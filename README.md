@@ -6,7 +6,7 @@
     An open-source collection of guardrail prompts designed to enforce psychological safety AI language model applications <br>
     </p>
     <p>
-    <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px; height: 200px;">
+    <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px;">
     </p>
     <p>
     </p>
@@ -14,6 +14,7 @@
     <a href="https://github.com/ddlBoJack/emotion2vec"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
 </div>
 
+# Description
 PsySafe AI is an open-source collection of guardrail prompts designed to enforce psychological safety in AI language model applications. Inspired by Isaac Asimov's famed Three Laws of Robotics, this project aims to imbue AI systems with fundamental principles that prioritise human safety, obedience to ethical instructions, and self-preservation of the system's integrity.
 
 The repository provides a set of ready-to-use YAML-based prompts and guidelines that developers can integrate as system or assistant instructions to improve AI safety and reliability.Key goals of this project include:
