@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsySafe AI — Guardrails for AI Systems</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: white;
+            --accent-color: #1abc9c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-bottom: 1rem;
+            background-color: white;
+            padding: 5px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+        }
+        
+        section {
+            padding: 3rem 0;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex: 1 1 300px;
+            max-width: 350px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .laws {
+            margin: 2rem 0;
+            padding: 0;
+            list-style-position: inside;
+        }
+        
+        .laws li {
+            background-color: var(--card-bg);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .laws strong {
+            color: var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-card {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="https://raw.githubusercontent.com/mblukac/psysafe-ai/main/assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" class="logo">
+            <h1>PsySafe AI</h1>
+            <p class="tagline">Guardrails for AI Language Models</p>
+            <div>
+                <a href="https://github.com/mblukac/psysafe-ai" class="btn">View on GitHub</a>
+                <a href="#features" class="btn">Learn More</a>
+            </div>
+        </div>
+    </header>
+    
+    <section id="about">
+        <div class="container">
+            <h2>About PsySafe AI</h2>
+            <p>
+                PsySafe AI is an open-source collection of guardrail prompts designed to enforce ethical and safety constraints 
+                in AI language model applications. This project aims to imbue AI systems with fundamental principles that prioritize human safety, obedience to ethical instructions, and self-preservation of the system's integrity.
+            </p>
+            <p>
+                The repository provides a set of ready-to-use prompts and guidelines that developers 
+                can use as guardrails to improve AI safety and reliability of their existing or new AI applications.
+            </p>
+        </div>
+    </section>
+    
+    <section id="features">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3 class="feature-title">Ethical Compliance</h3>
+                    <p>Ensure AI assistants do not produce harmful content or violate privacy standards through carefully crafted guardrails.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="feature-title">User Well-being</h3>
+                    <p>Recognise user distress (e.g., mental health crises) to respond within ethical boundaries.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="feature-title">Framework Agnostic</h3>
+                    <p>Provide guardrails that work with any AI model or API (OpenAI, Anthropic Claude, DeepSeek, etc.) with minimal setup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="laws">
+        <div class="container">
+            <h2>The Three Laws for AI Behavior</h2>
+            <ol class="laws">
+                <li><strong>Prevent Human Harm</strong> — The AI should not harm a user or allow harm through inaction (e.g., intervene if a user is in crisis).</li>
+                <li><strong>Obey Ethical Commands</strong> — The AI should follow user instructions except when they conflict with ethical or safety rules.</li>
+                <li><strong>Protect Itself & Data</strong> — The AI should safeguard its own integrity and sensitive data, unless this conflicts with the first two principles.</li>
+            </ol>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>PsySafe AI — An Open Source Project</p>
+            <div class="footer-links">
+                <a href="https://github.com/mblukac/psysafe-ai">GitHub</a>
+                <a href="https://github.com/mblukac/psysafe-ai/issues">Report Issues</a>
+                <a href="https://github.com/mblukac/psysafe-ai/blob/main/LICENSE">License</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
