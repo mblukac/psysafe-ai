@@ -1,6 +1,8 @@
 PsySafe AI is an open-source collection of guardrail prompts designed to enforce ethical and safety constraints in AI language model applications. Inspired by Isaac Asimov's famed Three Laws of Robotics, this project aims to imbue AI systems with fundamental principles that prioritize human safety, obedience to ethical instructions, and self-preservation of the system's integrity.
 
-<img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" width="200"/>
+<p align="center">
+  <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" width="200"/>
+</p>
 
 The repository provides a set of ready-to-use YAML-based prompts and guidelines that developers can integrate as system or assistant instructions to improve AI safety and reliability.Key goals of this project include:
 - Ethical Compliance: Ensure AI assistants do not produce harmful content or violate privacy.
