@@ -6,12 +6,12 @@
     An open-source collection of guardrail prompts designed to enforce psychological safety AI language model applications <br>
     </p>
     <p>
-    <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px;">
+    <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px;  border-radius: 8px;">
     </p>
     <p>
     </p>
-    <a href="https://github.com/ddlBoJack/emotion2vec"><img src="https://img.shields.io/badge/Python-3.8+-orange" alt="version"></a>
-    <a href="https://github.com/ddlBoJack/emotion2vec"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
+    <a href="https://github.com/mblukac/psysafe-ai"><img src="https://img.shields.io/badge/Python-3.8+-orange" alt="version"></a>
+    <a href="https://github.com/mblukac/psysafe-ai"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
 </div>
 
 # Description
