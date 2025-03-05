@@ -1,9 +1,30 @@
 [project]
 name = "psysafe-ai"
 version = "0.1.0"
-description = "Add your description here"
+description = "An open-source collection of guardrail prompts designed to enforce psychological safety in AI language model applications"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aisuite>=0.1.10",
+    "docstring-parser>=0.16",
+    "dotenv>=0.9.9",
+    "openai>=1.65.3",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pylint>=2.17.0",
+    "black>=23.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["guardrails", "utils"]
+
+[project.urls]
+Homepage = "https://github.com/mblukac/psysafe-ai"
+Issues = "https://github.com/mblukac/psysafe-ai/issues"
