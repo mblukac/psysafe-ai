@@ -34,5 +34,5 @@ Implementing robust guardrails is crucial for tailoring user experiences to indi
 It's essential to recognise that psychological safety doesn't come automatically with AI language models; it requires calibration. Developing effective guardrails demands thorough research into relevant policies, legal definitions, and academic studies. **PsySafe AI** undertakes this groundwork, providing developers with well-informed tools to:​
 
 - **Prevent Risks**: Use strong guardrails to mitigate potential harms associated with AI applications.​
-- ***Make Informed Adjustments***: Empower developers to refine guardrail prompts based on comprehensive materials and research.
+- **Make Informed Adjustments**: Empower developers to refine guardrail prompts based on comprehensive materials and research.
 
