@@ -1,14 +1,11 @@
 <div align="center">
     <h1>
-    PsySafe AI
-    </h1>
-    <p>
-    An open-source initiative dedicated to enhancing psychological safety in AI language model applications<br>
-    </p>
     <p>
     <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px;  border-radius: 8px;">
     </p>
+    </h1>
     <p>
+    An open-source initiative dedicated to enhancing psychological safety in AI language model applications<br>
     </p>
     <a href="https://github.com/mblukac/psysafe-ai"><img src="https://img.shields.io/badge/Python-3.8+-orange" alt="version"></a>
     <a href="https://github.com/mblukac/psysafe-ai"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
