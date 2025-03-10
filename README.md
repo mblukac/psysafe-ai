@@ -18,7 +18,7 @@
 ​PsySafe AI is an open-source initiative dedicated to enhancing psychological safety in AI language model applications. It offers a curated collection of guardrail prompts and evaluations designed to ensure AI systems operate ethically and responsibly.
 
 # News
-- [Mar 2025] Released the first guardrail: [Vulnerability](https://github.com/mblukac/psysafe-ai/tree/main/guardrails/vulnerability)! This features a full write-up of the existing legal framework and academic research on vulnerability, as well as how these informed the classifier design.
+- [Mar 2025] Released the first guardrail: [vulnerability](https://github.com/mblukac/psysafe-ai/tree/main/guardrails/vulnerability)! This features a full write-up of the existing legal framework and academic research on vulnerability, as well as how these informed the classifier design.
 - [Mar 2025] 🔥 Launch and started building
 
 # Key Features
@@ -30,7 +30,7 @@
 ## Why PsySafe AI
 Implementing robust guardrails is crucial for tailoring user experiences to individual needs while preventing potential negative outcomes. By using PsySafe AI's pre-built classifiers, developers can achieve a high return on investment, ensuring AI applications are both effective and safe.​
 
-**Understanding the Importance of Psychological Safety**
+## Understanding the Importance of Psychological Safety
 It's essential to recognise that psychological safety doesn't come automatically with AI language models; it requires calibration. Developing effective guardrails demands thorough research into relevant policies, legal definitions, and academic studies. **PsySafe AI** undertakes this groundwork, providing developers with well-informed tools to:​
 
 - **Prevent Risks**: Use strong guardrails to mitigate potential harms associated with AI applications.​
