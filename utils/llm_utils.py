@@ -3,11 +3,16 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from dotenv import load_dotenv
 import aisuite as ai
+from enum import Enum
 
 # Define paths
 ROOT_DIR = Path(__file__).parent.parent
 ENV_FILE = ROOT_DIR / ".env"
 
+class LLMModels(Enum):
+    GPT4o = 'openai:gpt-4o'
+    GPT4oMINI = 'openai:gpt-4o-mini'
+    DEEPSEEKR1 = 'deepseek:deepseek-reasoner'
 
 def load_environment() -> None:
     """
