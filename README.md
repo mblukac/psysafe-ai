@@ -15,6 +15,7 @@
 ​PsySafe AI is an open-source initiative dedicated to enhancing psychological safety in AI language model applications. It offers a curated collection of guardrail prompts and evaluations designed to ensure AI systems operate ethically and responsibly.
 
 # News
+- [May 2025] Released new guardrail: [suicide intent detection](https://github.com/mblukac/psysafe-ai/tree/main/guardrails/suicide)! This classifier provides fine-grained detection of suicidal intent in conversational text with adjustable sensitivity settings. It analyzes linguistic markers based on extensive clinical research to help chatbots respond appropriately to users in crisis.
 - [Mar 2025] Released the first guardrail: [vulnerability](https://github.com/mblukac/psysafe-ai/tree/main/guardrails/vulnerability)! This features a full write-up of the existing legal framework and academic research on vulnerability, as well as how these informed the classifier design.
 - [Mar 2025] 🔥 Launch and started building
 
