@@ -1,7 +1,7 @@
 <div align="center">
     <h1>
     <p>
-    <img src="assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px;  border-radius: 8px;">
+    <img src="assets/imgs/psysafe_logo.png" alt="PsySafe AI Logo" style="width: 200px;  border-radius: 8px;">
     </p>
     </h1>
     <p>
