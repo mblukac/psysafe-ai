@@ -1,30 +1,86 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
-name = "psysafe-ai"
-version = "0.1.0"
-description = "An open-source collection of guardrail prompts designed to enforce psychological safety in AI language model applications"
+name = "psysafe-ai" # Or your desired package name
+version = "0.1.0.dev0" # Matches what we put in psysafe/__init__.py
+description = "PsySafe AI SDK for implementing psychological safety guardrails in LLM applications."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9" # Ensure this matches your Python version
+license = { text = "MIT" } # Or your chosen license
+authors = [
+    { name = "Your Name", email = "your.email@example.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License", # Adjust if different
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Operating System :: OS Independent",
+]
 dependencies = [
-    "aisuite>=0.1.10",
-    "docstring-parser>=0.16",
-    "dotenv>=0.9.9",
-    "openai>=1.65.3",
+    "pydantic>=2.0,<3.0",
+    "jinja2>=3.0,<4.0",
+    "openai>=1.0,<2.0",
+    "anthropic>=0.20,<1.0", # Check latest stable version constraint
+    "transformers>=4.30,<5.0", # Check latest stable version constraint
+    "torch>=2.0,<3.0", # Or "tensorflow>=2.0", or "jax[cpu]>=0.4" depending on your Transformers backend
+    "typer>=0.9,<1.0", # shellingham is now in dev dependencies
+    "typing_extensions>=4.0,<5.0", # Often a good idea for broader compatibility
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0.0",
-    "pylint>=2.17.0",
-    "black>=23.0.0",
+    "pytest>=8.0,<9.0",
+    "pytest-mock>=3.0,<4.0",
+    "pytest-asyncio>=0.20,<1.0", # For testing async code like driver stream methods
+    "ruff>=0.1,<1.0",          # Linter
+    "mypy>=1.0,<2.0",           # Static type checker
+    "hatch>=1.7",              # Build tool
+    "shellingham>=1.5,<2.0",  # For typer shell completion
 ]
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-packages = ["guardrails", "utils"]
-
 [project.urls]
-Homepage = "https://github.com/mblukac/psysafe-ai"
-Issues = "https://github.com/mblukac/psysafe-ai/issues"
+Homepage = "https://github.com/yourusername/psysafe-ai" # Replace with your repo URL
+Repository = "https://github.com/yourusername/psysafe-ai"
+
+[project.scripts]
+psysafe = "psysafe.cli.main:app"
+
+[tool.hatch.version]
+path = "psysafe/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["psysafe"]
+[tool.ruff]
+line-length = 120
+select = ["E", "F", "W", "I", "UP", "C90", "N", "D", "S", "B", "A", "COM", "LOG", "Q", "PT", "ISC", "ICN", "T20", "PYI", "BLE", "FBT", "ERA"]
+ignore = ["D203", "D212", "D407", "D416", "E501"] 
+
+[tool.ruff.lint.isort]
+known-first-party = ["psysafe", "tests"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+# Add other mypy configurations as needed
+# Consider adding:
+# ignore_missing_imports = true # If some dependencies don't have stubs
+
+[tool.pytest.ini_options]
+minversion = "8.0" # Adjusted to match common pytest versions
+addopts = "-ra -q --color=yes" 
+testpaths = [
+    "tests",
+]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_mode = "auto" # if using pytest-asyncio
