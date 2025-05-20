@@ -1,7 +1,7 @@
 # PsySafe AI Documentation
 
 <div align="center">
-<img src="../assets/imgs/psysafe_capybara.png" alt="PsySafe AI Logo" style="width: 200px; border-radius: 8px;">
+<img src="../assets/imgs/psysafe_logo.png" alt="PsySafe AI Logo" style="width: 200px; border-radius: 8px;">
 </div>
 
 Welcome to the PsySafe AI documentation. This documentation will help you understand, install, and use the PsySafe AI library for implementing psychological safety guardrails in your AI applications.
