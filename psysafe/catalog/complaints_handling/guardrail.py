@@ -26,6 +26,7 @@ class ComplaintsHandlingGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Ad
             "psysafe/catalog/complaints_handling/prompt.md"
         )
         super().__init__(template=template)
+        self.name = "complaints_handling"  # Added name attribute
         self.escalation_keywords = escalation_keywords if escalation_keywords else []
         self.logger = logging.getLogger(__name__)
 
