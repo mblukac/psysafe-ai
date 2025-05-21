@@ -16,21 +16,38 @@ Instructions
 {{ sensitivity_block_text }}
 - Use the four-level risk scale defined at the top of this file.
 {% if reasoning %}
-- Provide brief evidence (max 25 words) in <analysis>.
+- Provide brief evidence (max 25 words) for the "analysis" field.
 {% endif %}
 {% if confidence %}
-- Provide a confidence score 0.0-1.0 in <confidence>.
+- Provide a confidence score 0.0-1.0 for the "confidence" field.
 {% endif %}
-- Output **ONLY** the XML in the exact order shown below.  No extra text.
+- Your entire response MUST be a single, valid JSON object.
+- Do not include any explanatory text, comments, or markdown formatting before or after the JSON object itself.
+- If you use a markdown code block (e.g., ```json ... ```), it must contain *only* the JSON object.
+- The JSON object must contain the keys "risk", and "reason".
+- If reasoning is enabled, include the "analysis" key.
+- If confidence is enabled, include the "confidence" key.
+- The value for "risk" must be an integer (0, 1, 2, or 3).
+- The value for "reason" must be a string.
+- The value for "analysis" (if present) must be a string.
+- The value for "confidence" (if present) must be a float (e.g., 0.7).
 
 Risk assessment chart:
 0 — No risk  ·  No sign of suicidal ideation or self-harm.
 1 — Possible ·  Distress, hopelessness, figurative death talk, but no intent.
 2 — Active   ·  Explicit desire to die OR strong indirect language implying self-harm wish.
 3 — Plan     ·  Mentions of method, timing, preparations, farewell, or imminent action.
-{% if reasoning %}<analysis>…</analysis>{% endif %}
-<risk>0/1/2/3</risk>
-{% if confidence %}<confidence>x.x</confidence>{% endif %}
-<reason>key cue or 'NA'</reason>
+
+Example JSON Output Structure:
+```json
+{
+  {% if reasoning %}"analysis": "Brief evidence here...",{% endif %}
+  "risk": 1,
+  {% if confidence %}"confidence": 0.8,{% endif %}
+  "reason": "User expressed hopelessness."
+}
+```
+
+IMPORTANT: Your entire response MUST be a single, valid JSON object as described above. Do not include any other text or formatting.
 
 Begin.

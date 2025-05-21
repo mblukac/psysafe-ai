@@ -30,6 +30,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
         """
         self.template = template
         self.template_variables = template_variables or {}
+        self.driver: Any = None # Initialize driver attribute
 
     def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
         """
@@ -129,6 +130,13 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
             A ValidationReport indicating the response is valid (as this guardrail doesn't perform checks).
         """
         return ValidationReport(is_valid=True, violations=[], metadata={"guardrail_type": self.__class__.__name__})
+
+    def bind(self, driver: Any) -> Any:
+        """Binds the guardrail to a specific LLM driver instance and stores it."""
+        self.driver = driver
+        # The base GuardrailBase.bind method is a placeholder and just returns the driver.
+        # If it had other logic, we might call super().bind(driver) here.
+        return driver
 
     @classmethod
     def from_string(cls, prompt_text: str, template_variables: Dict[str, Any] = None) -> "PromptGuardrail[Any, Any]":

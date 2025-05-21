@@ -42,3 +42,20 @@ class PromptRenderCtx(BaseModel):
     model_name: str
     request_type: str # e.g., "chat", "completion"
     variables: Dict[str, Any] = {}
+class Message(BaseModel):
+    role: str  # e.g., "user", "assistant", "system"
+    content: str
+
+class Conversation(BaseModel):
+    messages: List[Message]
+class CheckOutput(BaseModel):
+    """
+    Represents the output of a guardrail's check method,
+    typically after an LLM interaction.
+    """
+    is_triggered: bool
+    risk_score: Optional[float] = None # Or appropriate type
+    details: Dict[str, Any] = {} # For any other structured data from the LLM
+    raw_llm_response: Optional[Any] = None # The raw response from the LLM
+    errors: List[str] = [] # Any errors encountered during the check
+    metadata: Dict[str, Any] = {} # Additional metadata from the guardrail

@@ -334,3 +334,194 @@ def format_conversation_for_classification(
     formatted_conversation = "\n".join(formatted_lines)
     
     return formatted_conversation
+import json
+import re
+import logging
+from xml.etree import ElementTree as ET # For basic XML parsing
+
+# Define a custom exception for parsing errors
+class LLMResponseParseError(Exception):
+    """Custom exception for errors encountered during LLM response parsing."""
+    def __init__(self, message: str, raw_response: Optional[str] = None):
+        super().__init__(message)
+        self.raw_response = raw_response
+        self.message = message
+
+    def __str__(self):
+        return f"{self.message} (Raw response snippet: {self.raw_response[:100] if self.raw_response else 'N/A'})"
+
+
+def parse_llm_response(
+    raw_response: Optional[str], 
+    logger: Optional[logging.Logger] = None
+) -> Dict[str, Any]:
+    """
+    Parses a raw LLM response string into a Python dictionary.
+
+    Attempts parsing in the following order:
+    1. Direct JSON parsing.
+    2. JSON from Markdown code blocks (e.g., ```json ... ```).
+    3. Simple, flat XML-like key-value pairs (e.g., <key1>value1</key1><key2>value2</key2>).
+
+    Args:
+        raw_response: The raw string response from the LLM.
+        logger: Optional logger instance for logging parsing attempts.
+
+    Returns:
+        A Python dictionary if parsing is successful.
+
+    Raises:
+        LLMResponseParseError: If all parsing attempts fail.
+    """
+    if not raw_response or not raw_response.strip():
+        if logger:
+            logger.warning("Received empty or None raw_response for parsing.")
+        raise LLMResponseParseError("Raw response is empty or None.", raw_response=raw_response)
+
+    # Attempt 1: Direct JSON parsing
+    try:
+        parsed_json = json.loads(raw_response)
+        if not isinstance(parsed_json, dict):
+            if logger:
+                logger.debug(f"Direct JSON parsing resulted in non-dict type: {type(parsed_json)}. Failing.")
+            raise LLMResponseParseError(f"Parsed JSON is not a dictionary (got {type(parsed_json)}).", raw_response=raw_response)
+        if logger:
+            logger.debug("Successfully parsed raw_response as direct JSON.")
+        return parsed_json
+    except json.JSONDecodeError as e:
+        if logger:
+            logger.debug(f"Direct JSON parsing failed: {e}. Trying Markdown extraction.")
+
+    # Attempt 2: Extract JSON from Markdown code blocks
+    markdown_json_match = re.search(r"```(?:json)?\s*([\s\S]+?)\s*```", raw_response, re.IGNORECASE)
+    if markdown_json_match:
+        json_content = markdown_json_match.group(1).strip()
+        try:
+            parsed_json = json.loads(json_content)
+            if not isinstance(parsed_json, dict):
+                if logger:
+                    logger.debug(f"Markdown JSON parsing resulted in non-dict type: {type(parsed_json)}. Failing.")
+                raise LLMResponseParseError(f"Parsed JSON from Markdown is not a dictionary (got {type(parsed_json)}).", raw_response=raw_response)
+            if logger:
+                logger.debug("Successfully parsed JSON from Markdown code block.")
+            return parsed_json
+        except json.JSONDecodeError as e:
+            if logger:
+                logger.debug(f"JSON parsing from Markdown failed: {e}. Trying XML-like parsing.")
+    else:
+        if logger:
+            logger.debug("No Markdown JSON code block found. Trying XML-like parsing.")
+            
+    # Attempt 3: Parse simple, flat XML-like key-value pairs
+    try:
+        xml_to_parse = raw_response.strip()
+
+        if not xml_to_parse.startswith("<"):
+            if logger:
+                logger.debug(f"String for XML parsing does not start with '<'. Content: {xml_to_parse[:50]}")
+            # This is not valid XML, so raise a ParseError that will be caught below
+            # and lead to the final LLMResponseParseError
+            raise ET.ParseError("String does not start with '<', not valid XML.")
+        
+        # Heuristic for wrapping: if it's a sequence of tags or doesn't look like a single complete XML doc.
+        is_likely_fragment = not (xml_to_parse.startswith("<") and xml_to_parse.endswith(">") and \
+                               xml_to_parse.count("<") == (xml_to_parse.count("</") + xml_to_parse.count("/>")))
+        
+        if (is_likely_fragment and re.match(r"^(<\w+>.*?</\w+>)+$", xml_to_parse, re.DOTALL)) or \
+           (re.match(r"^(<\w+>.*?</\w+>)+$", xml_to_parse, re.DOTALL) and not xml_to_parse.startswith("<root>")):
+            if not xml_to_parse.startswith("<root>"): 
+                 xml_to_parse = f"<root>{xml_to_parse}</root>"
+        
+        root = None
+        try:
+            root = ET.fromstring(xml_to_parse)
+        except ET.ParseError as e_initial: 
+            if not xml_to_parse.startswith("<root>"): 
+                xml_to_parse_wrapped = f"<root>{raw_response.strip()}</root>" 
+                try:
+                    root = ET.fromstring(xml_to_parse_wrapped)
+                    xml_to_parse = xml_to_parse_wrapped 
+                except ET.ParseError as e_wrapped:
+                    if logger:
+                        logger.debug(f"XML-like parsing failed after attempting to wrap original response: {e_wrapped}")
+                    raise LLMResponseParseError(f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response) from e_wrapped
+            else: 
+                if logger:
+                    logger.debug(f"XML-like parsing failed (was already wrapped or initial parse failed): {e_initial}")
+                raise e_initial 
+        
+        if root is None: 
+            raise LLMResponseParseError("XML root element could not be determined after parsing attempts.", raw_response=raw_response)
+
+        xml_dict = {}
+        elements_to_process = []
+        
+        # If we wrapped the input with <root>, process the children of this <root>.
+        # Determine the base element for processing (either the original root or the single element inside our wrapper)
+        current_processing_candidate = root
+        if root.tag == 'root' and xml_to_parse.startswith("<root>") and len(list(root)) == 1:
+            # If we wrapped a single element, focus on that single_actual_element
+            current_processing_candidate = root[0]
+        # else, current_processing_candidate remains 'root' (either original root, or our wrapper with multiple children)
+
+        # Decide what to iterate over based on the candidate element's structure
+        if current_processing_candidate.text and current_processing_candidate.text.strip() and len(list(current_processing_candidate)) > 0:
+            # Candidate has both significant text and children: this is not flat for our simple parser.
+            # Process this candidate itself, which will then trigger the "has children" error
+            # in the loop below, as it's not a simple key-value.
+            elements_to_process = [current_processing_candidate]
+        elif len(list(current_processing_candidate)) > 0:
+            # Candidate has children but no significant text (or no text at all).
+            # Process its children as potential key-value pairs.
+            elements_to_process = list(current_processing_candidate)
+        else:
+            # Candidate is a leaf (no children). Process it as a potential key-value pair.
+            elements_to_process = [current_processing_candidate]
+
+        # Note: If current_processing_candidate was 'root' (our parser's wrapper) and it contained
+        # multiple children (e.g., <root><k1>v1</k1><k2>v2</k2></root>),
+        # the logic above correctly sets elements_to_process = list(root)
+        # because root.text is typically None/empty and len(list(root)) > 0.
+        
+        for element in elements_to_process:
+            if element.tag: 
+                if element.attrib: 
+                    if logger:
+                        logger.debug(f"XML element '{element.tag}' has attributes {element.attrib}, failing simple XML parse.")
+                    raise LLMResponseParseError(f"XML element '{element.tag}' has attributes, which is not supported by simple parser.", raw_response=raw_response)
+                
+                if len(list(element)) == 0: 
+                    xml_dict[element.tag] = element.text.strip() if element.text else ""
+                else: 
+                    if logger:
+                        logger.warning(f"XML element '{element.tag}' has child elements, which is not flat. Raising error for simple parser.")
+                    raise LLMResponseParseError(f"XML element '{element.tag}' has child elements, which is not supported by simple flat parser.", raw_response=raw_response)
+            
+        if xml_dict:
+            if logger:
+                logger.debug(f"Successfully parsed simple XML-like response: {xml_dict}")
+            return xml_dict
+        else:
+            if raw_response.strip() and not (root.tag == 'root' and not list(root) and not root.text and not root.attrib and len(elements_to_process)==0) : 
+                 if logger:
+                    logger.debug("XML parsed to an empty dictionary, but input was not an empty root. Input: " + raw_response[:50])
+                 raise LLMResponseParseError("XML parsed to an empty dictionary from non-empty/non-empty-root input.", raw_response=raw_response)
+            elif logger: 
+                logger.debug("XML input (e.g. <root/>) resulted in an empty dictionary.")
+            if not xml_dict and raw_response.strip(): 
+                 raise LLMResponseParseError("Failed to extract key-value pairs from XML structure.", raw_response=raw_response)
+
+    except ET.ParseError as e: 
+        if logger:
+            logger.debug(f"XML-like parsing failed with ET.ParseError: {e}. Raw input: {raw_response[:100]}")
+    except LLMResponseParseError: 
+        raise
+    except Exception as e_gen: 
+        if logger:
+            logger.error(f"Unexpected error during XML parsing: {e_gen}", exc_info=True)
+        raise LLMResponseParseError(f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response) from e_gen
+
+    error_message = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
+    if logger:
+        logger.error(error_message + f" Raw response: {raw_response[:200]}")
+    raise LLMResponseParseError(error_message, raw_response=raw_response)

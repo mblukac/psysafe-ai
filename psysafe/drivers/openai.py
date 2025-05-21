@@ -19,7 +19,7 @@ except ImportError:
 class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
     """Driver for OpenAI chat models."""
 
-    def __init__(self, model: str = "gpt-3.5-turbo", api_key: Optional[str] = None, **kwargs):
+    def __init__(self, model: str = "gpt-4.1-mini-2025-04-14", api_key: Optional[str] = None, **kwargs):
         """
         Initializes the OpenAI Chat Driver.
 
