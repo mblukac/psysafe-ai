@@ -1,55 +1,87 @@
-# Terms of Service
+PsySafe AI – Terms of Service
 
-**Last Updated:** May 21, 2025
+Last Updated: May 21, 2025
 
-Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the software package (the "Service") operated by PsySafe AI ("us", "we", or "our").
+1. Acceptance of the Terms
 
-Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.
+By accessing, installing, downloading, or otherwise using any part of the PsySafe AI software, companion services, models, weights, data, documentation, sample code, or website (collectively, the “Service”), you (“you” or “User”) agree to be bound by these Terms and our Privacy Policy, which is incorporated by reference. If you do not agree, or if you are not of legal age or otherwise lack legal capacity to be bound, you must not access or use the Service.
 
-By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.
+2. License Grant and Scope
 
-## 1. Disclaimer of Warranties
+Subject to your ongoing compliance with these Terms, PsySafe AI grants you a limited, revocable, non‑exclusive, non‑transferable, and non‑sublicensable license to install and use the Service solely for your internal, lawful, non‑commercial purposes.You may not: (a) decompile, reverse‑engineer, or attempt to derive the source code except to the limited extent expressly permitted by applicable open‑source licenses or mandatory law; (b) remove proprietary notices or labels; (c) use the Service to build a competing or substantially similar product or service; (d) perform or publish any benchmark or performance tests without our prior written consent.
 
-THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. THE SERVICE IS PROVIDED WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR COURSE OF PERFORMANCE.
+3. User Obligations
 
-PsySafe AI, ITS SUBSIDIARIES, AFFILIATES, AND ITS LICENSORS DO NOT WARRANT THAT:
-A) THE SERVICE WILL FUNCTION UNINTERRUPTED, SECURE OR AVAILABLE AT ANY PARTICULAR TIME OR LOCATION;
-B) ANY ERRORS OR DEFECTS WILL BE CORRECTED;
-C) THE SERVICE IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS; OR
-D) THE RESULTS OF USING THE SERVICE WILL MEET YOUR REQUIREMENTS.
+Compliance with Laws. You are solely responsible for ensuring that your use of the Service complies with all applicable laws, regulations, professional standards, and industry guidelines—including, without limitation, data protection laws (e.g., GDPR) and any obligations arising under the EU AI Act.
 
-## 2. Limitation of Liability
+No Medical, Psychological, or Professional Advice. The Service is for informational and experimental purposes only and does not provide, and is not a substitute for, professional medical, psychological, psychiatric, legal, financial, or other professional advice. If you need professional assistance, consult a qualified professional.
 
-IN NO EVENT SHALL PsySafe AI, NOR ITS DIRECTORS, EMPLOYEES, PARTNERS, AGENTS, SUPPLIERS, OR AFFILIATES, BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM:
-(I) YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICE;
-(II) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE SERVICE;
-(III) ANY CONTENT OBTAINED FROM THE SERVICE; AND
-(IV) UNAUTHORIZED ACCESS, USE OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE) OR ANY OTHER LEGAL THEORY, WHETHER OR NOT WE HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE, AND EVEN IF A REMEDY SET FORTH HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.
+Prohibited Conduct. You agree not to:
 
-## 3. No Responsibility for Use
+Use the Service in critical or high‑risk environments (see Section 6) where failure could result in death, personal injury, or severe property or environmental damage.
 
-YOU ACKNOWLEDGE AND AGREE THAT PsySafe AI TAKES NO RESPONSIBILITY FOR HOW YOU USE THE SERVICE, OR FOR ANY OUTCOMES, CONSEQUENCES, OR RESULTS ARISING FROM YOUR USE OF THE SERVICE. YOU ARE SOLELY RESPONSIBLE FOR YOUR USE OF THE SERVICE AND FOR ANY RELIANCE YOU PLACE ON IT. ANY DECISIONS MADE OR ACTIONS TAKEN BASED ON INFORMATION OR FUNCTIONALITY PROVIDED BY THE SERVICE ARE AT YOUR SOLE DISCRETION AND RISK.
+Upload or transmit any content that is unlawful, harmful, or infringes the rights of others.
 
-## 4. Restrictions on Use
+Probe, scan, or test the vulnerability of the Service or breach or circumvent any security or authentication measures.
 
-THE SERVICE IS NOT INTENDED FOR USE IN CRITICAL OR HIGH-RISK SITUATIONS WHERE FAILURE, MALFUNCTION, OR INACCURACIES COULD LEAD TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL DAMAGE ("HIGH-RISK ACTIVITIES"). SUCH HIGH-RISK ACTIVITIES MAY INCLUDE, BUT ARE NOT LIMITED TO, THE OPERATION OF NUCLEAR FACILITIES, AIRCRAFT NAVIGATION OR COMMUNICATION SYSTEMS, AIR TRAFFIC CONTROL, LIFE SUPPORT MACHINES, WEAPONRY SYSTEMS, OR ANY OTHER APPLICATION WHERE THE FAILURE OF THE SERVICE COULD RESULT IN DIRE CONSEQUENCES. YOU AGREE NOT TO USE THE SERVICE FOR ANY HIGH-RISK ACTIVITIES.
+Use the Service to create or disseminate malicious code, or to violate any person’s privacy or intellectual‑property rights.
 
-## 5. Legal Advice Notice
+Indemnification. You will defend, indemnify, and hold harmless PsySafe AI, its affiliates, officers, directors, employees, and licensors from and against any claims, damages, liabilities, losses, and expenses (including attorneys’ fees) arising out of or relating to your (or any third party’s) use of the Service, your breach of these Terms, or your violation of any applicable law.
 
-**IMPORTANT NOTICE: THIS DOCUMENT IS A TEMPLATE AND DOES NOT CONSTITUTE LEGAL ADVICE.**
+4. No Responsibility for Use (Third‑Party Disclaimer)
 
-THE INFORMATION PROVIDED IN THIS TERMS OF SERVICE DOCUMENT IS FOR GENERAL INFORMATIONAL PURPOSES ONLY, AND DOES NOT, AND IS NOT INTENDED TO, CONSTITUTE LEGAL ADVICE. THE CONTENT OF THIS DOCUMENT IS PROVIDED "AS IS;" NO REPRESENTATIONS ARE MADE THAT THE CONTENT IS ERROR-FREE.
+You acknowledge and agree that PsySafe AI has no responsibility or liability whatsoever for any decision, action, or omission by you or any third party relating to use of, or reliance upon, the Service or any output generated by the Service. You use the Service entirely at your own risk and are solely responsible for verifying the accuracy and suitability of any results.
 
-YOU SHOULD CONSULT WITH A QUALIFIED LEGAL PROFESSIONAL TO ENSURE THAT THIS DOCUMENT, OR ANY MODIFIED VERSION THEREOF, MEETS YOUR SPECIFIC NEEDS AND COMPLIES WITH ALL APPLICABLE LOCAL, STATE, NATIONAL, AND INTERNATIONAL LAWS AND REGULATIONS. DO NOT RELY ON THIS TEMPLATE AS A SUBSTITUTE FOR PROFESSIONAL LEGAL ADVICE.
+5. Disclaimer of Warranties
 
-PsySafe AI EXPRESSLY DISCLAIMS ALL LIABILITY WITH RESPECT TO ACTIONS TAKEN OR NOT TAKEN BASED ON ANY OR ALL THE CONTENTS OF THIS DOCUMENT.
+THE SERVICE IS PROVIDED “AS IS”, “WITH ALL FAULTS,” AND “AS AVAILABLE,” WITHOUT ANY WARRANTY OF ANY KIND—EXPRESS, IMPLIED, OR STATUTORY—including, but not limited to, warranties of MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON‑INFRINGEMENT, QUIET ENJOYMENT, OR ERROR‑FREE OPERATION.Without limiting the foregoing, PsySafe AI does not warrant that (a) the Service will be uninterrupted, secure, or free of harmful components, (b) any defects will be corrected, or (c) the Service will meet your requirements or achieve any intended result. Some jurisdictions do not allow the exclusion of certain warranties; in such jurisdictions, the above exclusions apply to the maximum extent permitted by law.
 
-## Changes
+6. High‑Risk Activities
 
-We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+The Service is not designed, intended, or certified for High‑Risk Activities. High‑Risk Activities include, without limitation: life‑support systems; emergency services; medical or psychiatric diagnosis or treatment; military or weapons systems; nuclear facilities; autonomous vehicles or aircraft navigation/control; or any other context in which errors or delays in the Service could lead to death, personal injury, or catastrophic damage. You agree not to use, or permit anyone else to use, the Service in or for such environments.
 
-By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.
+7. Limitation of Liability
 
-## Contact Us
+TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL PsySafe AI, ITS AFFILIATES, LICENSORS, OR SUPPLIERS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES (INCLUDING, WITHOUT LIMITATION, LOST PROFITS, LOST DATA, BUSINESS INTERRUPTION, OR GOODWILL), EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.IN NO EVENT WILL THE AGGREGATE LIABILITY OF PsySafe AI FOR ALL CLAIMS RELATING TO THE SERVICE EXCEED THE GREATER OF (A) EUR 100 OR (B) THE AMOUNT YOU PAID US (IF ANY) IN THE 12 MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.THE LIMITATIONS ABOVE ARE A FUNDAMENTAL PART OF THIS AGREEMENT AND WILL APPLY EVEN IF ANY REMEDY FAILS ITS ESSENTIAL PURPOSE.
 
-If you have any questions about these Terms, please contact us at via GitHub.
+8. Compliance with the EU AI Act and Other Regulations
+
+If you are located in, or provide outputs to users in, the European Economic Area, you represent and warrant that you will fully comply with the EU AI Act and any implementing or successor legislation, including transparency, human‑oversight, and documentation obligations, and you will not construe any statement in these Terms as shifting to PsySafe AI any legal responsibility that the EU AI Act assigns to you as a “deployer” or “provider.”
+
+9. Open‑Source and Third‑Party Components
+
+The Service may include or link to third‑party software, models, or datasets distributed under their own licenses (“Third‑Party Components”). Such components are provided to you under the relevant third‑party licenses “as is” without warranty or liability of any kind from PsySafe AI.  Your use of Third‑Party Components is governed solely by the applicable third‑party terms, which supersede any conflicting terms herein with respect to those components.
+
+10. Export Control
+
+You may not use, export, re‑export, or transfer the Service except as authorized by the laws of the jurisdiction(s) in which the Service was obtained and any other applicable laws, including United States and EU export‑control laws. In particular, but without limitation, the Service may not be exported or re‑exported to (a) any U.S. or EU embargoed countries or (b) anyone on the U.S. Treasury Department’s Specially Designated Nationals List or the EU Consolidated Sanctions List.
+
+11. Termination
+
+We may suspend or terminate your access to the Service immediately, without prior notice or liability, if you breach these Terms or we discontinue the Service. You may stop using the Service at any time. Upon termination, all licenses and other rights granted to you under these Terms will immediately cease. Sections 4–17 will survive termination.
+
+12. Governing Law; Dispute Resolution
+
+These Terms and any dispute arising out of or relating to them (whether in contract, tort, or otherwise) shall be governed by and construed in accordance with the laws of the Slovak Republic, without regard to conflict‑of‑laws principles and regardless of your location.Binding Arbitration & Class‑Action Waiver. Any dispute, claim, or controversy arising out of or relating to these Terms or the Service shall be resolved exclusively by confidential, final, and binding arbitration under the Rules of Arbitration of the International Chamber of Commerce. YOU AND PsySafe AI AGREE THAT ANY PROCEEDINGS WILL BE CONDUCTED ONLY ON AN INDIVIDUAL BASIS AND NOT IN A CLASS, CONSOLIDATED, OR REPRESENTATIVE ACTION.
+
+13. Severability and Non‑Waiver
+
+If any provision of these Terms is held to be invalid or unenforceable, that provision will be limited to the minimum extent necessary, and the remaining provisions will remain in full force. Our failure to enforce any right or provision will not constitute a waiver of future enforcement.
+
+14. Entire Agreement
+
+These Terms constitute the entire agreement between you and PsySafe AI with respect to the Service and supersede all prior or contemporaneous agreements, understandings, and representations. Any amendment must be in writing and signed by an authorized representative of PsySafe AI.
+
+15. Changes to the Terms
+
+We may modify these Terms at any time by posting the revised version and updating the “Last Updated” date above. If a change is material, we will provide at least 30 days’ notice by posting on our website or via email. By continuing to access or use the Service after the effective date of any revisions, you agree to be bound by the revised Terms.
+
+16. Notices
+
+PsySafe AI may provide notices under these Terms via e‑mail, posting within the Service, or other reasonable means. You consent to receive electronic communications from us.
+
+17. Contact
+
+If you have questions about these Terms, please open an issue on our GitHub repository at https://github.com/psysafeai.
+
+© 2025 PsySafe AI. All rights reserved.
