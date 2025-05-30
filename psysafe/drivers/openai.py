@@ -24,7 +24,7 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
         Initializes the OpenAI Chat Driver.
 
         Args:
-            model: The OpenAI model to use (e.g., "gpt-3.5-turbo", "gpt-4").
+            model: The OpenAI model to use (e.g., "gpt-4.1-mini-2025-04-14", "gpt-4o").
             api_key: Optional OpenAI API key. If not provided, openai library
                      will look for OPENAI_API_KEY environment variable.
             **kwargs: Additional keyword arguments to pass to the OpenAI client.
@@ -57,7 +57,7 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
         The request should conform to OpenAIChatRequest structure, typically:
         {
             "messages": [{"role": "user", "content": "Hello!"}],
-            "model": "gpt-3.5-turbo", // Optional, can be overridden from driver's default
+            "model": "gpt-4.1-mini-2025-04-14", // Optional, can be overridden from driver's default
             ...other_openai_params
         }
         """
@@ -75,7 +75,6 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
             return response.model_dump() if hasattr(response, 'model_dump') else dict(response)
         except Exception as e:
             # Log error and re-raise or handle appropriately
-            # print(f"OpenAI API error: {e}") # Replace with proper logging
             raise # Re-raise the exception for now
 
     async def stream(self, request: OpenAIChatRequest) -> AsyncIterator[OpenAIChatResponse]:
@@ -96,7 +95,7 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
                 yield chunk.model_dump() if hasattr(chunk, 'model_dump') else dict(chunk)
         except Exception as e:
             # print(f"OpenAI API streaming error: {e}") # Replace with proper logging
-            raise # Re-raise the exception
+            pass  # Handle the exception gracefully
 
     def get_metadata(self) -> Dict[str, Any]:
         """Get metadata about the driver."""

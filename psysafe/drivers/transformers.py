@@ -8,8 +8,6 @@ from psysafe.typing.responses import TransformersChatResponse, TransformersStrea
 try:
     from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
     # Specific pipeline types can be imported for better type hinting if focusing on one
-    # from transformers.pipelines.text_generation import TextGenerationPipeline
-    # from transformers.pipelines.conversational import ConversationalPipeline
 except ImportError:
     raise ImportError(
         "Transformers library is required for TransformersChatDriver. "
@@ -60,7 +58,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
             # For some tasks like conversational, model might not be explicitly loaded here
             # if pipeline handles it. For text-generation with streaming, explicit model is better.
             if self.task == "text-generation": # Or other tasks requiring explicit model for advanced control
-                 model = AutoModelForCausalLM.from_pretrained(self.model_name_or_path)
                  self._pipeline = pipeline(
                     task=self.task,
                     model=model,
@@ -115,7 +112,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                 # e.g. [{'generated_text': '...'}]
                 response_data = self.pipeline(input_data, **generation_kwargs)
                 # We'll return the first result, assuming single input
-                return response_data[0] if response_data else {"generated_text": ""}
             
             elif self.task == "conversational":
                 from transformers.pipelines.conversational import Conversation
@@ -152,7 +148,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                     # For now, let's make a simplified assumption that it returns something convertible
                     # This part is tricky without knowing the exact pipeline behavior.
                     # Let's assume a simplified response structure for now.
-                    # This is a placeholder and likely needs refinement.
                     raw_response = self.pipeline(conv_input, **generation_kwargs)
                     # Attempt to get the last generated response
                     if hasattr(raw_response, 'generated_responses') and raw_response.generated_responses:
@@ -178,7 +173,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
 
     async def stream(self, request: TransformersChatRequest) -> AsyncIterator[TransformersStreamChunk]:
         """
-        Stream response from the Transformers text-generation pipeline.
         Note: This is a basic implementation for text-generation and might need
               adjustments for other tasks or more complex streaming needs.
               Conversational streaming is more complex.

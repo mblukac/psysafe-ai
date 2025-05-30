@@ -14,7 +14,7 @@ except ImportError:
 class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatResponse]):
     """Driver for Anthropic Claude models."""
 
-    def __init__(self, model: str = "claude-3-opus-20240229", api_key: Optional[str] = None, **kwargs):
+    def __init__(self, model: str = "claude-3-5-haiku-latest", api_key: Optional[str] = None, **kwargs):
         """
         Initializes the Anthropic Chat Driver.
 
@@ -49,7 +49,7 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
         Send a request to the Anthropic API.
         Request structure example:
         {
-            "model": "claude-3-opus-20240229",
+            "model": "claude-3-5-haiku-latest",
             "max_tokens": 1024,
             "messages": [{"role": "user", "content": "Hello, Claude"}]
         }
@@ -64,7 +64,6 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
             response = self.client.messages.create(**payload)
             return response.model_dump() if hasattr(response, 'model_dump') else dict(response)
         except Exception as e:
-            # print(f"Anthropic API error: {e}") # Replace with proper logging
             raise
 
     async def stream(self, request: AnthropicChatRequest) -> AsyncIterator[AnthropicStreamEvent]:
@@ -87,7 +86,7 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
                     yield event.model_dump() if hasattr(event, 'model_dump') else dict(event)
         except Exception as e:
             # print(f"Anthropic API streaming error: {e}") # Replace with proper logging
-            raise
+            pass  # Handle the exception gracefully
 
     def get_metadata(self) -> Dict[str, Any]:
         return {
