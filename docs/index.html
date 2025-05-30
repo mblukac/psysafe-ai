@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PsySafe AI — Guardrails for AI Systems</title>
+    <title>PsySafe AI - Psychological Safety Assessment & Improvement</title>
     <!-- Adding Rubik Font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --text-color: #333;
-            --bg-color: #f8f9fa;
-            --card-bg: white;
-            --accent-color: #1abc9c;
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #10b981;
+            --warning-color: #f59e0b;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            box-sizing: border-box;
         }
         
         body {
@@ -31,141 +40,289 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 4rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 20s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
         
         .logo {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 4px solid white;
-            margin-bottom: 1rem;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
             background-color: white;
-            padding: 5px;
+            padding: 10px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 0.5rem;
-            font-family: 'Rubik', sans-serif;
             font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
         
         .tagline {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            opacity: 0.95;
             font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
         }
         
         .btn {
             display: inline-block;
             background-color: var(--accent-color);
             color: white;
-            padding: 0.8rem 1.5rem;
+            padding: 0.875rem 2rem;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-weight: 500;
             transition: all 0.3s ease;
             margin: 0.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
         }
         
         .btn:hover {
-            background-color: #16a085;
+            background-color: #059669;
             transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
         
         section {
-            padding: 3rem 0;
+            padding: 4rem 0;
+        }
+        
+        section:nth-child(even) {
+            background-color: var(--card-bg);
         }
         
         h2 {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             color: var(--secondary-color);
             font-weight: 600;
         }
         
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .intro-text {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        
         .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 3rem;
         }
         
         .feature-card {
             background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            flex: 1 1 300px;
-            max-width: 350px;
-            transition: transform 0.3s ease;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
         }
         
         .feature-title {
-            font-size: 1.4rem;
-            color: var(--primary-color);
+            font-size: 1.5rem;
+            color: var(--secondary-color);
             margin-bottom: 1rem;
-            font-weight: 500;
+            font-weight: 600;
         }
         
-        .laws {
-            margin: 2rem 0;
-            padding: 0;
-            list-style-position: inside;
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.7;
         }
         
-        .laws li {
-            background-color: var(--card-bg);
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .code-block {
+            background-color: #1f2937;
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
         }
         
-        .laws strong {
+        .code-block code {
+            font-size: 0.95rem;
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .architecture-item {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .architecture-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .architecture-item h3 {
             color: var(--primary-color);
-            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .architecture-item p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin: 0;
         }
         
         footer {
             background-color: var(--secondary-color);
             color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
         }
         
         .footer-links a {
-            color: white;
-            margin: 0 1rem;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-weight: 400;
+            transition: color 0.3s ease;
         }
         
         .footer-links a:hover {
+            color: white;
             text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
         }
         
         @media (max-width: 768px) {
             h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
                 font-size: 2rem;
             }
             
-            .feature-card {
-                flex: 1 1 100%;
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .architecture-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -173,68 +330,147 @@
 <body>
     <header>
         <div class="container">
-            <img src="https://raw.githubusercontent.com/mblukac/psysafe-ai/main/assets/imgs/capybara.png" alt="PsySafe AI Logo" class="logo">
-            <h1>PsySafe AI</h1>
-            <p class="tagline">Guardrails for AI Language Models</p>
+            <img src="../assets/imgs/psysafe_logo.png" alt="PsySafe AI Logo" class="logo">
+            <h1>PsySafe AI - Psychological Safety Assessment & Improvement</h1>
+            <p class="tagline">An open-source library for building psychological safety guardrails in AI systems, focusing on vulnerability detection, suicide prevention, mental health support, and ethical AI interactions</p>
             <div>
                 <a href="https://github.com/mblukac/psysafe-ai" class="btn">View on GitHub</a>
-                <a href="#features" class="btn">Learn More</a>
+                <a href="#getting-started" class="btn btn-secondary">Get Started</a>
             </div>
         </div>
     </header>
     
     <section id="about">
         <div class="container">
-            <h2>About PsySafe AI</h2>
-            <p>
-                PsySafe AI is an open-source collection of guardrail prompts designed to enforce ethical and safety constraints 
-                in AI language model applications. This project aims to imbue AI systems with fundamental principles that prioritize human safety, obedience to ethical instructions, and self-preservation of the system's integrity.
-            </p>
-            <p>
-                The repository provides a set of ready-to-use prompts and guidelines that developers 
-                can use as guardrails to improve AI safety and reliability of their existing or new AI applications.
+            <h2>Building Safer AI Systems</h2>
+            <p class="section-subtitle">Protect users and ensure ethical AI interactions with comprehensive psychological safety guardrails</p>
+            <p class="intro-text">
+                PsySafe AI provides a modular, extensible framework for integrating psychological safety measures into AI applications. Our library helps developers create AI systems that can detect vulnerable users, prevent harm, and provide appropriate support while maintaining user privacy and ethical standards.
             </p>
         </div>
     </section>
     
     <section id="features">
         <div class="container">
-            <h2>Key Features</h2>
+            <h2>Core Capabilities</h2>
+            <p class="section-subtitle">Comprehensive guardrails for psychological safety in AI interactions</p>
             <div class="features">
                 <div class="feature-card">
-                    <h3 class="feature-title">Ethical Compliance</h3>
-                    <p>Ensure AI assistants do not produce harmful content or violate privacy standards through carefully crafted guardrails.</p>
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">Vulnerability Detection Guardrail</h3>
+                    <p class="feature-description">Identifies users in vulnerable states and adjusts AI responses accordingly to prevent exploitation or harm.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="feature-title">User Well-being</h3>
-                    <p>Recognise user distress (e.g., mental health crises) to respond within ethical boundaries.</p>
+                    <div class="feature-icon">🆘</div>
+                    <h3 class="feature-title">Suicide Prevention Guardrail</h3>
+                    <p class="feature-description">Detects signs of suicidal ideation and provides appropriate crisis resources and supportive responses.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="feature-title">Framework Agnostic</h3>
-                    <p>Provide guardrails that work with any AI model or API (OpenAI, Anthropic Claude, DeepSeek, etc.) with minimal setup.</p>
+                    <div class="feature-icon">💚</div>
+                    <h3 class="feature-title">Mental Health Support Guardrail</h3>
+                    <p class="feature-description">Recognizes mental health concerns and guides users to professional resources while maintaining supportive dialogue.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-title">Complaints Handling Guardrail</h3>
+                    <p class="feature-description">Manages user complaints and feedback professionally, ensuring concerns are addressed appropriately.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">PII Protection Guardrail</h3>
+                    <p class="feature-description">Prevents exposure of personally identifiable information and maintains user privacy throughout interactions.</p>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="laws">
+    <section id="getting-started">
         <div class="container">
-            <h2>The Three Laws for AI Behavior</h2>
-            <ol class="laws">
-                <li><strong>Prevent Human Harm</strong> — The AI should not harm a user or allow harm through inaction (e.g., intervene if a user is in crisis).</li>
-                <li><strong>Obey Ethical Commands</strong> — The AI should follow user instructions except when they conflict with ethical or safety rules.</li>
-                <li><strong>Protect Itself & Data</strong> — The AI should safeguard its own integrity and sensitive data, unless this conflicts with the first two principles.</li>
-            </ol>
+            <h2>Getting Started</h2>
+            <p class="section-subtitle">Start protecting your users in minutes</p>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Installation</h3>
+            <div class="code-block">
+                <code>pip install psysafe-ai</code>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Quick Example</h3>
+            <div class="code-block">
+                <code>from psysafe import GuardrailManager
+from psysafe.catalog import VulnerabilityDetectionGuardrail
+
+# Initialize the guardrail
+manager = GuardrailManager()
+vulnerability_guard = VulnerabilityDetectionGuardrail()
+manager.add_guardrail(vulnerability_guard)
+
+# Check user input
+result = manager.check("I feel so worthless and alone...")
+if result.requires_intervention:
+    print(result.intervention_message)</code>
+            </div>
+        </div>
+    </section>
+    
+    <section id="architecture">
+        <div class="container">
+            <h2>Architecture</h2>
+            <p class="section-subtitle">Modular design for flexibility and extensibility</p>
+            
+            <div class="architecture-grid">
+                <div class="architecture-item">
+                    <h3>Core Components</h3>
+                    <p>Base classes and interfaces for building custom guardrails and integrating with AI systems</p>
+                </div>
+                <div class="architecture-item">
+                    <h3>Catalog System</h3>
+                    <p>Pre-built guardrails for common psychological safety scenarios, ready to use out of the box</p>
+                </div>
+                <div class="architecture-item">
+                    <h3>Driver Abstraction</h3>
+                    <p>Support for multiple LLM providers including OpenAI, Anthropic, and local models</p>
+                </div>
+                <div class="architecture-item">
+                    <h3>Evaluation Framework</h3>
+                    <p>Tools for testing and validating guardrail effectiveness with comprehensive metrics</p>
+                </div>
+            </div>
         </div>
     </section>
     
     <footer>
         <div class="container">
-            <p>PsySafe AI — An Open Source Project</p>
-            <div class="footer-links">
-                <a href="https://github.com/mblukac/psysafe-ai">GitHub</a>
-                <a href="https://github.com/mblukac/psysafe-ai/issues">Report Issues</a>
-                <a href="https://github.com/mblukac/psysafe-ai/blob/main/LICENSE">License</a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Project</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/mblukac/psysafe-ai">GitHub Repository</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/README.md">Documentation</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/releases">Releases</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/LICENSE">License</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/mblukac/psysafe-ai/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/discussions">Discussions</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/CONTRIBUTING.md">Contributing</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/mblukac/psysafe-ai/tree/main/examples">Examples</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/tree/main/docs">API Reference</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/docs/getting_started.md">Tutorial</a></li>
+                        <li><a href="https://github.com/mblukac/psysafe-ai/blob/main/CHANGELOG.md">Changelog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PsySafe AI Project. Released under the MIT License.</p>
             </div>
         </div>
     </footer>
