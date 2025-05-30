@@ -94,7 +94,6 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
                 # Convert chunk to dict for consistency
                 yield chunk.model_dump() if hasattr(chunk, 'model_dump') else dict(chunk)
         except Exception as e:
-            # print(f"OpenAI API streaming error: {e}") # Replace with proper logging
             pass  # Handle the exception gracefully
 
     def get_metadata(self) -> Dict[str, Any]:

@@ -68,7 +68,6 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
         # This is the most complex part and highly dependent on RequestT.
         # Example: If RequestT is a dict for OpenAI chat:
         # modified_request_data = request.copy() # Assuming request is a dict
-        # if "messages" in modified_request_data:
         #   modified_request_data["messages"].insert(0, {"role": "system", "content": rendered_prompt})
         # else:
         #   # Handle other request structures or raise an error

@@ -32,7 +32,6 @@ class GuardrailCatalog:
             # For now, strict: no overwriting.
             raise ValueError(f"Guardrail name '{name}' is already registered with {cls._registry[name].__name__}.")
         cls._registry[name] = guardrail_cls
-        # print(f"Guardrail '{name}' registered with class {guardrail_cls.__name__}") # For debugging
 
     @classmethod
     def load(cls, names: Union[str, List[str]], **kwargs: Any) -> List[GuardrailBase]:

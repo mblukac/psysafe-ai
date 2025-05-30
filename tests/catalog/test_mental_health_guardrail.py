@@ -144,8 +144,9 @@ def test_check_llm_response_parse_error(mh_guardrail_with_mock_driver, mock_logg
     assert len(result.errors) == 1
     assert "Failed to parse LLM response" in result.errors[0]
     assert result.raw_llm_response == raw_bad_response
+    expected_error_message_from_parser = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     mock_logger_mental_health.error.assert_any_call(
-        f"LLMResponseParseError in check method: Invalid JSON: Expected a JSON object or array. Raw Response: {raw_bad_response[:200]}",
+        f"LLMResponseParseError in check method: {expected_error_message_from_parser}. Raw Response: {raw_bad_response[:200]}",
         exc_info=True
     )
 
@@ -212,7 +213,6 @@ def test_check_successful_xml_like_input_parsed(mh_guardrail_with_mock_driver, m
     # If the LLM actually produced the above, `parse_llm_response` would convert <phrase>sad</phrase>
     # to "key_phrases_detected": "sad". For arrays, JSON is much better.
     # The prompt now strictly asks for JSON, so this case tests `parse_llm_response`'s flexibility
-    # if it were to encounter such (legacy or incorrect) XML.
 
     # Let's make the XML simpler to match what parse_llm_response handles well for non-JSON
     simple_xml_response = """

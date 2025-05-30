@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsySafe AI Cleanup Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .header { background: #f4f4f4; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .metric { background: #e9e9e9; padding: 15px; border-radius: 5px; text-align: center; }
+        .metric-value { font-size: 2em; font-weight: bold; color: #333; }
+        .metric-label { color: #666; }
+        .phase { border: 1px solid #ddd; margin-bottom: 15px; border-radius: 5px; }
+        .phase-header { background: #f9f9f9; padding: 10px; border-bottom: 1px solid #ddd; }
+        .phase-content { padding: 15px; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .file-changes { max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 3px; }
+        .recommendations { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; }
+        .recommendation { margin-bottom: 10px; padding: 10px; border-left: 4px solid #ffc107; background: #fffbf0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PsySafe AI Cleanup Report</h1>
+        <p>Generated on 2025-05-30 17:13:55</p>
+    </div>
+    
+    <h2>Summary</h2>
+    <div class="summary">
+        <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Total Phases</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Successful</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0</div>
+            <div class="metric-label">Failed</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">116</div>
+            <div class="metric-label">Files Modified</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0.4s</div>
+            <div class="metric-label">Total Duration</div>
+        </div>
+    </div>
+    
+    <h2>Phase Details</h2>
+
+    <div class="phase">
+        <div class="phase-header">
+            <h3 class="success">Dead Code Removal</h3>
+            <p>Duration: 0.4s | Files Modified: 116 | 
+               Errors: 0 | Warnings: 0</p>
+        </div>
+        <div class="phase-content">
+
+            <h4>File Changes (116)</h4>
+            <div class="file-changes">
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py - Removed commented code block (lines 51-52)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py - Removed commented code block (lines 34-34)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py - Removed commented code block (lines 17-17)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py - Removed commented code block (lines 216-216)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py - Removed commented code block (lines 88-88)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py - Removed commented code block (lines 97-97)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py - Removed commented code block (lines 59-59)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py - Removed commented code block (lines 112-112)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py - Removed commented code block (lines 147-147)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py - Removed commented code block (lines 171-171)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 148-148)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 152-152)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 160-161)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 163-163)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 166-166)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 171-172)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 174-174)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py - Removed commented code block (lines 176-176)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py - Removed commented code block (lines 54-54)</p>
+                <p><strong>modified:</strong> /Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py - Removed commented code block (lines 57-57)</p>
+                <p><em>... and 96 more files</em></p>
+            </div>
+
+        </div>
+    </div>
+
+    <h2>Recommendations</h2>
+    <div class="recommendations">
+
+        <div class="recommendation">
+            <h4>Review dead_code_removal Changes (medium priority)</h4>
+            <p>The dead_code_removal phase modified 116 files.</p>
+            <p><strong>Action:</strong> Review the changes to ensure they are correct and necessary.</p>
+        </div>
+    </div>
+
+</body>
+</html>

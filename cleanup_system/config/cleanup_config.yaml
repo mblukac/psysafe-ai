@@ -1,0 +1,139 @@
+# PsySafe AI Cleanup System Configuration
+
+project_name: "psysafe-ai"
+
+# Phase configurations
+phases:
+  dead_code_removal:
+    enabled: true
+    dry_run: false
+    timeout: 300
+    dependencies: []
+    config:
+      similarity_threshold: 0.8
+      min_pattern_size: 5
+      preserve_patterns:
+        - "\\s*(TODO|FIXME|NOTE|WARNING|HACK|XXX)"
+        - "\\s*(Copyright|License|Author)"
+        - "\\s*(Example:|Usage:|Returns:|Args:|Raises:|See also:)"
+        - "\\s*type:"
+        - "\\s*noqa"
+        - "\\s*pragma"
+
+  documentation_refresh:
+    enabled: true
+    dry_run: false
+    timeout: 180
+    dependencies: ["dead_code_removal"]
+    config:
+      update_readme: true
+      standardize_docstrings: true
+      check_examples: true
+      docstring_template: |
+        """
+        {brief_description}
+
+        {detailed_description}
+
+        Args:
+        {args}
+
+        Returns:
+        {returns}
+
+        Raises:
+        {raises}
+
+        Example:
+        {example}
+        """
+
+  code_consolidation:
+    enabled: true
+    dry_run: false
+    timeout: 300
+    dependencies: ["dead_code_removal"]
+    config:
+      similarity_threshold: 0.8
+      min_pattern_size: 5
+      extract_utilities: true
+      target_utility_modules:
+        - "psysafe/utils/extracted_utilities.py"
+
+  standards_enforcement:
+    enabled: true
+    dry_run: false
+    timeout: 120
+    dependencies: ["code_consolidation"]
+    config:
+      apply_formatting: true
+      organize_imports: true
+      check_naming: true
+      ruff:
+        line-length: 120
+        select: ["E", "F", "W", "I", "UP", "C90", "N", "D", "S", "B"]
+        ignore: ["D203", "D212", "D407", "D416", "E501"]
+        target-version: "py39"
+
+  dependency_cleanup:
+    enabled: true
+    dry_run: false
+    timeout: 180
+    dependencies: ["dead_code_removal"]
+    config:
+      confidence_threshold: 0.8
+      check_indirect_usage: true
+      preserve_dev_deps: true
+      package_import_mapping:
+        pillow: ["PIL"]
+        beautifulsoup4: ["bs4"]
+        pyyaml: ["yaml"]
+        python-dateutil: ["dateutil"]
+
+  test_validation:
+    enabled: true
+    dry_run: false
+    timeout: 600
+    dependencies: ["dead_code_removal", "code_consolidation", "standards_enforcement", "dependency_cleanup"]
+    config:
+      test_command: "python -m pytest"
+      run_examples: true
+      capture_baseline: true
+      validate_regressions: true
+      example_timeout: 60
+      test_timeout: 300
+
+# Safety configuration
+safety:
+  backup_enabled: true
+  backup_type: "git"  # "git", "full", "incremental"
+  backup_dir: null  # null = auto-generate
+  safety_checks: true
+  validation_enabled: true
+  stop_on_error: true
+
+# File patterns
+exclude_paths:
+  - ".git"
+  - "__pycache__"
+  - ".pytest_cache"
+  - ".mypy_cache"
+  - "*.egg-info"
+  - ".venv"
+  - "venv"
+  - "env"
+  - ".env"
+  - "node_modules"
+  - "dist"
+  - "build"
+  - ".coverage"
+  - "cleanup_system"
+
+include_patterns:
+  - "*.py"
+
+# Execution settings
+parallel_execution: false
+max_workers: 4
+log_level: "INFO"
+output_dir: "cleanup_reports"
