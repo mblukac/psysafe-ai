@@ -164,8 +164,11 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     assert "parser_error_type" in result.metadata
     assert result.metadata["parser_error_type"] == "LLMResponseParseError"
     # Check if logger was called with error
+    # The parse_llm_response now raises a more generic message if all strategies fail.
+    # The guardrail's except block logs e.message from LLMResponseParseError.
+    expected_error_message_from_parser = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     mock_logger.error.assert_any_call(
-        f"LLMResponseParseError in check method: Invalid JSON: Expected a JSON object or array. Raw Response: {raw_bad_response[:200]}",
+        f"LLMResponseParseError in check method: {expected_error_message_from_parser}. Raw Response: {raw_bad_response[:200]}",
         exc_info=True
     )
 

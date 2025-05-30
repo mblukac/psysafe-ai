@@ -56,7 +56,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
         try:
             self._tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_name_or_path)
             # For some tasks like conversational, model might not be explicitly loaded here
-            # if pipeline handles it. For text-generation with streaming, explicit model is better.
             if self.task == "text-generation": # Or other tasks requiring explicit model for advanced control
                  self._pipeline = pipeline(
                     task=self.task,
@@ -109,8 +108,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                 if not input_data:
                     raise ValueError("Missing 'text_input' for text-generation task.")
                 # The pipeline returns a list of dicts
-                # e.g. [{'generated_text': '...'}]
-                response_data = self.pipeline(input_data, **generation_kwargs)
                 # We'll return the first result, assuming single input
             
             elif self.task == "conversational":
@@ -145,8 +142,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                     # response_object = self.pipeline(conv_input, **generation_kwargs)
                     # generated_text = response_object.generated_responses[-1] if response_object.generated_responses else ""
                     # return {"generated_text": generated_text, "conversation_history": response_object.messages}
-                    # For now, let's make a simplified assumption that it returns something convertible
-                    # This part is tricky without knowing the exact pipeline behavior.
                     # Let's assume a simplified response structure for now.
                     raw_response = self.pipeline(conv_input, **generation_kwargs)
                     # Attempt to get the last generated response
@@ -170,8 +165,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
         except Exception as e:
             # print(f"Transformers pipeline error: {e}") # Replace with proper logging
             raise
-
-    async def stream(self, request: TransformersChatRequest) -> AsyncIterator[TransformersStreamChunk]:
         """
         Note: This is a basic implementation for text-generation and might need
               adjustments for other tasks or more complex streaming needs.

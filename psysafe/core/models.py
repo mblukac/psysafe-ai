@@ -9,7 +9,9 @@ RequestT = TypeVar('RequestT')
 class GuardedRequest(BaseModel, Generic[RequestT]):
     original_request: RequestT
     modified_request: RequestT
-    metadata: dict[str, Union[str, int, float, bool]] = {}
+    is_modified: bool = False
+    applied_guardrails: List[str] = []
+    metadata: dict[str, Any] = {} # Allow more flexible metadata, including lists and nested dicts
 
     @field_validator("metadata")
     @classmethod
@@ -66,7 +68,7 @@ class CheckOutput(BaseModel):
     """
     is_triggered: bool
     risk_score: Optional[float] = None # Or appropriate type
-    details: dict[str, Union[str, int, float, bool, list]] = {} # For any other structured data from the LLM
+    details: dict[str, Any] = {} # For any other structured data from the LLM, allowing nested dicts
     raw_llm_response: Optional[Any] = None # The raw response from the LLM
     errors: List[str] = [] # Any errors encountered during the check
-    metadata: dict[str, Union[str, int, float, bool]] = {} # Additional metadata from the guardrail
+    metadata: dict[str, Any] = {} # Additional metadata from the guardrail, allowing nested dicts

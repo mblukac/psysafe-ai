@@ -3,7 +3,6 @@ import typer
 from typing_extensions import Annotated # For Typer <0.9.0 compatibility if needed, else just use typing.Annotated for Python 3.9+
 
 # If Typer is version 0.9.0+ and Python 3.9+, can use:
-# from typing import Annotated
 
 app = typer.Typer(help="Commands for applying guardrails to inputs.")
 

@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsySafe AI Cleanup Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .header { background: #f4f4f4; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .metric { background: #e9e9e9; padding: 15px; border-radius: 5px; text-align: center; }
+        .metric-value { font-size: 2em; font-weight: bold; color: #333; }
+        .metric-label { color: #666; }
+        .phase { border: 1px solid #ddd; margin-bottom: 15px; border-radius: 5px; }
+        .phase-header { background: #f9f9f9; padding: 10px; border-bottom: 1px solid #ddd; }
+        .phase-content { padding: 15px; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .file-changes { max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 3px; }
+        .recommendations { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; }
+        .recommendation { margin-bottom: 10px; padding: 10px; border-left: 4px solid #ffc107; background: #fffbf0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PsySafe AI Cleanup Report</h1>
+        <p>Generated on 2025-05-30 15:20:22</p>
+    </div>
+    
+    <h2>Summary</h2>
+    <div class="summary">
+        <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Total Phases</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0</div>
+            <div class="metric-label">Successful</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Failed</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0</div>
+            <div class="metric-label">Files Modified</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0.0s</div>
+            <div class="metric-label">Total Duration</div>
+        </div>
+    </div>
+    
+    <h2>Phase Details</h2>
+
+    <div class="phase">
+        <div class="phase-header">
+            <h3 class="error">Dead Code Removal</h3>
+            <p>Duration: 0.0s | Files Modified: 0 | 
+               Errors: 1 | Warnings: 0</p>
+        </div>
+        <div class="phase-content">
+
+            <h4 class="error">Errors (1)</h4>
+            <ul>
+                <li>Validation failed for phase dead_code_removal</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <h2>Recommendations</h2>
+    <div class="recommendations">
+
+        <div class="recommendation">
+            <h4>Address Cleanup Errors (high priority)</h4>
+            <p>There were 1 errors during cleanup that need attention.</p>
+            <p><strong>Action:</strong> Review error messages and fix underlying issues before running cleanup again.</p>
+        </div>
+    </div>
+
+</body>
+</html>

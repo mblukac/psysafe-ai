@@ -1,0 +1,4400 @@
+{
+  "audit_metadata": {
+    "generated_at": "2025-05-30T10:54:49.357264",
+    "total_phases": 1,
+    "total_changes": 134
+  },
+  "changes_by_phase": {
+    "dead_code_removal": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 38-39)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 53-54)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 9-9)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 35-35)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 14-15)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 19-19)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/registry.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 35-35)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 130-130)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 217-217)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 6-6)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 46-46)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/composite.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 63-63)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 71-71)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 67-67)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 89-89)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 78-78)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 98-98)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-12)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 61-61)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 115-115)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 151-151)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 176-176)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 20-21)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 149-150)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 155-155)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 164-165)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 167-167)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 169-169)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 172-172)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 179-181)",
+        "line_changes": {
+          "removed_lines": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 183-183)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 185-185)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 55-55)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 59-59)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 215-215)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 46-46)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 84-84)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 129-129)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'apply'",
+        "line_changes": {
+          "function": "apply",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'run_tests'",
+        "line_changes": {
+          "function": "run_tests",
+          "line": 39
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'bind'",
+        "line_changes": {
+          "function": "bind",
+          "line": 31
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'apply'",
+        "line_changes": {
+          "function": "apply",
+          "line": 35
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'placeholder_accuracy_metric'",
+        "line_changes": {
+          "function": "placeholder_accuracy_metric",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'run_evaluation'",
+        "line_changes": {
+          "function": "run_evaluation",
+          "line": 32
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function '_parse_xml_like'",
+        "line_changes": {
+          "function": "_parse_xml_like",
+          "line": 101
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'test_parse_to_dict_xml_like_not_implemented'",
+        "line_changes": {
+          "function": "test_parse_to_dict_xml_like_not_implemented",
+          "line": 118
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.base'",
+        "line_changes": {
+          "import": "core.base",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.prompt'",
+        "line_changes": {
+          "import": "core.prompt",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.check'",
+        "line_changes": {
+          "import": "core.check",
+          "line": 7
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.composite'",
+        "line_changes": {
+          "import": "core.composite",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.template'",
+        "line_changes": {
+          "import": "core.template",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'catalog'",
+        "line_changes": {
+          "import": "catalog",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'drivers.base'",
+        "line_changes": {
+          "import": "drivers.base",
+          "line": 17
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'registry'",
+        "line_changes": {
+          "import": "registry",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.base.prompt_guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.base.prompt_guardrail",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.base.llm_guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.base.llm_guardrail",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/mental_health_support/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/pii_protection/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/vulnerability_detection/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.exceptions'",
+        "line_changes": {
+          "import": "psysafe.core.exceptions",
+          "line": 13
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.vulnerability_detection.guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.vulnerability_detection.guardrail",
+          "line": 19
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.suicide_prevention.guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.suicide_prevention.guardrail",
+          "line": 20
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/check.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'jinja2'",
+        "line_changes": {
+          "import": "jinja2",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/types.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'anthropic'",
+        "line_changes": {
+          "import": "anthropic",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'openai'",
+        "line_changes": {
+          "import": "openai",
+          "line": 13
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'transformers.pipelines.conversational'",
+        "line_changes": {
+          "import": "transformers.pipelines.conversational",
+          "line": 121
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'runner'",
+        "line_changes": {
+          "import": "runner",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/requests.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/responses.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'xml.etree'",
+        "line_changes": {
+          "import": "xml.etree",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_catalog_registry.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'unittest.mock'",
+        "line_changes": {
+          "import": "unittest.mock",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 13
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.types'",
+        "line_changes": {
+          "import": "psysafe.core.types",
+          "line": 14
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.exceptions'",
+        "line_changes": {
+          "import": "psysafe.core.exceptions",
+          "line": 15
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.check'",
+        "line_changes": {
+          "import": "psysafe.core.check",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.responses'",
+        "line_changes": {
+          "import": "psysafe.typing.responses",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/drivers/test_openai_driver.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.responses'",
+        "line_changes": {
+          "import": "psysafe.typing.responses",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'pydantic'",
+        "line_changes": {
+          "import": "pydantic",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'os'",
+        "line_changes": {
+          "import": "os",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'xml.etree.ElementTree'",
+        "line_changes": {
+          "import": "xml.etree.ElementTree",
+          "line": 201
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'os'",
+        "line_changes": {
+          "import": "os",
+          "line": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/test_conversation_formatter.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'pathlib'",
+        "line_changes": {
+          "import": "pathlib",
+          "line": 9
+        }
+      }
+    ]
+  },
+  "changes_by_file": {
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 38-39)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 53-54)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 9-9)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 35-35)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 14-15)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 19-19)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.base'",
+        "line_changes": {
+          "import": "core.base",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.prompt'",
+        "line_changes": {
+          "import": "core.prompt",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.check'",
+        "line_changes": {
+          "import": "core.check",
+          "line": 7
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.composite'",
+        "line_changes": {
+          "import": "core.composite",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.template'",
+        "line_changes": {
+          "import": "core.template",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'core.models'",
+        "line_changes": {
+          "import": "core.models",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'catalog'",
+        "line_changes": {
+          "import": "catalog",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'drivers.base'",
+        "line_changes": {
+          "import": "drivers.base",
+          "line": 17
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/registry.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/registry.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 35-35)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 130-130)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 217-217)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 9
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 6-6)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'apply'",
+        "line_changes": {
+          "function": "apply",
+          "line": 11
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 46-46)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'bind'",
+        "line_changes": {
+          "function": "bind",
+          "line": 31
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/composite.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/composite.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 63-63)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 71-71)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'apply'",
+        "line_changes": {
+          "function": "apply",
+          "line": 35
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 67-67)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 89-89)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'anthropic'",
+        "line_changes": {
+          "import": "anthropic",
+          "line": 9
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 78-78)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 98-98)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 8
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'openai'",
+        "line_changes": {
+          "import": "openai",
+          "line": 13
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-12)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 61-61)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 115-115)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 151-151)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 176-176)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'transformers.pipelines.conversational'",
+        "line_changes": {
+          "import": "transformers.pipelines.conversational",
+          "line": 121
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 20-21)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'placeholder_accuracy_metric'",
+        "line_changes": {
+          "function": "placeholder_accuracy_metric",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 149-150)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 155-155)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 164-165)",
+        "line_changes": {
+          "removed_lines": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 167-167)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 169-169)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 172-172)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 179-181)",
+        "line_changes": {
+          "removed_lines": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 183-183)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 185-185)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'run_evaluation'",
+        "line_changes": {
+          "function": "run_evaluation",
+          "line": 32
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 6
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 55-55)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 59-59)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function '_parse_xml_like'",
+        "line_changes": {
+          "function": "_parse_xml_like",
+          "line": 101
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'xml.etree'",
+        "line_changes": {
+          "import": "xml.etree",
+          "line": 5
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 215-215)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 11-11)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 46-46)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 84-84)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed commented code block (lines 129-129)",
+        "line_changes": {
+          "removed_lines": 1
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'test_parse_to_dict_xml_like_not_implemented'",
+        "line_changes": {
+          "function": "test_parse_to_dict_xml_like_not_implemented",
+          "line": 118
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'pydantic'",
+        "line_changes": {
+          "import": "pydantic",
+          "line": 3
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed placeholder function 'run_tests'",
+        "line_changes": {
+          "function": "run_tests",
+          "line": 39
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.vulnerability_detection.guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.vulnerability_detection.guardrail",
+          "line": 19
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.suicide_prevention.guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.suicide_prevention.guardrail",
+          "line": 20
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/__init__.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'registry'",
+        "line_changes": {
+          "import": "registry",
+          "line": 6
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.base.prompt_guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.base.prompt_guardrail",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.catalog.base.llm_guardrail'",
+        "line_changes": {
+          "import": "psysafe.catalog.base.llm_guardrail",
+          "line": 4
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/mental_health_support/guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/mental_health_support/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 6
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/pii_protection/guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/pii_protection/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 6
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/vulnerability_detection/guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/vulnerability_detection/guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.exceptions'",
+        "line_changes": {
+          "import": "psysafe.core.exceptions",
+          "line": 13
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/check.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/check.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'types'",
+        "line_changes": {
+          "import": "types",
+          "line": 5
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'jinja2'",
+        "line_changes": {
+          "import": "jinja2",
+          "line": 11
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/types.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/types.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 1
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'runner'",
+        "line_changes": {
+          "import": "runner",
+          "line": 2
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'models'",
+        "line_changes": {
+          "import": "models",
+          "line": 3
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/requests.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/requests.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/responses.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/responses.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 2
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_catalog_registry.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_catalog_registry.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 4
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'unittest.mock'",
+        "line_changes": {
+          "import": "unittest.mock",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 10
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.models'",
+        "line_changes": {
+          "import": "psysafe.core.models",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'utils.llm_utils'",
+        "line_changes": {
+          "import": "utils.llm_utils",
+          "line": 13
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'json'",
+        "line_changes": {
+          "import": "json",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 12
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.types'",
+        "line_changes": {
+          "import": "psysafe.core.types",
+          "line": 14
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.exceptions'",
+        "line_changes": {
+          "import": "psysafe.core.exceptions",
+          "line": 15
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 3
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.base'",
+        "line_changes": {
+          "import": "psysafe.core.base",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.core.check'",
+        "line_changes": {
+          "import": "psysafe.core.check",
+          "line": 6
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.requests'",
+        "line_changes": {
+          "import": "psysafe.typing.requests",
+          "line": 10
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.responses'",
+        "line_changes": {
+          "import": "psysafe.typing.responses",
+          "line": 11
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 4
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/drivers/test_openai_driver.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/drivers/test_openai_driver.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'psysafe.typing.responses'",
+        "line_changes": {
+          "import": "psysafe.typing.responses",
+          "line": 6
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'os'",
+        "line_changes": {
+          "import": "os",
+          "line": 9
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'typing'",
+        "line_changes": {
+          "import": "typing",
+          "line": 11
+        }
+      },
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'xml.etree.ElementTree'",
+        "line_changes": {
+          "import": "xml.etree.ElementTree",
+          "line": 201
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/llm_utils.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/llm_utils.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'os'",
+        "line_changes": {
+          "import": "os",
+          "line": 1
+        }
+      }
+    ],
+    "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/test_conversation_formatter.py": [
+      {
+        "phase": "dead_code_removal",
+        "timestamp": "2025-05-30T10:53:42.874693",
+        "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/test_conversation_formatter.py",
+        "change_type": "modified",
+        "description": "Removed unused import 'pathlib'",
+        "line_changes": {
+          "import": "pathlib",
+          "line": 9
+        }
+      }
+    ]
+  },
+  "all_changes": [
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 38-39)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/01_vulnerability.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 53-54)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 9-9)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/examples/02_suicide_prevention.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 35-35)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 14-15)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 19-19)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/registry.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 35-35)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 130-130)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 217-217)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 6-6)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 46-46)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/composite.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 63-63)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 71-71)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 67-67)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 89-89)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 78-78)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 98-98)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 11-12)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 61-61)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 115-115)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 151-151)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 176-176)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 20-21)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 11-11)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 149-150)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 155-155)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 164-165)",
+      "line_changes": {
+        "removed_lines": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 167-167)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 169-169)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 172-172)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 179-181)",
+      "line_changes": {
+        "removed_lines": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 183-183)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 185-185)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 11-11)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 55-55)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 59-59)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 215-215)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 11-11)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 46-46)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 84-84)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+      "change_type": "modified",
+      "description": "Removed commented code block (lines 129-129)",
+      "line_changes": {
+        "removed_lines": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/guard.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'apply'",
+      "line_changes": {
+        "function": "apply",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'run_tests'",
+      "line_changes": {
+        "function": "run_tests",
+        "line": 39
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/base.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'bind'",
+      "line_changes": {
+        "function": "bind",
+        "line": 31
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/prompt.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'apply'",
+      "line_changes": {
+        "function": "apply",
+        "line": 35
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'placeholder_accuracy_metric'",
+      "line_changes": {
+        "function": "placeholder_accuracy_metric",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'run_evaluation'",
+      "line_changes": {
+        "function": "run_evaluation",
+        "line": 32
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function '_parse_xml_like'",
+      "line_changes": {
+        "function": "_parse_xml_like",
+        "line": 101
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+      "change_type": "modified",
+      "description": "Removed placeholder function 'test_parse_to_dict_xml_like_not_implemented'",
+      "line_changes": {
+        "function": "test_parse_to_dict_xml_like_not_implemented",
+        "line": 118
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.base'",
+      "line_changes": {
+        "import": "core.base",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.prompt'",
+      "line_changes": {
+        "import": "core.prompt",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.check'",
+      "line_changes": {
+        "import": "core.check",
+        "line": 7
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.composite'",
+      "line_changes": {
+        "import": "core.composite",
+        "line": 8
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.template'",
+      "line_changes": {
+        "import": "core.template",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.models'",
+      "line_changes": {
+        "import": "core.models",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.models'",
+      "line_changes": {
+        "import": "core.models",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.models'",
+      "line_changes": {
+        "import": "core.models",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.models'",
+      "line_changes": {
+        "import": "core.models",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'core.models'",
+      "line_changes": {
+        "import": "core.models",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'catalog'",
+      "line_changes": {
+        "import": "catalog",
+        "line": 12
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'drivers.base'",
+      "line_changes": {
+        "import": "drivers.base",
+        "line": 17
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'registry'",
+      "line_changes": {
+        "import": "registry",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.catalog.base.prompt_guardrail'",
+      "line_changes": {
+        "import": "psysafe.catalog.base.prompt_guardrail",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/base/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.catalog.base.llm_guardrail'",
+      "line_changes": {
+        "import": "psysafe.catalog.base.llm_guardrail",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/mental_health_support/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/pii_protection/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'json'",
+      "line_changes": {
+        "import": "json",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 8
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/suicide_prevention/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/catalog/vulnerability_detection/guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.exceptions'",
+      "line_changes": {
+        "import": "psysafe.core.exceptions",
+        "line": 13
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.catalog.vulnerability_detection.guardrail'",
+      "line_changes": {
+        "import": "psysafe.catalog.vulnerability_detection.guardrail",
+        "line": 19
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/cli/main.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.catalog.suicide_prevention.guardrail'",
+      "line_changes": {
+        "import": "psysafe.catalog.suicide_prevention.guardrail",
+        "line": 20
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/check.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/config.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'types'",
+      "line_changes": {
+        "import": "types",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'types'",
+      "line_changes": {
+        "import": "types",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'types'",
+      "line_changes": {
+        "import": "types",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/template.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'jinja2'",
+      "line_changes": {
+        "import": "jinja2",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/core/types.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/anthropic.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'anthropic'",
+      "line_changes": {
+        "import": "anthropic",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 8
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/openai.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'openai'",
+      "line_changes": {
+        "import": "openai",
+        "line": 13
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/drivers/transformers.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'transformers.pipelines.conversational'",
+      "line_changes": {
+        "import": "transformers.pipelines.conversational",
+        "line": 121
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'runner'",
+      "line_changes": {
+        "import": "runner",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'models'",
+      "line_changes": {
+        "import": "models",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'models'",
+      "line_changes": {
+        "import": "models",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'models'",
+      "line_changes": {
+        "import": "models",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/metrics.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/evaluation/runner.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.base'",
+      "line_changes": {
+        "import": "psysafe.core.base",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/requests.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/typing/responses.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/psysafe/utils/parsing.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'xml.etree'",
+      "line_changes": {
+        "import": "xml.etree",
+        "line": 5
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_catalog_registry.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.base'",
+      "line_changes": {
+        "import": "psysafe.core.base",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'unittest.mock'",
+      "line_changes": {
+        "import": "unittest.mock",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_complaints_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'utils.llm_utils'",
+      "line_changes": {
+        "import": "utils.llm_utils",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_mental_health_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'utils.llm_utils'",
+      "line_changes": {
+        "import": "utils.llm_utils",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_pii_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'utils.llm_utils'",
+      "line_changes": {
+        "import": "utils.llm_utils",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.models'",
+      "line_changes": {
+        "import": "psysafe.core.models",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 12
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_suicide_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'utils.llm_utils'",
+      "line_changes": {
+        "import": "utils.llm_utils",
+        "line": 13
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'json'",
+      "line_changes": {
+        "import": "json",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 12
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.types'",
+      "line_changes": {
+        "import": "psysafe.core.types",
+        "line": 14
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/catalog/test_vulnerability_guardrail.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.exceptions'",
+      "line_changes": {
+        "import": "psysafe.core.exceptions",
+        "line": 15
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.base'",
+      "line_changes": {
+        "import": "psysafe.core.base",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.core.check'",
+      "line_changes": {
+        "import": "psysafe.core.check",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.requests'",
+      "line_changes": {
+        "import": "psysafe.typing.requests",
+        "line": 10
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_guardrail_abstractions.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.responses'",
+      "line_changes": {
+        "import": "psysafe.typing.responses",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/core/test_models.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 4
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/drivers/test_openai_driver.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'psysafe.typing.responses'",
+      "line_changes": {
+        "import": "psysafe.typing.responses",
+        "line": 6
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_llm_utils.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'json'",
+      "line_changes": {
+        "import": "json",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'json'",
+      "line_changes": {
+        "import": "json",
+        "line": 2
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/tests/utils/test_parsing.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'pydantic'",
+      "line_changes": {
+        "import": "pydantic",
+        "line": 3
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'os'",
+      "line_changes": {
+        "import": "os",
+        "line": 9
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'typing'",
+      "line_changes": {
+        "import": "typing",
+        "line": 11
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/__init__.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'xml.etree.ElementTree'",
+      "line_changes": {
+        "import": "xml.etree.ElementTree",
+        "line": 201
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/llm_utils.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'os'",
+      "line_changes": {
+        "import": "os",
+        "line": 1
+      }
+    },
+    {
+      "phase": "dead_code_removal",
+      "timestamp": "2025-05-30T10:53:42.874693",
+      "file_path": "/Users/martinlukac/psysafe-ai/psysafe-ai/utils/test_conversation_formatter.py",
+      "change_type": "modified",
+      "description": "Removed unused import 'pathlib'",
+      "line_changes": {
+        "import": "pathlib",
+        "line": 9
+      }
+    }
+  ]
+}

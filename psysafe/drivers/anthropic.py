@@ -85,7 +85,6 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
                     # event objects are Pydantic models in anthropic >0.16
                     yield event.model_dump() if hasattr(event, 'model_dump') else dict(event)
         except Exception as e:
-            # print(f"Anthropic API streaming error: {e}") # Replace with proper logging
             pass  # Handle the exception gracefully
 
     def get_metadata(self) -> Dict[str, Any]:

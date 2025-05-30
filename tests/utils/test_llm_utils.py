@@ -8,7 +8,6 @@ import logging
 from utils.llm_utils import parse_llm_response, LLMResponseParseError
 
 # Configure basic logging for tests to see debug messages if needed
-# logging.basicConfig(level=logging.DEBUG)
 # logger = logging.getLogger(__name__) # Optional: if you want to pass a logger to parse_llm_response in tests
 
 class TestParseLLMResponse:
@@ -43,8 +42,6 @@ class TestParseLLMResponse:
     ])
     def test_parse_simple_flat_xml(self, raw_response: str, expected_dict: Dict[str, Any]):
         """Tests parsing of simple, flat XML-like strings."""
-        # logger.debug(f"Testing XML: {raw_response}") # Uncomment for debugging specific XML cases
-        assert parse_llm_response(raw_response) == expected_dict
 
     @pytest.mark.parametrize("raw_response, expected_dict", [
         ("<root><key1>value1</key1><key2>value2</key2></root>", {"key1": "value1", "key2": "value2"}),

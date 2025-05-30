@@ -8,7 +8,6 @@ from pydantic import BaseModel # Added this import
 from psysafe.core.exceptions import ResponseParsingError
 # The specification mentions GuardrailResponse, but it's not directly used in the provided snippet for parsing.py
 # If it were used, the import would be:
-# from psysafe.core.types import GuardrailResponse 
 
 T = TypeVar('T', bound=BaseModel)
 
@@ -52,13 +51,8 @@ class ResponseParser:
             self.logger.debug(f"Failed to parse as direct JSON: {e}. Trying next strategy.")
             # Only set specific reason if it looks like an attempt at JSON, to satisfy
             # test_parse_to_dict_no_markdown_json_block and test_parse_to_dict_xml_like_not_implemented
-            # while keeping test_parse_to_dict_invalid_json passing.
-            if stripped_response.startswith(("{", "[")):
-                parsing_failure_reason = "Failed to parse as direct JSON"
+            parsing_failure_reason = "Failed to parse as direct JSON"
             # else parsing_failure_reason remains None, leading to "Could not parse..."
-            # if markdown also fails or is not found.
-
-        # Strategy 2: JSON from markdown code blocks
         # Regex to find ```json ... ``` or ``` ... ``` blocks
         json_match = re.search(r"```(?:json)?\s*([\s\S]+?)\s*```", raw_response, re.IGNORECASE)
         if json_match:

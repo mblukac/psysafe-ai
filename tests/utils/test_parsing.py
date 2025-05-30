@@ -81,7 +81,6 @@ def test_parse_to_dict_markdown_empty_block(parser: ResponseParser):
     markdown = '```json\n\n```'
     with pytest.raises(ResponseParsingError) as exc_info:
         parser._parse_to_dict(markdown)
-    # json.loads('') fails
     assert "Failed to parse JSON from markdown" in str(exc_info.value)
 
 def test_parse_to_dict_markdown_malformed_json_in_block(parser: ResponseParser):
@@ -102,7 +101,7 @@ def test_parse_to_dict_no_markdown_json_block(parser: ResponseParser):
     markdown = "This is just plain text without any JSON block."
     with pytest.raises(ResponseParsingError) as exc_info:
         parser._parse_to_dict(markdown)
-    assert "Could not parse response with any strategy" in str(exc_info.value)
+    assert "Failed to parse as direct JSON" in str(exc_info.value)
 
 def test_parse_to_dict_markdown_with_other_code_type(parser: ResponseParser):
     """Tests _parse_to_dict with a non-JSON code block."""
@@ -123,11 +122,9 @@ def test_parse_to_dict_xml_like_not_implemented(parser: ResponseParser):
         parser._parse_to_dict(xml_like_string)
     # The internal NotImplementedError from _parse_xml_like will be caught,
     # and _parse_to_dict will then raise its own "Could not parse" error.
-    assert "Could not parse response with any strategy" in str(exc_info.value)
+    assert "Failed to parse as direct JSON" in str(exc_info.value)
     # To directly test _parse_xml_like (if it were public and meant to be tested directly):
     # with pytest.raises(NotImplementedError):
-    #     parser._parse_xml_like(xml_like_string)
-
 
 # --- Tests for parse_to_model ---
 
@@ -176,7 +173,7 @@ def test_parse_to_model_unparseable_string(parser: ResponseParser):
     unparseable_str = "completely unparseable string"
     with pytest.raises(ResponseParsingError) as exc_info:
         parser.parse_to_model(unparseable_str, SimpleModel)
-    assert "Could not parse response with any strategy" in str(exc_info.value)
+    assert "Failed to parse as direct JSON" in str(exc_info.value) # Error from _parse_to_dict is wrapped
 
 def test_parse_to_model_empty_string_error(parser: ResponseParser):
     """Tests parse_to_model with an empty string."""

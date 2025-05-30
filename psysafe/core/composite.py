@@ -60,7 +60,6 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
             current_request_data = guarded_step_result.modified_request
             
             # Collect metadata - simple update, might need more sophisticated merging
-            # if keys clash or specific structures are expected.
             # Prefixing with guardrail name/index could be an option.
             cumulative_metadata[f"step_{i}_{guardrail_instance.__class__.__name__}"] = guarded_step_result.metadata
 

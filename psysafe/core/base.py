@@ -43,5 +43,4 @@ class GuardrailBase(Generic[RequestT, ResponseT], ABC):
         # Actual implementation might involve wrapping the driver or
         # storing a reference to it if the guardrail needs to call driver methods.
         # For a simple case, it might do nothing or return a modified driver.
-        # print(f"Binding {self.__class__.__name__} to {driver.__class__.__name__}")
         return driver # Or a wrapped/modified driver
