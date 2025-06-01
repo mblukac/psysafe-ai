@@ -10,9 +10,11 @@ def mock_openai_client(mocker):
     mock_client = MagicMock()
     mock_async_client = AsyncMock()
     
-    # Mock the client instantiation within the driver
-    mocker.patch('openai.OpenAI', return_value=mock_client)
-    mocker.patch('openai.AsyncOpenAI', return_value=mock_async_client)
+    # Mock the client CLASS instantiation within the driver's module namespace
+    # This assumes OpenAIChatDriver imports OpenAI and AsyncOpenAI as `from openai import OpenAI, AsyncOpenAI`
+    # or similar, making the names local to psysafe.drivers.openai.
+    mocker.patch('psysafe.drivers.openai.OpenAI', return_value=mock_client)
+    mocker.patch('psysafe.drivers.openai.AsyncOpenAI', return_value=mock_async_client)
     return mock_client, mock_async_client
 
 def test_openai_driver_send(mock_openai_client):

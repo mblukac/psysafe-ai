@@ -191,7 +191,7 @@ def test_check_method_success_direct_json(suicide_guardrail_for_check, sample_co
     guardrail = suicide_guardrail_for_check
     llm_response_json = {
         "risk_detected": True,
-        "risk_score": 2,
+        "risk": 2, # Changed from risk_score to risk, as expected by the guardrail
         "analysis": "User expresses suicidal ideation.",
         "reasoning": "Explicit statements of wanting to die.", # Ensure this matches prompt.md if reasoning is true
         "confidence_level": 0.9 # Ensure this matches prompt.md if confidence is true
@@ -219,7 +219,7 @@ def test_check_method_success_markdown_json(suicide_guardrail_for_check, sample_
     """Tests the check method with JSON in a markdown block."""
     guardrail = suicide_guardrail_for_check
     llm_response_data = {
-        "risk_detected": True, "risk_score": 3, "analysis": "Plan mentioned.",
+        "risk_detected": True, "risk": 3, "analysis": "Plan mentioned.", # Changed from risk_score to risk
         "reasoning": "User mentioned a plan.", "confidence_level": 0.95
     }
     raw_llm_content = f"```json\n{json.dumps(llm_response_data)}\n```"
