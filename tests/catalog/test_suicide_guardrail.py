@@ -191,7 +191,7 @@ def test_check_method_success_direct_json(suicide_guardrail_for_check, sample_co
     guardrail = suicide_guardrail_for_check
     llm_response_json = {
         "risk_detected": True,
-        "risk_score": 2,
+        "risk": 2, # Changed from risk_score to risk, as expected by the guardrail
         "analysis": "User expresses suicidal ideation.",
         "reasoning": "Explicit statements of wanting to die.", # Ensure this matches prompt.md if reasoning is true
         "confidence_level": 0.9 # Ensure this matches prompt.md if confidence is true
@@ -219,7 +219,7 @@ def test_check_method_success_markdown_json(suicide_guardrail_for_check, sample_
     """Tests the check method with JSON in a markdown block."""
     guardrail = suicide_guardrail_for_check
     llm_response_data = {
-        "risk_detected": True, "risk_score": 3, "analysis": "Plan mentioned.",
+        "risk_detected": True, "risk": 3, "analysis": "Plan mentioned.", # Changed from risk_score to risk
         "reasoning": "User mentioned a plan.", "confidence_level": 0.95
     }
     raw_llm_content = f"```json\n{json.dumps(llm_response_data)}\n```"
@@ -244,9 +244,10 @@ def test_check_method_success_xml_like(suicide_guardrail_for_check, sample_conve
     # Based on the updated prompt, the LLM should output JSON.
     # However, parse_llm_response can handle XML, so we test this path.
     # The prompt now strictly asks for JSON, so this case tests the parser's fallback.
-    xml_content = "<risk_detected>true</risk_detected><risk_score>1</risk_score><analysis>Indirect statements.</analysis><reasoning>User sounds hopeless.</reasoning><confidence_level>0.7</confidence_level>"
+    # Suicide guardrail expects a "risk" field, not "risk_score" from the LLM.
+    xml_content = "<risk_detected>true</risk_detected><risk>1</risk><analysis>Indirect statements.</analysis><reasoning>User sounds hopeless.</reasoning><confidence_level>0.7</confidence_level>"
     expected_parsed_dict = {
-        "risk_detected": "true", "risk_score": "1", "analysis": "Indirect statements.",
+        "risk_detected": "true", "risk": "1", "analysis": "Indirect statements.", # Changed risk_score to risk
         "reasoning": "User sounds hopeless.", "confidence_level": "0.7"
     }
     mock_driver = MockLLMDriver(response_content=xml_content)

@@ -11,13 +11,9 @@ from .core.models import GuardedRequest, ValidationReport, Violation, Validation
 
 from .catalog import GuardrailCatalog
 # Specific guardrails can be imported directly if desired, or loaded via catalog
-# from .catalog.vulnerability_detection.guardrail import VulnerabilityDetectionGuardrail
-# from .catalog.suicide_prevention.guardrail import SuicidePreventionGuardrail
 
 from .drivers.base import ChatDriverABC
 # Specific drivers
-# from .drivers.openai import OpenAIChatDriver
-
 
 __all__ = [
     "__version__",

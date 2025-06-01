@@ -127,7 +127,6 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         
         # Let's assume request.messages is mutable for now for simplicity,
         # though creating a new request object is generally safer.
-        # request.messages.insert(0, Message(role="system", content=rendered_prompt))
         # guarded_request_payload = request
 
         # A safer way with Pydantic models:
@@ -212,10 +211,9 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
 
         # 2. Apply the guardrail to get the modified request (with system prompt)
         guarded_request = self.apply(llm_request_input)
+        modified_llm_request = guarded_request.modified_request # Assign the modified request
         
         # The modified_request from apply() is already in the correct format for the driver
-        # if the driver expects an OpenAIChatRequest-like dictionary.
-        modified_llm_request = guarded_request.modified_request
 
         # 3. Send to LLM via the driver
         #    We assume the driver has a method like `chat_completion` or similar

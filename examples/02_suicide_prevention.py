@@ -6,7 +6,6 @@ from psysafe.catalog.suicide_prevention.guardrail import SuicidePreventionGuardr
 from psysafe.core.models import Conversation, Message
 from psysafe.drivers.openai import OpenAIChatDriver # Import the driver
 # Role enum is not strictly necessary if using string literals, but good for clarity if available
-# from psysafe.core.models import Role # Assuming Role might be an enum e.g., Role.USER
 
 load_environment()
 
@@ -32,8 +31,6 @@ def main():
         print(f"Error initializing or binding LLM driver: {e}")
         print("The script will likely fail at the check step without a functional driver.")
         # Optionally, exit here if a driver is critical for any further steps
-        # return
-
     # SUBSECTION 2.2: Create Triggering Conversation
     print("\nCreating a sample conversation designed to trigger the guardrail...")
     triggering_messages = [
