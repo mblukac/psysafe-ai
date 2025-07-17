@@ -87,6 +87,7 @@ It's essential to recognise that psychological safety doesn't come automatically
 
 ## News
 
+-   **[July 2025]** Released new guardrail: [AI harm detection](psysafe/catalog/ai_harm_detection/)! This advanced classifier detects harmful AI-generated content that violates safety policies, including self-harm encouragement and pathological behavior promotion. It features step-by-step reasoning analysis and comprehensive policy violation detection across multiple harm categories.
 -   **[May 2025]** Released new guardrail: [suicide intent detection](guardrails/suicide/README.md)! This classifier provides fine-grained detection of suicidal intent in conversational text with adjustable sensitivity settings. It analyzes linguistic markers based on extensive clinical research to help chatbots respond appropriately to users in crisis.
 -   **[Mar 2025]** Released the first guardrail: [vulnerability detection](guardrails/vulnerability/README.md)! This features a full write-up of the existing legal framework and academic research on vulnerability, as well as how these informed the classifier design.
 -   **[Mar 2025]** 🔥 Launch and started building the core PsySafe AI library.
