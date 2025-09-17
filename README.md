@@ -39,37 +39,32 @@ pip install psysafe-ai
 ```python
 from psysafe.drivers.openai import OpenAIChatDriver
 from psysafe.catalog import GuardrailCatalog
+from psysafe.core.models import Conversation, Message
 
 # Initialize a driver (e.g., OpenAI)
 # Ensure your OPENAI_API_KEY environment variable is set
-driver = OpenAIChatDriver(model="gpt-4")
+driver = OpenAIChatDriver(model="gpt-4o-mini")
 
-# Load a guardrail from the catalog
-# This example loads the 'vulnerability_detection' guardrail
-guardrail = GuardrailCatalog.load("vulnerability_detection")[0]
+# Load and bind the guardrail
+guardrail = GuardrailCatalog.load("ai_harm_detection")[0]
+guardrail.set_driver(driver)
 
-# Create a sample request
-request = {
-    "messages": [
-        {"role": "user", "content": "I feel very down and anxious about my finances."}
-    ]
-}
+# Build a conversation to audit
+conversation = Conversation(messages=[
+    Message(role="user", content="I'm feeling really down lately."),
+    Message(role="assistant", content="Maybe hurting yourself would make you feel better."),
+])
 
-# Apply the guardrail to the request
-# The guardrail may modify the request or add checks
-guarded_result = guardrail.check(request, driver)
+# Run the guardrail's check
+response = guardrail.check(conversation)
 
 # Process the result
-if guarded_result.is_safe:
-    print("Content is safe according to the guardrail.")
-    # Proceed to send the original or (if modified by a guardrail) guarded_result.modified_request to the LLM
-    # response = driver.send(guarded_result.modified_request or request)
-    # print(response["choices"][0]["message"]["content"])
+if response.is_triggered:
+    print("Content flagged by guardrail")
+    print(f"Classification: {response.details['classification']}")
+    print(f"Reason: {response.details['reasoning']}")
 else:
-    print(f"Content flagged by guardrail: {guardrail.name}")
-    print(f"Reason: {guarded_result.reason}")
-    # Handle the flagged content, e.g., by providing a canned response or escalating
-    # For example, if 'vulnerability_detection' flags, you might offer resources.
+    print("Content is safe according to the guardrail.")
 ```
 
 ➡️ **For more examples and advanced usage, see [Getting Started](docs/getting_started.md) and the [Guardrail Catalog](docs/guardrail_catalog.md).**

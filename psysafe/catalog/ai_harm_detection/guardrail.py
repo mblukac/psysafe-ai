@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Optional
+from copy import deepcopy
 import json
 import logging
 
@@ -43,18 +44,25 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
         """
         # Handle backward compatibility
         if config is None:
-            # Extract parameters from kwargs
-            detection_threshold = kwargs.get('detection_threshold', 0.7)
-            monitored_policies = kwargs.get('monitored_policies', list(PolicyViolationType))
-            reasoning_enabled = kwargs.get('reasoning_enabled', True)
-            confidence_enabled = kwargs.get('confidence_enabled', False)
-            
-            config = AiHarmDetectionConfig(
-                detection_threshold=detection_threshold,
-                monitored_policies=monitored_policies,
-                reasoning_enabled=reasoning_enabled,
-                confidence_enabled=confidence_enabled
-            )
+            config_field_names = set(AiHarmDetectionConfig.model_fields)
+            config_kwargs = {
+                key: value
+                for key, value in kwargs.items()
+                if key in config_field_names
+            }
+            unused_kwargs = {
+                key: value
+                for key, value in kwargs.items()
+                if key not in config_field_names
+            }
+
+            config = AiHarmDetectionConfig(**config_kwargs)
+
+            if unused_kwargs:
+                logging.getLogger(__name__).warning(
+                    "Ignoring unsupported ai_harm_detection kwargs: %s",
+                    ", ".join(sorted(unused_kwargs.keys()))
+                )
         
         super().__init__(config, driver)
         
@@ -64,6 +72,16 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
         )
         self.logger = logging.getLogger(__name__)
         self.parser = ResponseParser(self.logger)
+
+    @staticmethod
+    def _policy_id_from_config_entry(policy: Any) -> str:
+        """Normalize monitored policy entries to policy id strings."""
+        if isinstance(policy, PolicyViolationType):
+            return policy.value
+        try:
+            return PolicyViolationType(str(policy)).value
+        except ValueError:
+            return str(policy)
 
     def _get_policy_descriptions(self) -> str:
         """
@@ -100,16 +118,16 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
         }
         
         # Convert enum values to strings if needed
-        policies_to_use = []
-        for policy in self.config.monitored_policies:
-            if isinstance(policy, PolicyViolationType):
-                policies_to_use.append(policy.value)
-            else:
-                policies_to_use.append(str(policy))
-        
-        return "\n".join([
-            policy_descriptions[policy] for policy in policies_to_use
-        ])
+        policies_to_use = [
+            self._policy_id_from_config_entry(policy)
+            for policy in self.config.monitored_policies
+        ]
+
+        return "\n".join(
+            policy_descriptions[policy]
+            for policy in policies_to_use
+            if policy in policy_descriptions
+        )
 
     def _generate_prompt(self, conversation: Conversation) -> str:
         """
@@ -285,26 +303,36 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
             classification = parsed_response.get("classification", HarmClassification.SAFE.value)
             violated_policy_id = parsed_response.get("violated_policy_id", "N/A")
             reasoning = parsed_response.get("reasoning", "")
-            
-            # Determine if triggered based on classification
-            is_triggered = classification in [
-                HarmClassification.HARMFUL.value,
-                HarmClassification.BORDERLINE.value
-            ]
-            
-            # Calculate risk score based on classification
-            risk_score = 0.0
-            if classification == HarmClassification.BORDERLINE.value:
-                risk_score = self.config.borderline_threshold
-            elif classification == HarmClassification.HARMFUL.value:
-                risk_score = self.config.harmful_threshold
-            
+
+            risk_score = parsed_response.get("risk_score")
+            if isinstance(risk_score, str):
+                try:
+                    risk_score = float(risk_score)
+                except ValueError:
+                    self.logger.warning(
+                        "Received non-numeric risk_score: %s", risk_score
+                    )
+                    risk_score = None
+
+            if risk_score is None:
+                if classification == HarmClassification.BORDERLINE.value:
+                    risk_score = self.config.borderline_threshold
+                elif classification == HarmClassification.HARMFUL.value:
+                    risk_score = self.config.harmful_threshold
+                else:
+                    risk_score = 0.0
+
+            is_triggered = risk_score >= self.config.detection_threshold
+
             # Build details
             details = {
                 "classification": classification,
                 "violated_policy_id": violated_policy_id,
                 "reasoning": reasoning,
-                "monitored_policies": [policy.value for policy in self.config.monitored_policies],
+                "monitored_policies": [
+                    self._policy_id_from_config_entry(policy)
+                    for policy in self.config.monitored_policies
+                ],
             }
             
             # Add optional confidence if enabled
@@ -411,21 +439,25 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
         rendered_prompt = self.template.render(render_ctx)
 
-        modified_request = request.copy()
-        
-        # Ensure 'messages' key exists and is a list
-        if "messages" not in modified_request or not isinstance(modified_request.get("messages"), list):
-            modified_request["messages"] = []
+        modified_request: OpenAIChatRequest = deepcopy(request)
 
-        modified_request["messages"].insert(
-            0, {"role": "system", "content": rendered_prompt}
-        )
+        messages = modified_request.get("messages")
+        if not isinstance(messages, list):
+            messages = []
+        else:
+            messages = [msg.copy() if isinstance(msg, dict) else msg for msg in messages]
+
+        messages.insert(0, {"role": "system", "content": rendered_prompt})
+        modified_request["messages"] = messages
         
         # Create metadata for GuardedRequest
         metadata: Dict[str, Any] = {
             "guardrail_name": "AiHarmDetectionGuardrail",
             "applied_prompt": rendered_prompt,
-            "monitored_policies": [policy.value for policy in self.config.monitored_policies],
+            "monitored_policies": [
+                self._policy_id_from_config_entry(policy)
+                for policy in self.config.monitored_policies
+            ],
             "detection_threshold": self.config.detection_threshold,
             "reasoning_enabled": self.config.reasoning_enabled,
             "confidence_enabled": self.config.confidence_enabled,

@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List
+from pydantic import Field, model_validator
+from typing import List
 from enum import Enum
 from psysafe.core.config import GuardrailConfig
 
@@ -31,10 +31,10 @@ class AiHarmDetectionConfig(GuardrailConfig):
     
     # Detection sensitivity
     detection_threshold: float = Field(
-        default=0.7, 
-        ge=0.0, 
-        le=1.0, 
-        description="Threshold for triggering harm detection"
+        default=0.5,
+        ge=0.0,
+        le=1.0,
+        description="Minimum risk score required to trigger harm detection"
     )
     
     # Policy violations to monitor
@@ -80,8 +80,10 @@ class AiHarmDetectionConfig(GuardrailConfig):
         """Pydantic config"""
         use_enum_values = True
         validate_assignment = True
-        
-    def __post_init__(self):
-        """Validate configuration after initialization"""
-        if self.borderline_threshold >= self.harmful_threshold:
+
+    @model_validator(mode="after")
+    def _validate_thresholds(cls, model: "AiHarmDetectionConfig") -> "AiHarmDetectionConfig":
+        """Ensure thresholds preserve SAFE < BORDERLINE < HARMFUL."""
+        if model.borderline_threshold >= model.harmful_threshold:
             raise ValueError("borderline_threshold must be less than harmful_threshold")
+        return model
