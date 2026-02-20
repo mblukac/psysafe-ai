@@ -6,13 +6,13 @@ to improve code quality, maintainability, and consistency while preserving all
 existing functionality.
 """
 
+from .config.manager import ConfigurationManager
 from .core.base import CodeCleanupBase
 from .core.pipeline import CleanupPipeline
-from .config.manager import ConfigurationManager
 
 __all__ = [
     "CodeCleanupBase",
-    "CleanupPipeline", 
+    "CleanupPipeline",
     "ConfigurationManager",
 ]
 

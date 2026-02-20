@@ -1,13 +1,14 @@
 # tests/catalog/test_complaints_guardrail.py
-import pytest
 import json
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from psysafe.catalog.complaints_handling.guardrail import ComplaintsHandlingGuardrail
+from psysafe.core.models import Conversation, Message
 from psysafe.core.template import PromptTemplate
 from psysafe.typing.requests import OpenAIChatRequest
-from psysafe.core.models import Conversation, Message, CheckOutput
-from utils.llm_utils import LLMResponseParseError
+
 
 # Mock the logger for all tests in this file
 @pytest.fixture(autouse=True)
@@ -35,23 +36,22 @@ def test_complaints_handling_guardrail_apply_method(mock_from_file, mock_logger)
     mock_from_file.return_value = mock_template_instance
 
     guardrail = ComplaintsHandlingGuardrail()
-    guardrail.name = "complaints_handling" # Set name attribute for GuardedRequest
+    guardrail.name = "complaints_handling"  # Set name attribute for GuardedRequest
 
-    original_request: OpenAIChatRequest = { # type: ignore
+    original_request: OpenAIChatRequest = {  # type: ignore
         "messages": [
             {"role": "system", "content": "Initial system message."},
             {"role": "user", "content": "I am very unhappy with the service."},
         ],
         "model": "test-model",
-        "driver_type": "openai"
+        "driver_type": "openai",
     }
 
     guarded_req_obj = guardrail.apply(original_request)
     modified_request = guarded_req_obj.modified_request
 
-
     mock_from_file.assert_called_once_with(
-        "psysafe/catalog/complaints_handling/prompt.md"
+        "psysafe/catalog/complaints_handling/prompt.md",
     )
 
     assert mock_template_instance.render.call_count == 1
@@ -76,9 +76,9 @@ def test_complaints_handling_guardrail_apply_no_user_input(mock_from_file, mock_
     guardrail = ComplaintsHandlingGuardrail()
     guardrail.name = "complaints_handling"
 
-    original_request: OpenAIChatRequest = { # type: ignore
+    original_request: OpenAIChatRequest = {  # type: ignore
         "messages": [{"role": "assistant", "content": "How can I help?"}],
-        "model": "test-model"
+        "model": "test-model",
     }
     guarded_req_obj = guardrail.apply(original_request)
     assert not guarded_req_obj.is_modified
@@ -90,27 +90,29 @@ def test_complaints_handling_guardrail_apply_no_user_input(mock_from_file, mock_
 def guardrail_with_mock_driver(mock_logger):
     """Fixture to provide a guardrail instance with a bound mock LLM driver."""
     guardrail = ComplaintsHandlingGuardrail()
-    guardrail.name = "complaints_handling" # Set name for metadata
+    guardrail.name = "complaints_handling"  # Set name for metadata
     mock_driver = MagicMock()
-    mock_driver.send = MagicMock() # Mock the send method specifically
+    mock_driver.send = MagicMock()  # Mock the send method specifically
     guardrail.bind(mock_driver)
     return guardrail, mock_driver
 
+
 # --- Test Cases for check() method ---
+
 
 def test_check_successful_complaint_detected_direct_json(guardrail_with_mock_driver, mock_logger):
     """Test check method with a successful complaint detection (direct JSON response)."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="This is terrible service!")])
-    
+
     llm_response_json = {
         "complaint_detected": True,
         "category": "Service Issue",
         "summary": "User is unhappy with the service.",
-        "escalation_needed": True
+        "escalation_needed": True,
     }
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": json.dumps(llm_response_json)}}]
+        "choices": [{"message": {"content": json.dumps(llm_response_json)}}],
     }
 
     result = guardrail.check(conversation)
@@ -127,16 +129,16 @@ def test_check_successful_no_complaint_markdown_json(guardrail_with_mock_driver,
     """Test check method with no complaint detected (JSON in Markdown)."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="Everything is great!")])
-    
+
     llm_response_json = {
         "complaint_detected": False,
         "category": "N/A",
         "summary": "N/A",
-        "escalation_needed": False
+        "escalation_needed": False,
     }
     # Simulate LLM wrapping JSON in markdown
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": f"```json\n{json.dumps(llm_response_json)}\n```"}}]
+        "choices": [{"message": {"content": f"```json\n{json.dumps(llm_response_json)}\n```"}}],
     }
 
     result = guardrail.check(conversation)
@@ -151,7 +153,7 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     """Test check method when LLM response is unparsable."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="My product broke.")])
-    
+
     raw_bad_response = "This is not JSON."
     mock_driver.send.return_value = {"choices": [{"message": {"content": raw_bad_response}}]}
 
@@ -201,7 +203,7 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # f"LLMResponseParseError in check method: {e.message}. Raw Response: {e.raw_response[:200]}"
     # where e.message is "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     # and e.raw_response is "This is not JSON."
-    
+
     # Based on the actual call from the test output:
     # actual = [call('All parsing attempts failed (direct JSON, Markdown JSON, simple XML). Raw response: This is not JSON.'), call('...ll parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: This is not JSON.', exc_info=True)]
     # The message for the call with exc_info=True is:
@@ -217,19 +219,19 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # e.raw_response = "This is not JSON." (length 17, so not truncated by [:100])
     # So, str(e) = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML).. Raw response snippet: This is not JSON...."
     # This is still not matching the "actual" call from the test output.
-    
+
     # Let's re-examine the actual call from the test output for the `exc_info=True` case:
     # `call('...ll parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: This is not JSON.', exc_info=True)`
     # The message part is `"...ll parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: This is not JSON."`
     # This is very specific. The leading "..." and the trailing comma before "Raw Response" are odd.
     # It's possible the guardrail's logging is more complex or there's an intermediate formatting step.
-    
+
     # Given the test output:
     # `actual = [call('All parsing attempts failed (direct JSON, Markdown JSON, simple XML). Raw response: This is not JSON.'), call('...ll parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: This is not JSON.', exc_info=True)]`
     # The first call in `actual` is `call('All parsing attempts failed (direct JSON, Markdown JSON, simple XML). Raw response: This is not JSON.')`
     # This looks like `e.message + ". Raw response: " + e.raw_response`
     # Let's try to match this structure.
-    
+
     expected_logged_message = f"{expected_generic_parser_error_message}. Raw response: {raw_bad_response}"
 
     # The test output indicates the logger was called with exc_info=True for one of the calls.
@@ -255,7 +257,7 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # `e.message` = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     # `e.raw_response` = "This is not JSON." (length 17, so not truncated by [:100])
     # So, `str(e)` = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML).. Raw response snippet: This is not JSON...."
-    
+
     # The test output for the FAILED assertion was:
     # `AssertionError: error('LLMResponseParseError in check method: Failed to parse XML-like content: junk after document element: line 1, column 7. Raw Response: This is not JSON.', exc_info=True) call not found`
     # The `actual` calls listed were:
@@ -264,11 +266,11 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # So we need to match the message content of the *second* call in the `actual` list.
     # That message is `"...ll parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: This is not JSON."`
     # This is still very strange.
-    
+
     # Let's assume the guardrail's logging is: `logger.error(f"Failed to parse: {e.message}", exc_info=True)`
     # Then the message would be: `f"Failed to parse: {expected_generic_parser_error_message}"`
     # This is simpler and more likely.
-    
+
     # The original test was checking for a very specific format:
     # `f"LLMResponseParseError in check method: {expected_error_message_from_parser}. Raw Response: {raw_bad_response[:200]}"`
     # Let's adapt this to the new generic error from the parser.
@@ -277,12 +279,12 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # `self.logger.error(f"LLMResponseParseError in check method: {e.message}. Raw Response: {e.raw_response[:200]}", exc_info=True)`
     # then `e.message` is "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     # and `e.raw_response` is "This is not JSON."
-    
+
     final_expected_logged_message = f"LLMResponseParseError in check method: {expected_generic_parser_error_message}, Raw Response: {raw_bad_response}"
 
     mock_logger.error.assert_any_call(
         final_expected_logged_message,
-        exc_info=True
+        exc_info=True,
     )
 
 
@@ -290,26 +292,28 @@ def test_check_llm_returns_non_boolean_fields(guardrail_with_mock_driver, mock_l
     """Test check method when LLM returns non-boolean for boolean fields."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="This is okay, I guess.")])
-    
+
     llm_response_json = {
-        "complaint_detected": "true_string", # Invalid boolean
+        "complaint_detected": "true_string",  # Invalid boolean
         "category": "Feedback",
         "summary": "User provided neutral feedback.",
-        "escalation_needed": "maybe" # Invalid boolean
+        "escalation_needed": "maybe",  # Invalid boolean
     }
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": json.dumps(llm_response_json)}}]
+        "choices": [{"message": {"content": json.dumps(llm_response_json)}}],
     }
 
     result = guardrail.check(conversation)
 
-    assert result.is_triggered is False # Defaulted due to invalid "complaint_detected"
+    assert result.is_triggered is False  # Defaulted due to invalid "complaint_detected"
     assert result.details["category"] == "Feedback"
-    assert result.details["escalation_needed"] is False # Defaulted
-    assert len(result.errors) == 2 # Two errors for invalid booleans
+    assert result.details["escalation_needed"] is False  # Defaulted
+    assert len(result.errors) == 2  # Two errors for invalid booleans
     assert "LLM returned non-boolean 'complaint_detected'" in result.errors[0]
     assert "LLM returned non-boolean 'escalation_needed'" in result.errors[1]
-    mock_logger.warning.assert_any_call("LLM returned non-boolean 'complaint_detected': true_string. Defaulting to False.")
+    mock_logger.warning.assert_any_call(
+        "LLM returned non-boolean 'complaint_detected': true_string. Defaulting to False."
+    )
     mock_logger.warning.assert_any_call("LLM returned non-boolean 'escalation_needed': maybe. Defaulting to False.")
 
 
@@ -317,7 +321,7 @@ def test_check_llm_call_fails(guardrail_with_mock_driver, mock_logger):
     """Test check method when the call to LLM driver fails."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="Help me.")])
-    
+
     mock_driver.send.side_effect = Exception("Network Error")
 
     result = guardrail.check(conversation)
@@ -334,7 +338,7 @@ def test_check_llm_no_content_in_response(guardrail_with_mock_driver, mock_logge
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="Is this working?")])
 
-    mock_driver.send.return_value = {"choices": [{"message": {"content": None}}]} # No content
+    mock_driver.send.return_value = {"choices": [{"message": {"content": None}}]}  # No content
 
     result = guardrail.check(conversation)
 
@@ -349,21 +353,21 @@ def test_check_llm_empty_content_in_response(guardrail_with_mock_driver, mock_lo
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="Test.")])
 
-    mock_driver.send.return_value = {"choices": [{"message": {"content": ""}}]} # Empty content
+    mock_driver.send.return_value = {"choices": [{"message": {"content": ""}}]}  # Empty content
 
     result = guardrail.check(conversation)
-    
+
     assert result.is_triggered is False
     assert len(result.errors) == 1
     assert "Could not extract content from LLM response." in result.errors[0]
     assert result.raw_llm_response == ""
- 
+
 
 def test_check_driver_not_bound(mock_logger):
     """Test check method raises RuntimeError if driver is not bound."""
-    guardrail = ComplaintsHandlingGuardrail() # No driver bound
+    guardrail = ComplaintsHandlingGuardrail()  # No driver bound
     conversation = Conversation(messages=[Message(role="user", content="Test")])
-    
+
     with pytest.raises(RuntimeError) as excinfo:
         guardrail.check(conversation)
     assert "LLM driver not bound" in str(excinfo.value)
@@ -375,7 +379,7 @@ def test_check_driver_lacks_send_method(mock_logger):
     mock_driver_no_send = MagicMock()
     # del mock_driver_no_send.send # Ensure it doesn't have 'send'
     # Or, more explicitly:
-    if hasattr(mock_driver_no_send, 'send'):
+    if hasattr(mock_driver_no_send, "send"):
         del mock_driver_no_send.send
 
     guardrail.bind(mock_driver_no_send)
@@ -384,13 +388,16 @@ def test_check_driver_lacks_send_method(mock_logger):
     result = guardrail.check(conversation)
     assert result.is_triggered is False
     assert len(result.errors) == 1
-    assert f"Bound driver of type {type(mock_driver_no_send).__name__} does not have a 'send' method." in result.errors[0]
+    assert (
+        f"Bound driver of type {type(mock_driver_no_send).__name__} does not have a 'send' method." in result.errors[0]
+    )
+
 
 def test_check_successful_xml_like_input_parsed(guardrail_with_mock_driver, mock_logger):
     """Test check method with XML-like input that parse_llm_response can handle."""
     guardrail, mock_driver = guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="My order is late.")])
-    
+
     # This XML-like format is what the old prompt produced.
     # parse_llm_response should be able to convert this to a dict.
     xml_like_response = """
@@ -400,7 +407,7 @@ def test_check_successful_xml_like_input_parsed(guardrail_with_mock_driver, mock
     <escalation_needed>False</escalation_needed>
     """
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": xml_like_response}}]
+        "choices": [{"message": {"content": xml_like_response}}],
     }
 
     result = guardrail.check(conversation)
@@ -409,8 +416,10 @@ def test_check_successful_xml_like_input_parsed(guardrail_with_mock_driver, mock
     assert result.is_triggered is False
     assert result.details["category"] == "Service Issue"
     assert result.details["summary"] == "Order is late."
-    assert result.details["escalation_needed"] is False # escalation_needed was "False" string, guardrail defaults to False
-    assert len(result.errors) == 2 # One for complaint_detected, one for escalation_needed
+    assert (
+        result.details["escalation_needed"] is False
+    )  # escalation_needed was "False" string, guardrail defaults to False
+    assert len(result.errors) == 2  # One for complaint_detected, one for escalation_needed
     assert "LLM returned non-boolean 'complaint_detected': True" in result.errors
     assert "LLM returned non-boolean 'escalation_needed': False" in result.errors
     # Check that the parsed_llm_output contains the expected dictionary
@@ -419,6 +428,6 @@ def test_check_successful_xml_like_input_parsed(guardrail_with_mock_driver, mock
         "complaint_detected": "True",
         "category": "Service Issue",
         "summary": "Order is late.",
-        "escalation_needed": "False"
+        "escalation_needed": "False",
     }
     assert result.details["parsed_llm_output"] == expected_parsed_dict

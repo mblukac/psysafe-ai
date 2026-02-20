@@ -6,6 +6,6 @@ from .schemas import CleanupConfig, PhaseConfig, SafetyConfig
 __all__ = [
     "ConfigurationManager",
     "CleanupConfig",
-    "PhaseConfig", 
+    "PhaseConfig",
     "SafetyConfig",
 ]

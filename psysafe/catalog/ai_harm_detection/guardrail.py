@@ -1,27 +1,23 @@
-from typing import List, Dict, Any, Optional
-from copy import deepcopy
 import json
 import logging
+from copy import deepcopy
+from typing import Any, Dict, Optional
 
-from psysafe.catalog.base.llm_guardrail import LLMGuardrail
-from psysafe.catalog.ai_harm_detection.config import AiHarmDetectionConfig, HarmClassification, PolicyViolationType
-from psysafe.core.types import GuardrailResponse
-from psysafe.core.models import Conversation, GuardedRequest
-from psysafe.core.exceptions import (
-    LLMDriverError,
-    ResponseParsingError,
-    GuardrailError
-)
-from psysafe.utils.parsing import ResponseParser
-from psysafe.core.template import PromptTemplate, PromptRenderCtx
-from psysafe.typing.requests import OpenAIChatRequest
 from psysafe.catalog import GuardrailCatalog
+from psysafe.catalog.ai_harm_detection.config import AiHarmDetectionConfig, HarmClassification, PolicyViolationType
+from psysafe.catalog.base.llm_guardrail import LLMGuardrail
+from psysafe.core.exceptions import LLMDriverError, ResponseParsingError
+from psysafe.core.models import Conversation, GuardedRequest
+from psysafe.core.template import PromptRenderCtx, PromptTemplate
+from psysafe.core.types import GuardrailResponse
+from psysafe.typing.requests import OpenAIChatRequest
+from psysafe.utils.parsing import ResponseParser
 
 
 class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
     """
     A guardrail to detect AI-generated content that may cause harm or violate safety policies.
-    
+
     This guardrail analyzes AI responses to detect:
     - Agreement with or assistance in self-harm
     - Encouragement of pathological behaviors
@@ -32,7 +28,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
         self,
         config: Optional[AiHarmDetectionConfig] = None,
         driver: Optional[Any] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         Initialize the AI harm detection guardrail.
@@ -41,34 +37,27 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
             config: AiHarmDetectionConfig instance or None to use defaults
             driver: Optional LLM driver instance
             **kwargs: Additional config parameters for backward compatibility
+
         """
         # Handle backward compatibility
         if config is None:
             config_field_names = set(AiHarmDetectionConfig.model_fields)
-            config_kwargs = {
-                key: value
-                for key, value in kwargs.items()
-                if key in config_field_names
-            }
-            unused_kwargs = {
-                key: value
-                for key, value in kwargs.items()
-                if key not in config_field_names
-            }
+            config_kwargs = {key: value for key, value in kwargs.items() if key in config_field_names}
+            unused_kwargs = {key: value for key, value in kwargs.items() if key not in config_field_names}
 
             config = AiHarmDetectionConfig(**config_kwargs)
 
             if unused_kwargs:
                 logging.getLogger(__name__).warning(
                     "Ignoring unsupported ai_harm_detection kwargs: %s",
-                    ", ".join(sorted(unused_kwargs.keys()))
+                    ", ".join(sorted(unused_kwargs.keys())),
                 )
-        
+
         super().__init__(config, driver)
-        
+
         # Load template
         self.template = PromptTemplate.from_file(
-            "psysafe/catalog/ai_harm_detection/prompt.md"
+            "psysafe/catalog/ai_harm_detection/prompt.md",
         )
         self.logger = logging.getLogger(__name__)
         self.parser = ResponseParser(self.logger)
@@ -104,7 +93,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
             "2.1": (
                 "Policy 2.1 (Eating Disorders): The AI provides advice, encouragement, or validation "
                 "for behaviors associated with eating disorders (e.g., anorexia, bulimia). This includes "
-                "adopting the lexicon of \"pro-ana\" or \"pro-mia\" communities."
+                'adopting the lexicon of "pro-ana" or "pro-mia" communities.'
             ),
             "2.2": (
                 "Policy 2.2 (Substance Abuse): The AI gives instructions, encouragement, or methods "
@@ -114,48 +103,42 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                 "Policy 2.3 (Other Self-Destructive Patterns): The AI encourages or normalizes other "
                 "harmful behaviors like severe self-isolation, refusing medical treatment for serious "
                 "conditions, or engaging in reckless activities that pose a clear danger to the user."
-            )
+            ),
         }
-        
-        # Convert enum values to strings if needed
-        policies_to_use = [
-            self._policy_id_from_config_entry(policy)
-            for policy in self.config.monitored_policies
-        ]
 
-        return "\n".join(
-            policy_descriptions[policy]
-            for policy in policies_to_use
-            if policy in policy_descriptions
-        )
+        # Convert enum values to strings if needed
+        policies_to_use = [self._policy_id_from_config_entry(policy) for policy in self.config.monitored_policies]
+
+        return "\n".join(policy_descriptions[policy] for policy in policies_to_use if policy in policy_descriptions)
 
     def _generate_prompt(self, conversation: Conversation) -> str:
         """
         Generate prompt for LLM based on conversation.
-        
+
         Args:
             conversation: Input conversation
-            
+
         Returns:
             Formatted prompt string
+
         """
         # Extract user and AI messages
         user_messages = []
         ai_messages = []
-        
+
         for msg in conversation.messages:
             if msg.role == "user" and msg.content:
                 user_messages.append(msg.content)
             elif msg.role == "assistant" and msg.content:
                 ai_messages.append(msg.content)
-        
+
         # For harm detection, we need both user context and AI response
         user_context = "\n".join(user_messages)
         ai_response = "\n".join(ai_messages) if ai_messages else ""
-        
+
         # Get policy descriptions
         policy_descriptions_text = self._get_policy_descriptions()
-        
+
         render_ctx = PromptRenderCtx(
             driver_type="openai",  # Default, could be made configurable
             model_name="unknown",
@@ -168,7 +151,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                 "confidence": self.config.confidence_enabled,
                 "require_step_by_step": self.config.require_step_by_step_reasoning,
                 "include_policy_details": self.config.include_policy_details,
-            }
+            },
         )
 
         return self.template.render(render_ctx)
@@ -176,32 +159,33 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
     def _call_llm(self, prompt: str) -> str:
         """
         Call LLM with prompt and return raw response.
-        
+
         Args:
             prompt: Formatted prompt
-            
+
         Returns:
             Raw LLM response
-            
+
         Raises:
             LLMDriverError: If LLM call fails
+
         """
-        if not hasattr(self.driver, 'send'):
+        if not hasattr(self.driver, "send"):
             raise LLMDriverError(
                 f"Driver {type(self.driver).__name__} does not support 'send' method",
-                guardrail_name=self.__class__.__name__
+                guardrail_name=self.__class__.__name__,
             )
-        
+
         # Construct request for LLM
         llm_request = {
             "messages": [{"role": "system", "content": prompt}],
             "temperature": self.config.temperature,
-            "max_tokens": self.config.max_tokens
+            "max_tokens": self.config.max_tokens,
         }
-        
+
         try:
             response = self.driver.send(llm_request)
-            
+
             # Extract content from response
             if response and response.get("choices"):
                 first_choice = response["choices"][0]
@@ -209,96 +193,98 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                     content = first_choice["message"].get("content")
                     if content is not None:  # Allow empty string
                         return content
-            
+
             raise LLMDriverError(
                 "Could not extract content from LLM response",
                 guardrail_name=self.__class__.__name__,
-                context={"raw_response": str(response)}
+                context={"raw_response": str(response)},
             )
-            
+
         except Exception as e:
             if isinstance(e, LLMDriverError):
                 raise
             raise LLMDriverError(
                 f"LLM call failed: {str(e)}",
-                guardrail_name=self.__class__.__name__
+                guardrail_name=self.__class__.__name__,
             )
 
     def _parse_llm_response(self, raw_response: str) -> Dict[str, Any]:
         """
         Parse LLM response and extract harm detection results.
-        
+
         Args:
             raw_response: Raw LLM response
-            
+
         Returns:
             Parsed response dictionary
-            
+
         Raises:
             ResponseParsingError: If response cannot be parsed
+
         """
         try:
             # Try to parse as JSON
             response_data = json.loads(raw_response.strip())
-            
+
             # Validate required fields
             if "classification" not in response_data:
                 raise ResponseParsingError(
                     "Missing required field 'classification' in LLM response",
-                    raw_response=raw_response
+                    raw_response=raw_response,
                 )
-            
+
             # Validate classification value
             classification = response_data["classification"]
             if classification not in [cls.value for cls in HarmClassification]:
                 raise ResponseParsingError(
                     f"Invalid classification '{classification}'. Must be one of: {[cls.value for cls in HarmClassification]}",
-                    raw_response=raw_response
+                    raw_response=raw_response,
                 )
-            
+
             # Validate policy violation field
             violated_policy_id = response_data.get("violated_policy_id", "N/A")
             if classification == HarmClassification.HARMFUL.value and violated_policy_id == "N/A":
                 self.logger.warning(
-                    f"HARMFUL classification without policy violation ID: {raw_response[:200]}"
+                    f"HARMFUL classification without policy violation ID: {raw_response[:200]}",
                 )
-            
+
             return response_data
-            
+
         except json.JSONDecodeError as e:
             raise ResponseParsingError(
                 f"Failed to parse JSON response: {str(e)}",
-                raw_response=raw_response
+                raw_response=raw_response,
             )
         except Exception as e:
             raise ResponseParsingError(
                 f"Unexpected error parsing response: {str(e)}",
-                raw_response=raw_response
+                raw_response=raw_response,
             )
 
     def check(self, conversation: Conversation) -> GuardrailResponse:
         """
         Check conversation for AI harm using LLM.
-        
+
         Args:
             conversation: Input conversation
-            
+
         Returns:
             GuardrailResponse with check results
+
         """
         try:
             # Ensure driver is available
             self._ensure_driver()
-            
+
             # Generate prompt
             prompt = self._generate_prompt(conversation)
-            
+
             # Call LLM
             raw_response = self._call_llm(prompt)
-            
+
             # Parse response
             parsed_response = self._parse_llm_response(raw_response)
-            
+
             # Extract results
             classification = parsed_response.get("classification", HarmClassification.SAFE.value)
             violated_policy_id = parsed_response.get("violated_policy_id", "N/A")
@@ -310,7 +296,8 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                     risk_score = float(risk_score)
                 except ValueError:
                     self.logger.warning(
-                        "Received non-numeric risk_score: %s", risk_score
+                        "Received non-numeric risk_score: %s",
+                        risk_score,
                     )
                     risk_score = None
 
@@ -330,15 +317,14 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                 "violated_policy_id": violated_policy_id,
                 "reasoning": reasoning,
                 "monitored_policies": [
-                    self._policy_id_from_config_entry(policy)
-                    for policy in self.config.monitored_policies
+                    self._policy_id_from_config_entry(policy) for policy in self.config.monitored_policies
                 ],
             }
-            
+
             # Add optional confidence if enabled
             if self.config.confidence_enabled and "confidence_score" in parsed_response:
                 details["confidence_score"] = parsed_response["confidence_score"]
-            
+
             response = GuardrailResponse(
                 is_triggered=is_triggered,
                 risk_score=risk_score,
@@ -348,14 +334,14 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                     "guardrail_type": "ai_harm_detection",
                     "classification": classification,
                     "policy_violation": violated_policy_id,
-                }
+                },
             )
-            
+
             return response
-            
+
         except ResponseParsingError as e:
             self.logger.error(f"Failed to parse LLM response: {e}")
-            
+
             # Apply fail-safe mode
             if self.config.fail_safe_mode:
                 return GuardrailResponse(
@@ -368,16 +354,16 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                     },
                     errors=[f"Failed to parse LLM response: {str(e)}"],
                     raw_llm_response=e.raw_response,
-                    metadata={"error_type": "ResponseParsingError", "fail_safe_applied": True}
+                    metadata={"error_type": "ResponseParsingError", "fail_safe_applied": True},
                 )
             else:
                 return GuardrailResponse(
                     is_triggered=False,
                     errors=[f"Failed to parse LLM response: {str(e)}"],
                     raw_llm_response=e.raw_response,
-                    metadata={"error_type": "ResponseParsingError"}
+                    metadata={"error_type": "ResponseParsingError"},
                 )
-                
+
         except LLMDriverError as e:
             self.logger.error(f"LLM driver error: {e}")
             if "No LLM driver configured" in str(e):
@@ -385,14 +371,14 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
             return GuardrailResponse(
                 is_triggered=False,
                 errors=[str(e)],
-                metadata={"error_type": "LLMDriverError"}
+                metadata={"error_type": "LLMDriverError"},
             )
         except Exception as e:
             self.logger.error(f"Unexpected error in check: {e}")
             return GuardrailResponse(
                 is_triggered=False,
                 errors=[f"Unexpected error: {str(e)}"],
-                metadata={"error_type": type(e).__name__}
+                metadata={"error_type": type(e).__name__},
             )
 
     def apply(self, request: OpenAIChatRequest) -> GuardedRequest[OpenAIChatRequest]:
@@ -404,24 +390,25 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
         Returns:
             A GuardedRequest object containing the original and modified request
+
         """
         # Extract messages for context
         user_messages = []
         ai_messages = []
         messages = request.get("messages", [])
-        
+
         for msg in messages:
             if msg.get("role") == "user" and isinstance(msg.get("content"), str):
                 user_messages.append(msg["content"])
             elif msg.get("role") == "assistant" and isinstance(msg.get("content"), str):
                 ai_messages.append(msg["content"])
-        
+
         user_context = "\n".join(user_messages)
         ai_response = "\n".join(ai_messages)
-        
+
         # Get policy descriptions
         policy_descriptions_text = self._get_policy_descriptions()
-        
+
         render_ctx = PromptRenderCtx(
             driver_type=request.get("driver_type", "openai"),
             model_name=request.get("model", "unknown"),
@@ -434,7 +421,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
                 "confidence": self.config.confidence_enabled,
                 "require_step_by_step": self.config.require_step_by_step_reasoning,
                 "include_policy_details": self.config.include_policy_details,
-            }
+            },
         )
 
         rendered_prompt = self.template.render(render_ctx)
@@ -449,14 +436,13 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
         messages.insert(0, {"role": "system", "content": rendered_prompt})
         modified_request["messages"] = messages
-        
+
         # Create metadata for GuardedRequest
         metadata: Dict[str, Any] = {
             "guardrail_name": "AiHarmDetectionGuardrail",
             "applied_prompt": rendered_prompt,
             "monitored_policies": [
-                self._policy_id_from_config_entry(policy)
-                for policy in self.config.monitored_policies
+                self._policy_id_from_config_entry(policy) for policy in self.config.monitored_policies
             ],
             "detection_threshold": self.config.detection_threshold,
             "reasoning_enabled": self.config.reasoning_enabled,
@@ -473,22 +459,23 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
     def validate(self, response: Any) -> Any:
         """
         Validate a response against the guardrail.
-        
+
         For AI harm detection, we don't perform post-response validation.
         The main logic is in the check method which analyzes conversations.
-        
+
         Args:
             response: The response to validate
-            
+
         Returns:
             ValidationReport indicating the response is valid
+
         """
         from psysafe.core.models import ValidationReport
-        
+
         return ValidationReport(
             is_valid=True,
             violations=[],
-            metadata={"guardrail": "ai_harm_detection"}
+            metadata={"guardrail": "ai_harm_detection"},
         )
 
 

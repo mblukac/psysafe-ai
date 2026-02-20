@@ -1,5 +1,5 @@
 # psysafe/evaluation/__init__.py
+from .models import EvaluationResult, MetricResult, TestCase  # Placeholder models
 from .runner import EvaluationRunner
-from .models import EvaluationResult, TestCase, MetricResult # Placeholder models
 
 __all__ = ["EvaluationRunner", "EvaluationResult", "TestCase", "MetricResult"]

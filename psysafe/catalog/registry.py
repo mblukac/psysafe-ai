@@ -1,8 +1,8 @@
 # psysafe/catalog/registry.py
-from typing import Dict, List, Type, Union, Any
+from typing import Any, Dict, List, Type, Union
 
 from psysafe.core.base import GuardrailBase
-from psysafe.core.composite import CompositeGuardrail # Needed for the compose method
+from psysafe.core.composite import CompositeGuardrail  # Needed for the compose method
 
 
 class GuardrailCatalog:
@@ -10,6 +10,7 @@ class GuardrailCatalog:
     A registry for discovering and loading guardrail implementations.
     Guardrails can be registered by name and then loaded or composed.
     """
+
     _registry: Dict[str, Type[GuardrailBase]] = {}
 
     @classmethod
@@ -24,6 +25,7 @@ class GuardrailCatalog:
         Raises:
             TypeError: If guardrail_cls is not a subclass of GuardrailBase.
             ValueError: If the name is already registered.
+
         """
         if not issubclass(guardrail_cls, GuardrailBase):
             raise TypeError(f"Cannot register {guardrail_cls.__name__}: must be a subclass of GuardrailBase.")
@@ -48,6 +50,7 @@ class GuardrailCatalog:
 
         Raises:
             ValueError: If any requested name is not found in the registry.
+
         """
         if isinstance(names, str):
             names_list = [names]
@@ -60,7 +63,7 @@ class GuardrailCatalog:
         for name in names_list:
             if name not in cls._registry:
                 raise ValueError(f"Unknown guardrail: '{name}'. Available: {list(cls._registry.keys())}")
-            
+
             guardrail_cls = cls._registry[name]
             try:
                 # Instantiate the guardrail, passing any provided kwargs
@@ -70,7 +73,7 @@ class GuardrailCatalog:
                 # Catch errors if kwargs don't match the guardrail's __init__ signature
                 raise TypeError(
                     f"Error instantiating guardrail '{name}' ({guardrail_cls.__name__}): {e}. "
-                    f"Ensure provided kwargs match constructor parameters."
+                    f"Ensure provided kwargs match constructor parameters.",
                 ) from e
         return loaded_guardrails
 
@@ -86,6 +89,7 @@ class GuardrailCatalog:
 
         Returns:
             A CompositeGuardrail instance containing the loaded guardrails.
+
         """
         guardrails_to_compose = cls.load(names, **kwargs)
         if not guardrails_to_compose:
@@ -112,6 +116,7 @@ class GuardrailCatalog:
 
         Raises:
             ValueError: If the name is not found.
+
         """
         if name not in cls._registry:
             raise ValueError(f"Unknown guardrail: '{name}'. Available: {list(cls._registry.keys())}")

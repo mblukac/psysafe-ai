@@ -1,15 +1,19 @@
 # psysafe/cli/guard.py
+from typing import Annotated
+
 import typer
-from typing_extensions import Annotated # For Typer <0.9.0 compatibility if needed, else just use typing.Annotated for Python 3.9+
 
 # If Typer is version 0.9.0+ and Python 3.9+, can use:
 
 app = typer.Typer(help="Commands for applying guardrails to inputs.")
 
+
 @app.command()
 def apply(
     text: Annotated[str, typer.Argument(help="The input text to guard.")],
-    guardrail: Annotated[str, typer.Option(help="Name of the guardrail to apply from the catalog.")] = "vulnerability_detection", # Example default
+    guardrail: Annotated[
+        str, typer.Option(help="Name of the guardrail to apply from the catalog.")
+    ] = "vulnerability_detection",  # Example default
     # Add more options as needed, e.g., sensitivity, specific model for the guardrail if not using a default driver
 ):
     """
@@ -27,6 +31,7 @@ def apply(
     #    validation_report = loaded_guardrail.validate(dummy_response)
     # 6. Print results: modified_prompt, validation_report, etc.
     print("CLI 'guard apply' command needs full implementation.")
+
 
 if __name__ == "__main__":
     app()
