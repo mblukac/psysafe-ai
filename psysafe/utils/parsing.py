@@ -82,12 +82,6 @@ class ResponseParser:
         else:
             self.logger.debug("No markdown JSON block found.")
 
-        # Strategy 3: XML-like key-value pairs (Placeholder)
-        # Current logic in _parse_xml_like raises NotImplementedError, which would be caught by a generic
-        # try/except if it were called here. For now, it's not actively part of the parsing flow unless
-        # _parse_xml_like is directly called and its result used, which it isn't in this structure.
-        # So, we effectively 'pass' this strategy if the above haven't returned/raised.
-
         # If all strategies failed or were not applicable
         final_error_message = (
             parsing_failure_reason if parsing_failure_reason else "Could not parse response with any strategy"
@@ -97,15 +91,3 @@ class ResponseParser:
             final_error_message,
             raw_response=raw_response,
         )
-
-    def _parse_xml_like(self, raw_response: str) -> Dict[str, Any]:
-        """Parse simple XML-like key-value pairs (Placeholder)"""
-        # This method is marked as a placeholder in the specification.
-        # Actual implementation would depend on the specifics of the "XML-like" format.
-        # For now, it will not parse anything and let the calling method raise an error.
-        self.logger.warning("_parse_xml_like is not fully implemented as per specification placeholder.")
-        # To avoid returning None and potentially causing issues if called directly,
-        # we can raise a NotImplementedError or simply let the _parse_to_dict handle the failure.
-        # For now, returning an empty dict or raising an error are options.
-        # Let's make it clear it's not implemented if called.
-        raise NotImplementedError("XML-like parsing is not yet implemented.")

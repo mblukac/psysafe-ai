@@ -142,10 +142,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
 
                     # Conversational pipeline often returns a Conversation object.
                     # We need to extract the generated response.
-                    # This is a placeholder, actual usage depends on pipeline version and model.
-                    # response_object = self.pipeline(conv_input, **generation_kwargs)
-                    # generated_text = response_object.generated_responses[-1] if response_object.generated_responses else ""
-                    # return {"generated_text": generated_text, "conversation_history": response_object.messages}
                     # Let's assume a simplified response structure for now.
                     raw_response = self.pipeline(conv_input, **generation_kwargs)
                     # Attempt to get the last generated response
@@ -166,7 +162,6 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                 return {"output": response_data}  # Adjust based on typical output for other tasks
 
         except Exception:
-            # print(f"Transformers pipeline error: {e}") # Replace with proper logging
             raise
         """
         Note: This is a basic implementation for text-generation and might need

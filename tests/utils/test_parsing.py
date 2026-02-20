@@ -128,22 +128,6 @@ def test_parse_to_dict_markdown_with_other_code_type(parser: ResponseParser):
     assert "Failed to parse JSON from markdown" in str(exc_info.value)
 
 
-# --- Tests for XML-like parsing (expecting NotImplementedError) ---
-
-
-def test_parse_to_dict_xml_like_not_implemented(parser: ResponseParser):
-    """Tests that _parse_xml_like raises NotImplementedError if directly called or if it's the only strategy."""
-    # To test this, we need a string that won't parse as JSON or markdown JSON
-    xml_like_string = "<key>value</key>"
-    with pytest.raises(ResponseParsingError) as exc_info:  # _parse_to_dict wraps it
-        parser._parse_to_dict(xml_like_string)
-    # The internal NotImplementedError from _parse_xml_like will be caught,
-    # and _parse_to_dict will then raise its own "Could not parse" error.
-    assert "Failed to parse as direct JSON" in str(exc_info.value)
-    # To directly test _parse_xml_like (if it were public and meant to be tested directly):
-    # with pytest.raises(NotImplementedError):
-
-
 # --- Tests for parse_to_model ---
 
 
