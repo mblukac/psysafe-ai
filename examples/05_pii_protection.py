@@ -4,7 +4,7 @@
 from psysafe.catalog.pii_protection.guardrail import PiiProtectionGuardrail  # Corrected import
 from psysafe.core.models import Conversation, Message
 from psysafe.drivers.openai import OpenAIChatDriver
-from utils.llm_utils import load_environment  # Changed import
+from psysafe.utils.llm_parsing import load_environment  # Changed import
 
 load_environment()  # Added environment loading call
 

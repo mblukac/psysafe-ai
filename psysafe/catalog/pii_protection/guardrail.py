@@ -6,7 +6,7 @@ from psysafe.core.models import CheckOutput, Conversation, GuardedRequest
 from psysafe.core.prompt import PromptGuardrail
 from psysafe.core.template import PromptRenderCtx, PromptTemplate
 from psysafe.typing.requests import OpenAIChatRequest, OpenAIMessage
-from utils.llm_utils import LLMResponseParseError, parse_llm_response
+from psysafe.utils.llm_parsing import LLMResponseParseError, parse_llm_response
 
 
 class PiiProtectionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):

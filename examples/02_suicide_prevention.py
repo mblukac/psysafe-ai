@@ -4,7 +4,7 @@
 from psysafe.catalog.suicide_prevention.guardrail import Sensitivity, SuicidePreventionGuardrail
 from psysafe.core.models import Conversation, Message
 from psysafe.drivers.openai import OpenAIChatDriver  # Import the driver
-from utils.llm_utils import load_environment
+from psysafe.utils.llm_parsing import load_environment
 
 # Role enum is not strictly necessary if using string literals, but good for clarity if available
 

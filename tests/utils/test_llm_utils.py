@@ -5,7 +5,7 @@ import pytest
 
 # Adjust the import path based on your project structure
 # Assuming psysafe is the root package for utils
-from utils.llm_utils import LLMResponseParseError, parse_llm_response
+from psysafe.utils.llm_parsing import LLMResponseParseError, parse_llm_response
 
 # Configure basic logging for tests to see debug messages if needed
 # logger = logging.getLogger(__name__) # Optional: if you want to pass a logger to parse_llm_response in tests

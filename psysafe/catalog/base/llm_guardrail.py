@@ -62,7 +62,6 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
         """
         pass
 
-    @abstractmethod
     def _call_llm(self, prompt: str) -> str:
         """
         Call LLM with prompt and return raw response
@@ -73,8 +72,47 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
         Returns:
             Raw LLM response
 
+        Raises:
+            LLMDriverError: If LLM call fails
+
         """
-        pass
+        if not hasattr(self.driver, "send"):
+            raise LLMDriverError(
+                f"Driver {type(self.driver).__name__} does not support 'send' method",
+                guardrail_name=self.__class__.__name__,
+            )
+
+        # Construct request for LLM
+        llm_request = {
+            "messages": [{"role": "system", "content": prompt}],
+            "temperature": getattr(self.config, "temperature", 0.0),
+            "max_tokens": getattr(self.config, "max_tokens", 500),
+        }
+
+        try:
+            response = self.driver.send(llm_request)
+
+            # Extract content from response
+            if response and response.get("choices"):
+                first_choice = response["choices"][0]
+                if first_choice and first_choice.get("message"):
+                    content = first_choice["message"].get("content")
+                    if content is not None:  # Allow empty string
+                        return content
+
+            raise LLMDriverError(
+                "Could not extract content from LLM response",
+                guardrail_name=self.__class__.__name__,
+                context={"raw_response": str(response)},
+            )
+
+        except Exception as e:
+            if isinstance(e, LLMDriverError):
+                raise
+            raise LLMDriverError(
+                f"LLM call failed: {str(e)}",
+                guardrail_name=self.__class__.__name__,
+            )
 
     def check(self, conversation: Conversation) -> GuardrailResponse:
         """

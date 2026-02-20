@@ -11,7 +11,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Now we can import our module
-from utils.llm_utils import format_conversation_for_classification
+from psysafe.utils.llm_parsing import format_conversation_for_classification
 
 
 def main():
