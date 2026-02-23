@@ -156,7 +156,6 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
         return self.template.render(render_ctx)
 
-
     def _parse_llm_response(self, raw_response: str) -> Dict[str, Any]:
         """
         Parse LLM response and extract harm detection results.
