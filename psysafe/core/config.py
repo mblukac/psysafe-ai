@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel, Field
 
 from psysafe.core.types import SensitivityLevel, VulnerabilityIndicators

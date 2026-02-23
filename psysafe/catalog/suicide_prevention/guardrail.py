@@ -115,7 +115,8 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
         # For simplicity, inserting as the first message.
         # More sophisticated logic might be needed to merge with existing system prompts.
         modified_messages = [{"role": "system", "content": rendered_prompt}] + request.get(
-            "messages", [],
+            "messages",
+            [],
         )  # Ensure dicts
 
         # Create a new request object with the modified messages
@@ -300,7 +301,10 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
             llm_errors.append("LLM response content was empty or could not be extracted after driver call.")
             # Ensure raw_llm_response is the actual (empty) content
             return CheckOutput(
-                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata,
+                is_triggered=False,
+                errors=llm_errors,
+                raw_llm_response=raw_llm_response_content,
+                metadata=llm_metadata,
             )
 
         # 4. Parse LLM response using the new utility

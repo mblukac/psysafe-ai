@@ -397,7 +397,8 @@ def parse_llm_response(
             if logger:
                 logger.debug(f"Direct JSON parsing resulted in non-dict type: {type(parsed_json)}. Failing.")
             raise LLMResponseParseError(
-                f"Parsed JSON is not a dictionary (got {type(parsed_json)}).", raw_response=raw_response,
+                f"Parsed JSON is not a dictionary (got {type(parsed_json)}).",
+                raw_response=raw_response,
             )
         if logger:
             logger.debug("Successfully parsed raw_response as direct JSON.")
@@ -466,7 +467,8 @@ def parse_llm_response(
                     if logger:
                         logger.debug(f"XML-like parsing failed after attempting to wrap original response: {e_wrapped}")
                     raise LLMResponseParseError(
-                        f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response,
+                        f"Failed to parse XML-like content: {e_wrapped}",
+                        raw_response=raw_response,
                     ) from e_wrapped
             else:
                 if logger:
@@ -475,7 +477,8 @@ def parse_llm_response(
 
         if root is None:
             raise LLMResponseParseError(
-                "XML root element could not be determined after parsing attempts.", raw_response=raw_response,
+                "XML root element could not be determined after parsing attempts.",
+                raw_response=raw_response,
             )
 
         xml_dict = {}
@@ -554,13 +557,15 @@ def parse_llm_response(
                         + raw_response[:50],
                     )
                 raise LLMResponseParseError(
-                    "XML parsed to an empty dictionary from non-empty/non-empty-root input.", raw_response=raw_response,
+                    "XML parsed to an empty dictionary from non-empty/non-empty-root input.",
+                    raw_response=raw_response,
                 )
             elif logger:
                 logger.debug("XML input (e.g. <root/>) resulted in an empty dictionary.")
             if not xml_dict and raw_response.strip():
                 raise LLMResponseParseError(
-                    "Failed to extract key-value pairs from XML structure.", raw_response=raw_response,
+                    "Failed to extract key-value pairs from XML structure.",
+                    raw_response=raw_response,
                 )
 
     except ET.ParseError as e:
@@ -572,7 +577,8 @@ def parse_llm_response(
         if logger:
             logger.error(f"Unexpected error during XML parsing: {e_gen}", exc_info=True)
         raise LLMResponseParseError(
-            f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response,
+            f"Unexpected error during XML processing: {e_gen}",
+            raw_response=raw_response,
         ) from e_gen
 
     error_message = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."

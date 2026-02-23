@@ -12,7 +12,8 @@ app = typer.Typer(help="Commands for applying guardrails to inputs.")
 def apply(
     text: Annotated[str, typer.Argument(help="The input text to guard.")],
     guardrail: Annotated[
-        str, typer.Option(help="Name of the guardrail to apply from the catalog."),
+        str,
+        typer.Option(help="Name of the guardrail to apply from the catalog."),
     ] = "vulnerability_detection",  # Example default
     # Add more options as needed, e.g., sensitivity, specific model for the guardrail if not using a default driver
 ):

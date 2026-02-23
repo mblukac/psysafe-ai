@@ -113,7 +113,8 @@ def parse_llm_response(
                 except ET.ParseError as e_wrapped:
                     logger.debug(f"XML-like parsing failed after attempting to wrap original response: {e_wrapped}")
                     raise LLMResponseParseError(
-                        f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response,
+                        f"Failed to parse XML-like content: {e_wrapped}",
+                        raw_response=raw_response,
                     ) from e_wrapped
             else:
                 logger.debug(f"XML-like parsing failed (was already wrapped or initial parse failed): {e_initial}")
@@ -121,7 +122,8 @@ def parse_llm_response(
 
         if root is None:
             raise LLMResponseParseError(
-                "XML root element could not be determined after parsing attempts.", raw_response=raw_response,
+                "XML root element could not be determined after parsing attempts.",
+                raw_response=raw_response,
             )
 
         xml_dict = {}
@@ -196,7 +198,8 @@ def parse_llm_response(
     except Exception as e_gen:
         logger.error(f"Unexpected error during XML parsing: {e_gen}", exc_info=True)
         raise LLMResponseParseError(
-            f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response,
+            f"Unexpected error during XML processing: {e_gen}",
+            raw_response=raw_response,
         ) from e_gen
 
     # If all attempts fail

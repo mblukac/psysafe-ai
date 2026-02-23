@@ -24,7 +24,9 @@ def test_call_llm(mock_get_client):
     response = call_llm("openai:gpt-4o", [{"role": "user", "content": "hello"}])
 
     mock_client.chat.completions.create.assert_called_once_with(
-        model="openai:gpt-4o", messages=[{"role": "user", "content": "hello"}], temperature=0.7,
+        model="openai:gpt-4o",
+        messages=[{"role": "user", "content": "hello"}],
+        temperature=0.7,
     )
     assert response == mock_response
 

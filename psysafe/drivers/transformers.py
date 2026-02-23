@@ -130,7 +130,8 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                         # A common pattern is to pass the Conversation object.
                         # For now, let's assume a simple string input from the last message.
                         last_user_message = next(
-                            (m["content"] for m in reversed(messages) if m["role"] == "user"), None,
+                            (m["content"] for m in reversed(messages) if m["role"] == "user"),
+                            None,
                         )
                         if not last_user_message:
                             raise ValueError("No user message found for conversational task.")

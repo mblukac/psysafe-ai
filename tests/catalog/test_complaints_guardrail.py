@@ -232,7 +232,6 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # This looks like `e.message + ". Raw response: " + e.raw_response`
     # Let's try to match this structure.
 
-
     # The test output indicates the logger was called with exc_info=True for one of the calls.
     # We need to find a call that matches the message AND has exc_info=True.
     # The test output's `actual` calls are:

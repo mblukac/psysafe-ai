@@ -160,7 +160,9 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
     @classmethod
     def from_file(
-        cls, template_file_path: str, template_variables: dict[str, Any] = None,
+        cls,
+        template_file_path: str,
+        template_variables: dict[str, Any] = None,
     ) -> "PromptGuardrail[Any, Any]":
         """
         Factory method to create a PromptGuardrail from a template file.

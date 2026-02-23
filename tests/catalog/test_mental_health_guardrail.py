@@ -93,7 +93,8 @@ def mh_guardrail_with_mock_driver(mock_logger_mental_health):
 
 
 def test_check_distress_detected_suggestion_needed_direct_json(
-    mh_guardrail_with_mock_driver, mock_logger_mental_health,
+    mh_guardrail_with_mock_driver,
+    mock_logger_mental_health,
 ):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I feel hopeless and alone.")])

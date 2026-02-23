@@ -10,7 +10,9 @@ from psysafe.core.models import GuardedRequest, PromptRenderCtx, ValidationRepor
 def test_validation_report_merge_two_valid():
     report1 = ValidationReport(is_valid=True, violations=[], metadata={"source": "report1", "common_key": "val1"})
     report2 = ValidationReport(
-        is_valid=True, violations=[], metadata={"checker": "report2", "common_key": "val2_override"},
+        is_valid=True,
+        violations=[],
+        metadata={"checker": "report2", "common_key": "val2_override"},
     )
 
     merged_report = report1.merge(report2)

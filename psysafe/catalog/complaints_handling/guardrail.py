@@ -68,13 +68,19 @@ class ComplaintsHandlingGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # A
         """
         if not request.get("messages"):
             return GuardedRequest(
-                original_request=request, modified_request=request, is_modified=False, applied_guardrails=[self.name],
+                original_request=request,
+                modified_request=request,
+                is_modified=False,
+                applied_guardrails=[self.name],
             )
 
         user_input = self._get_user_input_from_request(request)
         if not user_input:  # If no user input could be extracted
             return GuardedRequest(
-                original_request=request, modified_request=request, is_modified=False, applied_guardrails=[self.name],
+                original_request=request,
+                modified_request=request,
+                is_modified=False,
+                applied_guardrails=[self.name],
             )
 
         render_ctx = PromptRenderCtx(
@@ -158,7 +164,9 @@ class ComplaintsHandlingGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # A
             else:
                 llm_errors.append(f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method.")
                 return CheckOutput(
-                    is_triggered=False, errors=llm_errors, metadata={"info": "LLM call not possible.", **llm_metadata},
+                    is_triggered=False,
+                    errors=llm_errors,
+                    metadata={"info": "LLM call not possible.", **llm_metadata},
                 )
 
         except Exception as e:
@@ -169,7 +177,10 @@ class ComplaintsHandlingGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # A
         if not raw_llm_response_content:
             llm_errors.append("LLM response content was empty after driver call.")
             return CheckOutput(
-                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata,
+                is_triggered=False,
+                errors=llm_errors,
+                raw_llm_response=raw_llm_response_content,
+                metadata=llm_metadata,
             )
 
         try:

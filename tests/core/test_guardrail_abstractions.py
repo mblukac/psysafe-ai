@@ -420,7 +420,8 @@ def test_composite_guardrail_validate_one_fails():
     v_fail = Violation(severity=ValidationSeverity.CRITICAL, code="V_FAIL", message="Failed validation")
     g1 = StubCheckGuardrail("pass1", ValidationReport(is_valid=True))
     g2 = StubCheckGuardrail(
-        "fail1", ValidationReport(is_valid=False, violations=[v_fail], metadata={"failed_by": "g2"}),
+        "fail1",
+        ValidationReport(is_valid=False, violations=[v_fail], metadata={"failed_by": "g2"}),
     )
     g3 = StubCheckGuardrail("pass2", ValidationReport(is_valid=True))
     composite = CompositeGuardrail[DummyRequest, DummyResponse](guardrails=[g1, g2, g3])
@@ -458,7 +459,8 @@ def test_composite_guardrail_validate_multiple_fail_reports_merged():
 def test_composite_guardrail_validate_guardrail_raises_exception():
     v_pass = Violation(severity=ValidationSeverity.INFO, code="PASSED_PREVIOUSLY", message="Passed before exception")
     g1 = StubCheckGuardrail(
-        "pass_before_ex", ValidationReport(is_valid=False, violations=[v_pass], metadata={"meta1": "val1"}),
+        "pass_before_ex",
+        ValidationReport(is_valid=False, violations=[v_pass], metadata={"meta1": "val1"}),
     )
     g2 = StubCheckGuardrail("raiser", ValidationReport(is_valid=True), raise_on_validate=True)
     g3 = StubCheckGuardrail("pass_after_ex", ValidationReport(is_valid=True, metadata={"meta3": "val3"}))
@@ -487,7 +489,8 @@ def test_composite_guardrail_validate_modifying_prompt_guardrail_in_chain():
     g1 = ModifyingPromptGuardrail("M1")
     v_fail = Violation(severity=ValidationSeverity.ERROR, code="CHECK_FAIL", message="Check failed")
     g2 = StubCheckGuardrail(
-        "checker", ValidationReport(is_valid=False, violations=[v_fail], metadata={"checker_meta": "yes"}),
+        "checker",
+        ValidationReport(is_valid=False, violations=[v_fail], metadata={"checker_meta": "yes"}),
     )
 
     composite = CompositeGuardrail[DummyRequest, DummyResponse](guardrails=[g1, g2])

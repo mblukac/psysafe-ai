@@ -135,7 +135,9 @@ class PiiProtectionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
             else:
                 llm_errors.append(f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method.")
                 return CheckOutput(
-                    is_triggered=False, errors=llm_errors, metadata={"info": "LLM call not possible.", **llm_metadata},
+                    is_triggered=False,
+                    errors=llm_errors,
+                    metadata={"info": "LLM call not possible.", **llm_metadata},
                 )
 
         except Exception as e:
@@ -146,7 +148,10 @@ class PiiProtectionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         if not raw_llm_response_content:
             llm_errors.append("LLM response content was empty after driver call.")
             return CheckOutput(
-                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata,
+                is_triggered=False,
+                errors=llm_errors,
+                raw_llm_response=raw_llm_response_content,
+                metadata=llm_metadata,
             )
 
         try:
@@ -183,7 +188,8 @@ class PiiProtectionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
             )
         except LLMResponseParseError as e:
             self.logger.error(
-                f"LLMResponseParseError in PII check: {e.message}, Raw: {e.raw_response[:200]}", exc_info=True,
+                f"LLMResponseParseError in PII check: {e.message}, Raw: {e.raw_response[:200]}",
+                exc_info=True,
             )
             llm_errors.append(
                 f"Failed to parse PII LLM response: {e.message}. Snippet: {e.raw_response[:100] if e.raw_response else 'N/A'}",
