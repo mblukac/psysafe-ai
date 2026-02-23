@@ -1,6 +1,6 @@
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import aisuite as ai
 from dotenv import load_dotenv
@@ -25,7 +25,7 @@ def load_environment() -> None:
     print(f"Loaded environment variables from {ENV_FILE}")
 
 
-def get_client(additional_configs: Optional[Dict[str, Dict[str, str]]] = None) -> ai.Client:
+def get_client(additional_configs: dict[str, dict[str, str]] | None = None) -> ai.Client:
     """
     Create and configure an aisuite client with API keys from environment variables.
 
@@ -49,9 +49,9 @@ def get_client(additional_configs: Optional[Dict[str, Dict[str, str]]] = None) -
 
 def call_llm(
     model: str,
-    messages: List[Dict[str, str]],
+    messages: list[dict[str, str]],
     temperature: float = 0.7,
-    client: Optional[ai.Client] = None,
+    client: ai.Client | None = None,
     **kwargs,
 ) -> Any:
     """
@@ -88,9 +88,9 @@ def call_llm(
 def get_llm_response(
     model: str,
     prompt: str,
-    system_prompt: Optional[str] = None,
+    system_prompt: str | None = None,
     temperature: float = 0.7,
-    client: Optional[ai.Client] = None,
+    client: ai.Client | None = None,
     **kwargs,
 ) -> str:
     """
@@ -128,12 +128,12 @@ def get_llm_response(
 
 def compare_llm_responses(
     prompt: str,
-    models: List[str],
-    system_prompt: Optional[str] = None,
+    models: list[str],
+    system_prompt: str | None = None,
     temperature: float = 0.7,
-    client: Optional[ai.Client] = None,
+    client: ai.Client | None = None,
     **kwargs,
-) -> Dict[str, str]:
+) -> dict[str, str]:
     """
     Compare responses from multiple LLMs for the same prompt.
 
@@ -172,12 +172,12 @@ def compare_llm_responses(
 
 
 def format_conversation_for_classification(
-    conversation: Union[List[Dict[str, str]], List[Tuple[str, str]], str, Any],
+    conversation: list[dict[str, str]] | list[tuple[str, str]] | str | Any,
     chronological: bool = True,
     include_roles: bool = True,
     format_style: str = "plain",
-    max_message_length: Optional[int] = None,
-    attribute_prefixes: Optional[Dict[str, str]] = None,
+    max_message_length: int | None = None,
+    attribute_prefixes: dict[str, str] | None = None,
 ) -> str:
     """
     Converts conversation history into a structured string representation for classification.
@@ -353,7 +353,7 @@ from xml.etree import ElementTree as ET  # For basic XML parsing
 class LLMResponseParseError(Exception):
     """Custom exception for errors encountered during LLM response parsing."""
 
-    def __init__(self, message: str, raw_response: Optional[str] = None):
+    def __init__(self, message: str, raw_response: str | None = None):
         super().__init__(message)
         self.raw_response = raw_response
         self.message = message
@@ -363,9 +363,9 @@ class LLMResponseParseError(Exception):
 
 
 def parse_llm_response(
-    raw_response: Optional[str],
-    logger: Optional[logging.Logger] = None,
-) -> Dict[str, Any]:
+    raw_response: str | None,
+    logger: logging.Logger | None = None,
+) -> dict[str, Any]:
     """
     Parses a raw LLM response string into a Python dictionary.
 
@@ -397,7 +397,7 @@ def parse_llm_response(
             if logger:
                 logger.debug(f"Direct JSON parsing resulted in non-dict type: {type(parsed_json)}. Failing.")
             raise LLMResponseParseError(
-                f"Parsed JSON is not a dictionary (got {type(parsed_json)}).", raw_response=raw_response
+                f"Parsed JSON is not a dictionary (got {type(parsed_json)}).", raw_response=raw_response,
             )
         if logger:
             logger.debug("Successfully parsed raw_response as direct JSON.")
@@ -466,7 +466,7 @@ def parse_llm_response(
                     if logger:
                         logger.debug(f"XML-like parsing failed after attempting to wrap original response: {e_wrapped}")
                     raise LLMResponseParseError(
-                        f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response
+                        f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response,
                     ) from e_wrapped
             else:
                 if logger:
@@ -475,7 +475,7 @@ def parse_llm_response(
 
         if root is None:
             raise LLMResponseParseError(
-                "XML root element could not be determined after parsing attempts.", raw_response=raw_response
+                "XML root element could not be determined after parsing attempts.", raw_response=raw_response,
             )
 
         xml_dict = {}
@@ -517,7 +517,7 @@ def parse_llm_response(
                 if element.attrib:
                     if logger:
                         logger.debug(
-                            f"XML element '{element.tag}' has attributes {element.attrib}, failing simple XML parse."
+                            f"XML element '{element.tag}' has attributes {element.attrib}, failing simple XML parse.",
                         )
                     raise LLMResponseParseError(
                         f"XML element '{element.tag}' has attributes, which is not supported by simple parser.",
@@ -529,7 +529,7 @@ def parse_llm_response(
                 else:
                     if logger:
                         logger.warning(
-                            f"XML element '{element.tag}' has child elements, which is not flat. Raising error for simple parser."
+                            f"XML element '{element.tag}' has child elements, which is not flat. Raising error for simple parser.",
                         )
                     raise LLMResponseParseError(
                         f"XML element '{element.tag}' has child elements, which is not supported by simple flat parser.",
@@ -551,16 +551,16 @@ def parse_llm_response(
                 if logger:
                     logger.debug(
                         "XML parsed to an empty dictionary, but input was not an empty root. Input: "
-                        + raw_response[:50]
+                        + raw_response[:50],
                     )
                 raise LLMResponseParseError(
-                    "XML parsed to an empty dictionary from non-empty/non-empty-root input.", raw_response=raw_response
+                    "XML parsed to an empty dictionary from non-empty/non-empty-root input.", raw_response=raw_response,
                 )
             elif logger:
                 logger.debug("XML input (e.g. <root/>) resulted in an empty dictionary.")
             if not xml_dict and raw_response.strip():
                 raise LLMResponseParseError(
-                    "Failed to extract key-value pairs from XML structure.", raw_response=raw_response
+                    "Failed to extract key-value pairs from XML structure.", raw_response=raw_response,
                 )
 
     except ET.ParseError as e:
@@ -572,7 +572,7 @@ def parse_llm_response(
         if logger:
             logger.error(f"Unexpected error during XML parsing: {e_gen}", exc_info=True)
         raise LLMResponseParseError(
-            f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response
+            f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response,
         ) from e_gen
 
     error_message = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."

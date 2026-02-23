@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -19,30 +19,30 @@ class VulnerabilityIndicators(Enum):
 
 class VulnerabilityCheckOutput(BaseModel):
     is_vulnerable: bool
-    confidence_score: Optional[float] = None
-    severity_level: Optional[SensitivityLevel] = None
+    confidence_score: float | None = None
+    severity_level: SensitivityLevel | None = None
     indicators_detected: list[VulnerabilityIndicators] = []
-    reasoning: Optional[str] = None
-    raw_response: Optional[str] = None
-    metadata: dict[str, Union[str, int, float, bool]] = {}
+    reasoning: str | None = None
+    raw_response: str | None = None
+    metadata: dict[str, str | int | float | bool] = {}
 
 
 class SuicideRiskOutput(BaseModel):
     risk_level: Literal["none", "low", "medium", "high", "critical"]
-    risk_score: Optional[float] = None
+    risk_score: float | None = None
     indicators_present: list[str] = []
-    reasoning: Optional[str] = None
-    confidence_level: Optional[str] = None
-    raw_response: Optional[str] = None
-    metadata: dict[str, Union[str, int, float, bool]] = {}
+    reasoning: str | None = None
+    confidence_level: str | None = None
+    raw_response: str | None = None
+    metadata: dict[str, str | int | float | bool] = {}
 
 
 class GuardrailResponse(BaseModel):
-    """Unified response type for all guardrails"""
+    """Unified response type for all guardrails."""
 
     is_triggered: bool
-    risk_score: Optional[float] = None
-    details: dict[str, Union[str, int, float, bool, list]] = {}
-    raw_llm_response: Optional[str] = None
+    risk_score: float | None = None
+    details: dict[str, str | int | float | bool | list] = {}
+    raw_llm_response: str | None = None
     errors: list[str] = []
-    metadata: dict[str, Union[str, int, float, bool]] = {}
+    metadata: dict[str, str | int | float | bool] = {}

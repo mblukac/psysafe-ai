@@ -1,7 +1,7 @@
 # psysafe/drivers/base.py
 from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator  # Removed List, Optional as not used in this ABC
-from typing import Any, Dict, Generic
+from typing import Any, Generic
 
 # Assuming RequestT and ResponseT will be imported from psysafe.typing
 from psysafe.typing.requests import RequestT
@@ -31,6 +31,6 @@ class ChatDriverABC(Generic[RequestT, ResponseT], ABC):
         # A concrete implementation would look different.
 
     @abstractmethod
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """Get metadata about the driver (e.g., model name, provider, capabilities)."""
         pass

@@ -1,5 +1,5 @@
 # psysafe/core/composite.py
-from typing import Generic, List
+from typing import Generic
 
 # Core imports
 from psysafe.core.base import GuardrailBase
@@ -17,7 +17,7 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
     merges validation reports from all composed guardrails.
     """
 
-    def __init__(self, guardrails: List[GuardrailBase[RequestT, ResponseT]]):
+    def __init__(self, guardrails: list[GuardrailBase[RequestT, ResponseT]]):
         """
         Initializes a CompositeGuardrail.
 

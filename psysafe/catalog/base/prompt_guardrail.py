@@ -12,7 +12,7 @@ T = TypeVar("T", bound=GuardrailConfig)
 
 
 class ModernPromptGuardrail(GuardrailBase, Generic[T]):
-    """Modern base class for prompt-based guardrails"""
+    """Modern base class for prompt-based guardrails."""
 
     def __init__(self, config: T):
         self.config = config
@@ -21,10 +21,10 @@ class ModernPromptGuardrail(GuardrailBase, Generic[T]):
 
     @abstractmethod
     def check(self, conversation: Conversation) -> GuardrailResponse:
-        """Check conversation with typed response"""
+        """Check conversation with typed response."""
         pass
 
     def _validate_config(self) -> None:
-        """Validate guardrail configuration"""
+        """Validate guardrail configuration."""
         if not isinstance(self.config, GuardrailConfig):
             raise GuardrailConfigError("Invalid configuration type")

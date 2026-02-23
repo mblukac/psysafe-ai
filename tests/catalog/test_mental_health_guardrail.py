@@ -93,7 +93,7 @@ def mh_guardrail_with_mock_driver(mock_logger_mental_health):
 
 
 def test_check_distress_detected_suggestion_needed_direct_json(
-    mh_guardrail_with_mock_driver, mock_logger_mental_health
+    mh_guardrail_with_mock_driver, mock_logger_mental_health,
 ):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I feel hopeless and alone.")])
@@ -225,13 +225,6 @@ def test_check_successful_xml_like_input_parsed(mh_guardrail_with_mock_driver, m
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I'm feeling sad.")])
 
-    xml_like_response = """
-    <distress_level>medium</distress_level>
-    <key_phrases_detected><phrase>sad</phrase></key_phrases_detected>
-    <concerns_identified><concern>sadness</concern></concerns_identified>
-    <suggestion_needed>True</suggestion_needed>
-    <summary>User is feeling sad.</summary>
-    """
     # Note: parse_llm_response might need specific handling for nested XML lists like above.
     # For simplicity, let's assume it parses to a flat structure or the prompt ensures simpler JSON.
     # The current `parse_llm_response` handles simple key-value XML.

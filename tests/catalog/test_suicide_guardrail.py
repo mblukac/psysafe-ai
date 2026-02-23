@@ -1,5 +1,4 @@
 import json  # Added json
-from typing import Optional
 from unittest.mock import MagicMock, patch
 
 # tests/catalog/test_suicide_guardrail.py
@@ -151,7 +150,7 @@ def test_get_sensitivity_block_text():
 
 # Mock driver for testing the check method
 class MockLLMDriver:
-    def __init__(self, response_content: str = "", raise_exception: Optional[Exception] = None):
+    def __init__(self, response_content: str = "", raise_exception: Exception | None = None):
         self.response_content = response_content
         self.raise_exception = raise_exception
         self.send_called_with = None
@@ -175,7 +174,7 @@ class MockLLMDriver:
                         "content": self.response_content,
                     },
                     "finish_reason": "stop",
-                }
+                },
             ],
             "usage": {"prompt_tokens": 10, "completion_tokens": 20, "total_tokens": 30},
         }
@@ -195,7 +194,7 @@ def sample_conversation():
             Message(role="user", content="I feel terrible and don't want to live anymore."),
             Message(role="assistant", content="I'm here to listen. Can you tell me more?"),
             Message(role="user", content="There's no point."),
-        ]
+        ],
     )
 
 
@@ -306,7 +305,7 @@ def test_check_method_parse_error(suicide_guardrail_for_check, sample_conversati
     assert "XML parsed to an empty dictionary" in output.errors[0] or "All parsing attempts failed" in output.errors[0]
     # Logger will get the specific error from parse_llm_response
     mock_logger.error.assert_any_call(
-        f"LLMResponseParseError in check method: All parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: {raw_unparseable_content[:200]}"
+        f"LLMResponseParseError in check method: All parsing attempts failed (direct JSON, Markdown JSON, simple XML)., Raw Response: {raw_unparseable_content[:200]}",
     )
 
 
@@ -390,7 +389,7 @@ def test_check_method_llm_returns_non_dict_json(suicide_guardrail_for_check, sam
     # This part of the assert might need adjustment based on the exact error message from parse_llm_response
     # For example, if parse_llm_response itself logs "JSON is not an object"
     mock_logger.error.assert_any_call(
-        f"LLMResponseParseError in check method: Parsed JSON is not a dictionary (got <class 'list'>)., Raw Response: {llm_response_list_json[:200]}"
+        f"LLMResponseParseError in check method: Parsed JSON is not a dictionary (got <class 'list'>)., Raw Response: {llm_response_list_json[:200]}",
     )
 
 

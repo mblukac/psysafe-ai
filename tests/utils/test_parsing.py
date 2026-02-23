@@ -1,4 +1,3 @@
-from typing import Optional
 
 import pytest
 from pydantic import BaseModel
@@ -16,7 +15,7 @@ class SimpleModel(BaseModel):
 class NestedModel(BaseModel):
     id: int
     data: SimpleModel
-    optional_field: Optional[str] = None
+    optional_field: str | None = None
 
 
 # --- Fixtures ---

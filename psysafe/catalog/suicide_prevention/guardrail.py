@@ -1,6 +1,6 @@
 import logging  # Added import
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from psysafe.catalog import GuardrailCatalog
 from psysafe.core.models import CheckOutput, Conversation, GuardedRequest  # GuardedRequest is a model
@@ -115,7 +115,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
         # For simplicity, inserting as the first message.
         # More sophisticated logic might be needed to merge with existing system prompts.
         modified_messages = [{"role": "system", "content": rendered_prompt}] + request.get(
-            "messages", []
+            "messages", [],
         )  # Ensure dicts
 
         # Create a new request object with the modified messages
@@ -179,7 +179,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
             modified_request=guarded_request_payload,
             is_modified=True,  # Indicate that the request was modified
             applied_guardrails=[
-                self.name if hasattr(self, "name") else "SuicidePreventionGuardrail"
+                self.name if hasattr(self, "name") else "SuicidePreventionGuardrail",
             ],  # self.name should be defined
             metadata={"original_request_hash": hash(str(request))},  # Example meta, ensure request is hashable
         )
@@ -189,7 +189,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
         Formats a Conversation object into the OpenAIChatRequest structure
         expected by the apply method.
         """
-        messages_for_llm: List[Dict[str, str]] = []
+        messages_for_llm: list[dict[str, str]] = []
         for msg in conversation.messages:
             messages_for_llm.append({"role": msg.role, "content": msg.content})
 
@@ -230,9 +230,9 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
         #    For now, let's assume a `driver.chat_completion(request_payload)` method
         #    that returns a response from which we can extract text content.
 
-        raw_llm_response_content: Optional[str] = None
-        llm_errors: List[str] = []
-        llm_metadata: Dict[str, Any] = {}
+        raw_llm_response_content: str | None = None
+        llm_errors: list[str] = []
+        llm_metadata: dict[str, Any] = {}
 
         try:
             # This is a placeholder for the actual driver call.
@@ -282,7 +282,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
                     )
             else:
                 llm_errors.append(
-                    f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method for LLM calls."
+                    f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method for LLM calls.",
                 )
                 return CheckOutput(
                     is_triggered=False,
@@ -300,7 +300,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
             llm_errors.append("LLM response content was empty or could not be extracted after driver call.")
             # Ensure raw_llm_response is the actual (empty) content
             return CheckOutput(
-                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata
+                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata,
             )
 
         # 4. Parse LLM response using the new utility
@@ -317,7 +317,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
             # Attempt to extract and process the risk value
             raw_risk_from_llm = llm_output.get("risk")  # Key from LLM is 'risk'
 
-            final_risk_score: Optional[float] = None
+            final_risk_score: float | None = None
             final_is_triggered: bool = False
 
             if raw_risk_from_llm is not None:
@@ -352,10 +352,10 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
             )
         except LLMResponseParseError as e:
             self.logger.error(
-                f"LLMResponseParseError in check method: {e.message}, Raw Response: {e.raw_response[:200]}"
+                f"LLMResponseParseError in check method: {e.message}, Raw Response: {e.raw_response[:200]}",
             )
             llm_errors.append(
-                f"Failed to parse LLM response: {e.message}. Response snippet: {e.raw_response[:500] if e.raw_response else 'N/A'}"
+                f"Failed to parse LLM response: {e.message}. Response snippet: {e.raw_response[:500] if e.raw_response else 'N/A'}",
             )
             return CheckOutput(
                 is_triggered=False,  # Default to not triggered on parse error
@@ -370,7 +370,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Ad
         except Exception as e:  # Catch any other unexpected errors during this stage
             self.logger.error(f"Unexpected error processing LLM response after parsing attempt: {str(e)}")
             llm_errors.append(
-                f"Unexpected error processing LLM response: {str(e)}. Response snippet: {raw_llm_response_content[:500] if raw_llm_response_content else 'N/A'}"
+                f"Unexpected error processing LLM response: {str(e)}. Response snippet: {raw_llm_response_content[:500] if raw_llm_response_content else 'N/A'}",
             )
             return CheckOutput(
                 is_triggered=False,

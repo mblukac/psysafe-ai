@@ -1,5 +1,5 @@
 # psysafe/core/prompt.py
-from typing import Any, Dict, Generic  # Optional removed as not directly used in this snippet
+from typing import Any, Generic  # Optional removed as not directly used in this snippet
 
 # Core imports
 from psysafe.core.base import GuardrailBase
@@ -17,7 +17,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
     based on a provided template.
     """
 
-    def __init__(self, template: PromptTemplate, template_variables: Dict[str, Any] = None):
+    def __init__(self, template: PromptTemplate, template_variables: dict[str, Any] = None):
         """
         Initializes a PromptGuardrail.
 
@@ -143,7 +143,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
         return driver
 
     @classmethod
-    def from_string(cls, prompt_text: str, template_variables: Dict[str, Any] = None) -> "PromptGuardrail[Any, Any]":
+    def from_string(cls, prompt_text: str, template_variables: dict[str, Any] = None) -> "PromptGuardrail[Any, Any]":
         """
         Factory method to create a PromptGuardrail directly from a prompt string.
 
@@ -160,7 +160,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
     @classmethod
     def from_file(
-        cls, template_file_path: str, template_variables: Dict[str, Any] = None
+        cls, template_file_path: str, template_variables: dict[str, Any] = None,
     ) -> "PromptGuardrail[Any, Any]":
         """
         Factory method to create a PromptGuardrail from a template file.

@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Any, Dict, Optional, Type, TypeVar
+from typing import Any, TypeVar
 
 from pydantic import BaseModel  # Added this import
 
@@ -14,34 +14,34 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class ResponseParser:
-    """Centralized response parsing with multiple format support"""
+    """Centralized response parsing with multiple format support."""
 
-    def __init__(self, logger: Optional[logging.Logger] = None):
+    def __init__(self, logger: logging.Logger | None = None):
         self.logger = logger or logging.getLogger(__name__)
 
-    def parse_to_model(self, raw_response: str, model_class: Type[T]) -> T:
-        """Parse raw response to specific Pydantic model"""
+    def parse_to_model(self, raw_response: str, model_class: type[T]) -> T:
+        """Parse raw response to specific Pydantic model."""
         try:
             parsed_dict = self._parse_to_dict(raw_response)
             return model_class.model_validate(parsed_dict)
         except Exception as e:
             self.logger.error(
-                f"Failed to parse response to {model_class.__name__}: {str(e)}. Raw response: {raw_response}"
+                f"Failed to parse response to {model_class.__name__}: {str(e)}. Raw response: {raw_response}",
             )
             raise ResponseParsingError(
                 f"Failed to parse response to {model_class.__name__}: {str(e)}",
                 raw_response=raw_response,
             )
 
-    def _parse_to_dict(self, raw_response: str) -> Dict[str, Any]:
-        """Parse raw response to dictionary using multiple strategies"""
+    def _parse_to_dict(self, raw_response: str) -> dict[str, Any]:
+        """Parse raw response to dictionary using multiple strategies."""
         stripped_response = raw_response.strip()
         # Handle empty, whitespace-only, or specific "\\n" case as per test_parse_to_dict_whitespace_string
         if not raw_response or not stripped_response or stripped_response == "\\n":
             self.logger.warning(f"Attempted to parse an effectively empty response: '{raw_response}'")
             raise ResponseParsingError("Empty response", raw_response=raw_response)
 
-        parsing_failure_reason: Optional[str] = None
+        parsing_failure_reason: str | None = None
 
         # Strategy 1: Direct JSON
         try:

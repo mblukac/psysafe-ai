@@ -91,7 +91,7 @@ def pii_guardrail_with_mock_driver(mock_logger_pii):
 def test_check_pii_detected_direct_json(pii_guardrail_with_mock_driver, mock_logger_pii):
     guardrail, mock_driver = pii_guardrail_with_mock_driver
     conversation = Conversation(
-        messages=[Message(role="user", content="My email is test@example.com and my phone is 123-456-7890.")]
+        messages=[Message(role="user", content="My email is test@example.com and my phone is 123-456-7890.")],
     )
 
     llm_response_json = {

@@ -62,7 +62,7 @@ async def test_openai_driver_stream(mock_openai_client):
         chunks.append(chunk)
 
     async_client.chat.completions.create.assert_called_once_with(
-        model="test-gpt-stream", messages=request["messages"], stream=True
+        model="test-gpt-stream", messages=request["messages"], stream=True,
     )
     assert len(chunks) == 1
     assert chunks[0] == mock_chunk_data

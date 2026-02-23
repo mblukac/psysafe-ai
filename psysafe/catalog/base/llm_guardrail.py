@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Generic, TypeVar
 
 from psysafe.catalog.base.prompt_guardrail import ModernPromptGuardrail
 from psysafe.core.config import GuardrailConfig
@@ -12,15 +12,15 @@ T = TypeVar("T", bound=GuardrailConfig)
 
 class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
     """
-    Base class for LLM-based guardrails
+    Base class for LLM-based guardrails.
 
     This class extends ModernPromptGuardrail to provide additional
     functionality specific to guardrails that interact with LLM drivers.
     """
 
-    def __init__(self, config: T, driver: Optional[Any] = None):
+    def __init__(self, config: T, driver: Any | None = None):
         """
-        Initialize LLM guardrail with configuration and optional driver
+        Initialize LLM guardrail with configuration and optional driver.
 
         Args:
             config: Guardrail configuration
@@ -32,7 +32,7 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
 
     def set_driver(self, driver: Any) -> None:
         """
-        Set or update the LLM driver
+        Set or update the LLM driver.
 
         Args:
             driver: LLM driver instance
@@ -41,7 +41,7 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
         self.driver = driver
 
     def _ensure_driver(self) -> None:
-        """Ensure driver is available before LLM operations"""
+        """Ensure driver is available before LLM operations."""
         if self.driver is None:
             raise LLMDriverError(
                 "No LLM driver configured for this guardrail",
@@ -51,7 +51,7 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
     @abstractmethod
     def _generate_prompt(self, conversation: Conversation) -> str:
         """
-        Generate prompt for LLM based on conversation
+        Generate prompt for LLM based on conversation.
 
         Args:
             conversation: Input conversation
@@ -64,7 +64,7 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
 
     def _call_llm(self, prompt: str) -> str:
         """
-        Call LLM with prompt and return raw response
+        Call LLM with prompt and return raw response.
 
         Args:
             prompt: Formatted prompt
@@ -116,7 +116,7 @@ class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
 
     def check(self, conversation: Conversation) -> GuardrailResponse:
         """
-        Check conversation using LLM
+        Check conversation using LLM.
 
         Args:
             conversation: Input conversation

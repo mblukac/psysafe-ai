@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 
 import pytest
 
@@ -21,7 +21,7 @@ class TestParseLLMResponse:
             ("{}", {}),
         ],
     )
-    def test_parse_valid_direct_json(self, raw_response: str, expected_dict: Dict[str, Any]):
+    def test_parse_valid_direct_json(self, raw_response: str, expected_dict: dict[str, Any]):
         """Tests parsing of valid direct JSON strings."""
         assert parse_llm_response(raw_response) == expected_dict
 
@@ -41,7 +41,7 @@ class TestParseLLMResponse:
             ),
         ],
     )
-    def test_parse_json_in_markdown(self, raw_response: str, expected_dict: Dict[str, Any]):
+    def test_parse_json_in_markdown(self, raw_response: str, expected_dict: dict[str, Any]):
         """Tests parsing of JSON embedded in Markdown code blocks."""
         assert parse_llm_response(raw_response) == expected_dict
 
@@ -56,7 +56,7 @@ class TestParseLLMResponse:
             ("<tagWithCaps>ValueCaps</tagWithCaps>", {"tagWithCaps": "ValueCaps"}),
         ],
     )
-    def test_parse_simple_flat_xml(self, raw_response: str, expected_dict: Dict[str, Any]):
+    def test_parse_simple_flat_xml(self, raw_response: str, expected_dict: dict[str, Any]):
         """Tests parsing of simple, flat XML-like strings."""
 
     @pytest.mark.parametrize(
@@ -70,7 +70,7 @@ class TestParseLLMResponse:
             ("<single_root_element>only_value</single_root_element>", {"single_root_element": "only_value"}),
         ],
     )
-    def test_parse_xml_with_root_element(self, raw_response: str, expected_dict: Dict[str, Any]):
+    def test_parse_xml_with_root_element(self, raw_response: str, expected_dict: dict[str, Any]):
         """Tests parsing of simple XML with a single root element containing key-value pairs."""
         assert parse_llm_response(raw_response) == expected_dict
 
@@ -118,7 +118,7 @@ class TestParseLLMResponse:
             (None),
         ],
     )
-    def test_parse_empty_or_none_input(self, raw_response: Optional[str]):
+    def test_parse_empty_or_none_input(self, raw_response: str | None):
         """Tests that empty or None input raises LLMResponseParseError."""
         with pytest.raises(LLMResponseParseError) as excinfo:
             parse_llm_response(raw_response)

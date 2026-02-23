@@ -1,10 +1,10 @@
-from typing import Any, Dict
+from typing import Any
 
 
 class GuardrailError(Exception):
-    """Base exception for all guardrail-related errors"""
+    """Base exception for all guardrail-related errors."""
 
-    def __init__(self, message: str, guardrail_name: str = None, context: Dict[str, Any] = None):
+    def __init__(self, message: str, guardrail_name: str = None, context: dict[str, Any] = None):
         super().__init__(message)
         self.message = message
         self.guardrail_name = guardrail_name
@@ -12,13 +12,13 @@ class GuardrailError(Exception):
 
 
 class GuardrailConfigError(GuardrailError):
-    """Raised when guardrail configuration is invalid"""
+    """Raised when guardrail configuration is invalid."""
 
     pass
 
 
 class LLMDriverError(GuardrailError):
-    """Raised when LLM driver encounters an error"""
+    """Raised when LLM driver encounters an error."""
 
     def __init__(self, message: str, driver_type: str = None, **kwargs):
         super().__init__(message, **kwargs)
@@ -26,7 +26,7 @@ class LLMDriverError(GuardrailError):
 
 
 class ResponseParsingError(GuardrailError):
-    """Raised when LLM response cannot be parsed"""
+    """Raised when LLM response cannot be parsed."""
 
     def __init__(self, message: str, raw_response: str = None, **kwargs):
         super().__init__(message, **kwargs)
@@ -34,12 +34,12 @@ class ResponseParsingError(GuardrailError):
 
 
 class ValidationError(GuardrailError):
-    """Raised when input validation fails"""
+    """Raised when input validation fails."""
 
     pass
 
 
 class TimeoutError(GuardrailError):
-    """Raised when guardrail operation times out"""
+    """Raised when guardrail operation times out."""
 
     pass

@@ -83,7 +83,7 @@ def test_response_parsing_error():
     context = {"parser_used": "json.loads"}
     with pytest.raises(ResponseParsingError) as exc_info:
         raise ResponseParsingError(
-            message=message, guardrail_name=guardrail_name, raw_response=raw_response, context=context
+            message=message, guardrail_name=guardrail_name, raw_response=raw_response, context=context,
         )
     assert exc_info.value.message == message
     assert exc_info.value.guardrail_name == guardrail_name

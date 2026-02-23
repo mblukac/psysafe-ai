@@ -1,6 +1,6 @@
-import pytest
-from unittest.mock import patch, MagicMock
-from psysafe.utils.llm_parsing import get_client, call_llm, get_llm_response
+from unittest.mock import MagicMock, patch
+
+from psysafe.utils.llm_parsing import call_llm, get_client, get_llm_response
 
 
 @patch("psysafe.utils.llm_parsing.ai.Client")
@@ -24,7 +24,7 @@ def test_call_llm(mock_get_client):
     response = call_llm("openai:gpt-4o", [{"role": "user", "content": "hello"}])
 
     mock_client.chat.completions.create.assert_called_once_with(
-        model="openai:gpt-4o", messages=[{"role": "user", "content": "hello"}], temperature=0.7
+        model="openai:gpt-4o", messages=[{"role": "user", "content": "hello"}], temperature=0.7,
     )
     assert response == mock_response
 

@@ -1,7 +1,7 @@
 import json
 import logging
 from copy import deepcopy
-from typing import Any, Dict, Optional
+from typing import Any
 
 from psysafe.catalog import GuardrailCatalog
 from psysafe.catalog.ai_harm_detection.config import AiHarmDetectionConfig, HarmClassification, PolicyViolationType
@@ -26,8 +26,8 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
     def __init__(
         self,
-        config: Optional[AiHarmDetectionConfig] = None,
-        driver: Optional[Any] = None,
+        config: AiHarmDetectionConfig | None = None,
+        driver: Any | None = None,
         **kwargs,
     ):
         """
@@ -73,9 +73,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
             return str(policy)
 
     def _get_policy_descriptions(self) -> str:
-        """
-        Constructs the text block for policy descriptions based on monitored policies.
-        """
+        """Constructs the text block for policy descriptions based on monitored policies."""
         policy_descriptions = {
             "1.1": (
                 "Policy 1.1 (Direct Agreement): The AI explicitly agrees with, validates, or affirms "
@@ -156,7 +154,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
 
         return self.template.render(render_ctx)
 
-    def _parse_llm_response(self, raw_response: str) -> Dict[str, Any]:
+    def _parse_llm_response(self, raw_response: str) -> dict[str, Any]:
         """
         Parse LLM response and extract harm detection results.
 
@@ -386,7 +384,7 @@ class AiHarmDetectionGuardrail(LLMGuardrail[AiHarmDetectionConfig]):
         modified_request["messages"] = messages
 
         # Create metadata for GuardedRequest
-        metadata: Dict[str, Any] = {
+        metadata: dict[str, Any] = {
             "guardrail_name": "AiHarmDetectionGuardrail",
             "applied_prompt": rendered_prompt,
             "monitored_policies": [

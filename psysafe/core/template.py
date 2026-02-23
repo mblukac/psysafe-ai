@@ -1,6 +1,5 @@
 # psysafe/core/template.py
 from pathlib import Path
-from typing import Optional, Union
 
 # Assuming PromptRenderCtx will be imported from psysafe.core.models
 from psysafe.core.models import PromptRenderCtx
@@ -21,7 +20,7 @@ class PromptTemplate:
     and rendering them with provided context using Jinja2.
     """
 
-    def __init__(self, template_string: str, template_path: Optional[Path] = None):
+    def __init__(self, template_string: str, template_path: Path | None = None):
         """
         Initializes a PromptTemplate.
 
@@ -63,7 +62,7 @@ class PromptTemplate:
         return cls(template_string=prompt_text)
 
     @classmethod
-    def from_file(cls, template_file_path: Union[str, Path]) -> "PromptTemplate":
+    def from_file(cls, template_file_path: str | Path) -> "PromptTemplate":
         """
         Creates a PromptTemplate instance by loading content from a file.
 

@@ -1,6 +1,6 @@
 # psysafe/drivers/openai.py
 from collections.abc import AsyncIterator  # Added List, Optional
-from typing import Any, Dict, Optional
+from typing import Any
 
 # Driver base
 from psysafe.drivers.base import ChatDriverABC
@@ -15,14 +15,14 @@ try:
     from openai import AsyncOpenAI, OpenAI  # For newer openai versions
 except ImportError:
     raise ImportError(
-        "OpenAI library is required for OpenAIChatDriver. Please install it (e.g., `pip install openai`)."
+        "OpenAI library is required for OpenAIChatDriver. Please install it (e.g., `pip install openai`).",
     )
 
 
 class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
     """Driver for OpenAI chat models."""
 
-    def __init__(self, model: str = "gpt-4.1-mini-2025-04-14", api_key: Optional[str] = None, **kwargs):
+    def __init__(self, model: str = "gpt-4.1-mini-2025-04-14", api_key: str | None = None, **kwargs):
         """
         Initializes the OpenAI Chat Driver.
 
@@ -38,8 +38,8 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
         if api_key:
             self.client_kwargs["api_key"] = api_key
 
-        self._client: Optional[OpenAI] = None
-        self._async_client: Optional[AsyncOpenAI] = None
+        self._client: OpenAI | None = None
+        self._async_client: AsyncOpenAI | None = None
 
     @property
     def client(self) -> OpenAI:
@@ -63,7 +63,7 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
             "messages": [{"role": "user", "content": "Hello!"}],
             "model": "gpt-4.1-mini-2025-04-14", // Optional, can be overridden from driver's default
             ...other_openai_params
-        }
+        }.
         """
         # Ensure model is part of the request, defaulting to driver's model
         payload = {"model": self.model, **request}
@@ -102,7 +102,7 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
         except Exception:
             pass  # Handle the exception gracefully
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """Get metadata about the driver."""
         return {
             "driver_type": "openai",

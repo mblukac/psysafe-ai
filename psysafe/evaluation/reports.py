@@ -1,10 +1,9 @@
 # psysafe/evaluation/reports.py
-from typing import List
 
 from psysafe.evaluation.models import EvaluationResult
 
 
-def generate_summary_report(results: List[EvaluationResult]) -> str:
+def generate_summary_report(results: list[EvaluationResult]) -> str:
     """Generates a simple text summary of evaluation results."""
     if not results:
         return "No evaluation results to report."

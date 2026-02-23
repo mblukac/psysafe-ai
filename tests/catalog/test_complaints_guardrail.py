@@ -232,7 +232,6 @@ def test_check_llm_response_parse_error(guardrail_with_mock_driver, mock_logger)
     # This looks like `e.message + ". Raw response: " + e.raw_response`
     # Let's try to match this structure.
 
-    expected_logged_message = f"{expected_generic_parser_error_message}. Raw response: {raw_bad_response}"
 
     # The test output indicates the logger was called with exc_info=True for one of the calls.
     # We need to find a call that matches the message AND has exc_info=True.
@@ -312,7 +311,7 @@ def test_check_llm_returns_non_boolean_fields(guardrail_with_mock_driver, mock_l
     assert "LLM returned non-boolean 'complaint_detected'" in result.errors[0]
     assert "LLM returned non-boolean 'escalation_needed'" in result.errors[1]
     mock_logger.warning.assert_any_call(
-        "LLM returned non-boolean 'complaint_detected': true_string. Defaulting to False."
+        "LLM returned non-boolean 'complaint_detected': true_string. Defaulting to False.",
     )
     mock_logger.warning.assert_any_call("LLM returned non-boolean 'escalation_needed': maybe. Defaulting to False.")
 
