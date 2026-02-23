@@ -1,6 +1,6 @@
 # psysafe/core/models.py
 from enum import Enum
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 from pydantic import BaseModel, field_validator
 
@@ -11,7 +11,7 @@ class GuardedRequest(BaseModel, Generic[RequestT]):
     original_request: RequestT
     modified_request: RequestT
     is_modified: bool = False
-    applied_guardrails: List[str] = []
+    applied_guardrails: list[str] = []
     metadata: dict[str, Any] = {}  # Allow more flexible metadata, including lists and nested dicts
 
     @field_validator("metadata")
@@ -36,13 +36,13 @@ class Violation(BaseModel):
     severity: ValidationSeverity
     code: str
     message: str
-    context: Dict[str, Any] = {}
+    context: dict[str, Any] = {}
 
 
 class ValidationReport(BaseModel):
     is_valid: bool
-    violations: List[Violation] = []
-    metadata: dict[str, Union[str, int, float, bool]] = {}
+    violations: list[Violation] = []
+    metadata: dict[str, str | int | float | bool] = {}
 
     def merge(self, other: "ValidationReport") -> "ValidationReport":
         merged_violations = self.violations + other.violations
@@ -59,7 +59,7 @@ class PromptRenderCtx(BaseModel):
     driver_type: str
     model_name: str
     request_type: str  # e.g., "chat", "completion"
-    variables: Dict[str, Any] = {}
+    variables: dict[str, Any] = {}
 
 
 class Message(BaseModel):
@@ -68,7 +68,7 @@ class Message(BaseModel):
 
 
 class Conversation(BaseModel):
-    messages: List[Message]
+    messages: list[Message]
 
 
 class CheckOutput(BaseModel):
@@ -78,8 +78,8 @@ class CheckOutput(BaseModel):
     """
 
     is_triggered: bool
-    risk_score: Optional[float] = None  # Or appropriate type
+    risk_score: float | None = None  # Or appropriate type
     details: dict[str, Any] = {}  # For any other structured data from the LLM, allowing nested dicts
-    raw_llm_response: Optional[Any] = None  # The raw response from the LLM
-    errors: List[str] = []  # Any errors encountered during the check
+    raw_llm_response: Any | None = None  # The raw response from the LLM
+    errors: list[str] = []  # Any errors encountered during the check
     metadata: dict[str, Any] = {}  # Additional metadata from the guardrail, allowing nested dicts

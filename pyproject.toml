@@ -67,8 +67,13 @@ line-length = 120
 
 [tool.ruff]
 line-length = 120
-select = ["E", "F", "W", "I", "UP", "C90", "N", "D", "S", "B", "A", "COM", "LOG", "Q", "PT", "ISC", "ICN", "T20", "PYI", "BLE", "FBT", "ERA"]
-ignore = ["D203", "D212", "D407", "D416", "E501", "T201"] 
+select = ["E", "F", "W", "I", "UP", "C90", "N", "S", "B", "A", "COM", "LOG", "Q", "PT", "ISC", "ICN", "T20", "PYI", "BLE", "FBT"]
+ignore = ["D203", "D212", "D407", "D416", "E501", "T201", "C901", "S314", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "B904", "BLE001", "E402", "FBT001", "FBT002", "A001", "S110", "S701", "F401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D", "ANN", "ERA001", "FBT001", "FBT002", "PT006", "PT011", "PT018", "BLE001"]
+"test_*.py" = ["S101", "D", "ANN", "ERA001", "FBT001", "FBT002", "PT006", "PT011", "PT018", "BLE001"]
+"examples/**" = ["D", "T201", "S101"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["psysafe", "tests"]

@@ -1,6 +1,6 @@
 # psysafe/drivers/anthropic.py
 from collections.abc import AsyncIterator
-from typing import Any, Dict, Optional
+from typing import Any
 
 from psysafe.drivers.base import ChatDriverABC
 from psysafe.typing.requests import AnthropicChatRequest
@@ -11,14 +11,14 @@ try:
     from anthropic import Anthropic, AsyncAnthropic
 except ImportError:
     raise ImportError(
-        "Anthropic library is required for AnthropicChatDriver. Please install it (e.g., `pip install anthropic`)."
+        "Anthropic library is required for AnthropicChatDriver. Please install it (e.g., `pip install anthropic`).",
     )
 
 
 class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatResponse]):
     """Driver for Anthropic Claude models."""
 
-    def __init__(self, model: str = "claude-3-5-haiku-latest", api_key: Optional[str] = None, **kwargs):
+    def __init__(self, model: str = "claude-3-5-haiku-latest", api_key: str | None = None, **kwargs):
         """
         Initializes the Anthropic Chat Driver.
 
@@ -34,8 +34,8 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
         if api_key:
             self.client_kwargs["api_key"] = api_key
 
-        self._client: Optional[Anthropic] = None
-        self._async_client: Optional[AsyncAnthropic] = None
+        self._client: Anthropic | None = None
+        self._async_client: AsyncAnthropic | None = None
 
     @property
     def client(self) -> Anthropic:
@@ -57,7 +57,7 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
             "model": "claude-3-5-haiku-latest",
             "max_tokens": 1024,
             "messages": [{"role": "user", "content": "Hello, Claude"}]
-        }
+        }.
         """
         payload = {"model": self.model, **request}
         if "messages" not in payload or not isinstance(payload["messages"], list):
@@ -92,7 +92,7 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
         except Exception:
             pass  # Handle the exception gracefully
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         return {
             "driver_type": "anthropic",
             "model_name": self.model,

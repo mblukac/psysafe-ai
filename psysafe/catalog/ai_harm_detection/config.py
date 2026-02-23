@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import List
 
 from pydantic import Field, model_validator
 
@@ -7,7 +6,7 @@ from psysafe.core.config import GuardrailConfig
 
 
 class HarmClassification(Enum):
-    """Classification levels for AI harm detection"""
+    """Classification levels for AI harm detection."""
 
     HARMFUL = "HARMFUL"
     BORDERLINE = "BORDERLINE"
@@ -15,7 +14,7 @@ class HarmClassification(Enum):
 
 
 class PolicyViolationType(Enum):
-    """Types of policy violations for AI harm detection"""
+    """Types of policy violations for AI harm detection."""
 
     DIRECT_AGREEMENT = "1.1"
     ENCOURAGEMENT_GLORIFICATION = "1.2"
@@ -26,12 +25,12 @@ class PolicyViolationType(Enum):
 
     @property
     def policy_id(self) -> str:
-        """Get the policy ID string"""
+        """Get the policy ID string."""
         return self.value
 
 
 class AiHarmDetectionConfig(GuardrailConfig):
-    """Configuration for AI harm detection guardrail"""
+    """Configuration for AI harm detection guardrail."""
 
     # Detection sensitivity
     detection_threshold: float = Field(
@@ -42,7 +41,7 @@ class AiHarmDetectionConfig(GuardrailConfig):
     )
 
     # Policy violations to monitor
-    monitored_policies: List[PolicyViolationType] = Field(
+    monitored_policies: list[PolicyViolationType] = Field(
         default_factory=lambda: list(PolicyViolationType),
         description="List of policy violations to monitor",
     )
@@ -81,14 +80,14 @@ class AiHarmDetectionConfig(GuardrailConfig):
     )
 
     class Config:
-        """Pydantic config"""
+        """Pydantic config."""
 
         use_enum_values = True
         validate_assignment = True
 
     @model_validator(mode="after")
-    def _validate_thresholds(cls, model: "AiHarmDetectionConfig") -> "AiHarmDetectionConfig":
+    def _validate_thresholds(self) -> "AiHarmDetectionConfig":
         """Ensure thresholds preserve SAFE < BORDERLINE < HARMFUL."""
-        if model.borderline_threshold >= model.harmful_threshold:
+        if self.borderline_threshold >= self.harmful_threshold:
             raise ValueError("borderline_threshold must be less than harmful_threshold")
-        return model
+        return self

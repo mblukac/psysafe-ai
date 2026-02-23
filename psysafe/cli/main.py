@@ -1,5 +1,5 @@
 # psysafe/cli/main.py
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 
@@ -41,12 +41,12 @@ test_app = typer.Typer(help="Commands for running evaluations and tests.")
 @test_app.command("run")
 def run_tests(
     guardrail_name: Annotated[str, typer.Option(help="Name of the guardrail to test (or 'all').")] = "all",
-    test_file: Annotated[Optional[str], typer.Option(help="Path to a specific JSONL test case file.")] = None,
+    test_file: Annotated[str | None, typer.Option(help="Path to a specific JSONL test case file.")] = None,
     # Add more options like output directory for reports, etc.
 ):
     """
     Runs evaluations for specified guardrails using golden examples.
-    (This is a placeholder - actual implementation will use EvaluationRunner)
+    (This is a placeholder - actual implementation will use EvaluationRunner).
     """
     print(f"Placeholder: Running tests for guardrail: '{guardrail_name}'")
     if test_file:
@@ -70,9 +70,7 @@ app.add_typer(test_app, name="test")
 
 @app.command()
 def version():
-    """
-    Displays the version of the PsySafe AI SDK.
-    """
+    """Displays the version of the PsySafe AI SDK."""
     # Placeholder for version. This would typically come from __version__ in psysafe/__init__.py
     try:
         from psysafe import __version__ as sdk_version

@@ -1,5 +1,6 @@
 # psysafe/core/check.py
-from typing import Callable, Generic, List
+from collections.abc import Callable
+from typing import Generic
 
 # Core imports
 from psysafe.core.base import GuardrailBase
@@ -23,7 +24,7 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
     It does not modify the outgoing request.
     """
 
-    def __init__(self, validators: List[Validator]):
+    def __init__(self, validators: list[Validator]):
         """
         Initializes a CheckGuardrail.
 

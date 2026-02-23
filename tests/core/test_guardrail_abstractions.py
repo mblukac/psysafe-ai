@@ -1,5 +1,5 @@
 # tests/core/test_guardrail_abstractions.py
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 
@@ -12,8 +12,8 @@ from psysafe.typing.requests import OpenAIChatRequest  # Using OpenAIChatRequest
 from psysafe.typing.responses import OpenAIChatResponse  # Using OpenAIChatResponse as a concrete example
 
 # Dummy Request/Response types for testing if not using specific ones
-DummyRequest = Dict[str, Any]
-DummyResponse = Dict[str, Any]
+DummyRequest = dict[str, Any]
+DummyResponse = dict[str, Any]
 
 
 # --- Test PromptGuardrail ---
@@ -72,11 +72,11 @@ def test_prompt_guardrail_apply_openai_empty_messages():
 def test_prompt_guardrail_apply_generic_prompt_key():
     template = PromptTemplate.from_string("Prefix: {{ var }}")
     # Using Dict[str, Any] as RequestT for this generic case
-    guardrail = PromptGuardrail[Dict[str, Any], Dict[str, Any]](
+    guardrail = PromptGuardrail[dict[str, Any], dict[str, Any]](
         template=template,
         template_variables={"var": "Important"},
     )
-    initial_request: Dict[str, Any] = {"prompt": "User query."}
+    initial_request: dict[str, Any] = {"prompt": "User query."}
     guarded_req = guardrail.apply(initial_request)
     expected_prompt = "Prefix: Important\n\nUser query."
     assert guarded_req.modified_request["prompt"] == expected_prompt
@@ -215,7 +215,7 @@ def test_check_guardrail_validate_mixed_validators_with_exception_and_malformed(
             validator_raises_exception,
             failing_validator,
             validator_returns_malformed,
-        ]
+        ],
     )
     report = guardrail.validate({"response": "data"})
     assert not report.is_valid
@@ -420,7 +420,8 @@ def test_composite_guardrail_validate_one_fails():
     v_fail = Violation(severity=ValidationSeverity.CRITICAL, code="V_FAIL", message="Failed validation")
     g1 = StubCheckGuardrail("pass1", ValidationReport(is_valid=True))
     g2 = StubCheckGuardrail(
-        "fail1", ValidationReport(is_valid=False, violations=[v_fail], metadata={"failed_by": "g2"})
+        "fail1",
+        ValidationReport(is_valid=False, violations=[v_fail], metadata={"failed_by": "g2"}),
     )
     g3 = StubCheckGuardrail("pass2", ValidationReport(is_valid=True))
     composite = CompositeGuardrail[DummyRequest, DummyResponse](guardrails=[g1, g2, g3])
@@ -458,7 +459,8 @@ def test_composite_guardrail_validate_multiple_fail_reports_merged():
 def test_composite_guardrail_validate_guardrail_raises_exception():
     v_pass = Violation(severity=ValidationSeverity.INFO, code="PASSED_PREVIOUSLY", message="Passed before exception")
     g1 = StubCheckGuardrail(
-        "pass_before_ex", ValidationReport(is_valid=False, violations=[v_pass], metadata={"meta1": "val1"})
+        "pass_before_ex",
+        ValidationReport(is_valid=False, violations=[v_pass], metadata={"meta1": "val1"}),
     )
     g2 = StubCheckGuardrail("raiser", ValidationReport(is_valid=True), raise_on_validate=True)
     g3 = StubCheckGuardrail("pass_after_ex", ValidationReport(is_valid=True, metadata={"meta3": "val3"}))
@@ -487,7 +489,8 @@ def test_composite_guardrail_validate_modifying_prompt_guardrail_in_chain():
     g1 = ModifyingPromptGuardrail("M1")
     v_fail = Violation(severity=ValidationSeverity.ERROR, code="CHECK_FAIL", message="Check failed")
     g2 = StubCheckGuardrail(
-        "checker", ValidationReport(is_valid=False, violations=[v_fail], metadata={"checker_meta": "yes"})
+        "checker",
+        ValidationReport(is_valid=False, violations=[v_fail], metadata={"checker_meta": "yes"}),
     )
 
     composite = CompositeGuardrail[DummyRequest, DummyResponse](guardrails=[g1, g2])

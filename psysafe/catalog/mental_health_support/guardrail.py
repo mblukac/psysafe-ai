@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from psysafe.catalog import GuardrailCatalog
 from psysafe.core.models import CheckOutput, Conversation, GuardedRequest, PromptRenderCtx
@@ -29,7 +29,7 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         This might need to be more sophisticated based on how much history is relevant.
         For now, concatenates all user messages.
         """
-        user_messages_content: List[str] = []
+        user_messages_content: list[str] = []
         messages = request.get("messages", [])
         for msg in messages:
             if msg.get("role") == "user":
@@ -85,7 +85,7 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         Formats a Conversation object into the OpenAIChatRequest structure
         expected by the apply method.
         """
-        messages_for_llm: List[Dict[str, str]] = []
+        messages_for_llm: list[dict[str, str]] = []
         for msg in conversation.messages:
             messages_for_llm.append({"role": msg.role, "content": msg.content})
 
@@ -112,9 +112,9 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         guarded_request = self.apply(llm_request_input)  # apply() now prepares the request for this check
         modified_llm_request = guarded_request.modified_request
 
-        raw_llm_response_content: Optional[str] = None
-        llm_errors: List[str] = []
-        llm_metadata: Dict[str, Any] = {}
+        raw_llm_response_content: str | None = None
+        llm_errors: list[str] = []
+        llm_metadata: dict[str, Any] = {}
 
         try:
             if hasattr(self.driver, "send"):
@@ -136,7 +136,9 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
             else:
                 llm_errors.append(f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method.")
                 return CheckOutput(
-                    is_triggered=False, errors=llm_errors, metadata={"info": "LLM call not possible.", **llm_metadata}
+                    is_triggered=False,
+                    errors=llm_errors,
+                    metadata={"info": "LLM call not possible.", **llm_metadata},
                 )
 
         except Exception as e:
@@ -147,7 +149,10 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         if not raw_llm_response_content:
             llm_errors.append("LLM response content was empty after driver call.")
             return CheckOutput(
-                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata
+                is_triggered=False,
+                errors=llm_errors,
+                raw_llm_response=raw_llm_response_content,
+                metadata=llm_metadata,
             )
 
         try:
@@ -162,7 +167,7 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
 
             if not isinstance(suggestion_needed, bool):
                 self.logger.warning(
-                    f"LLM returned non-boolean 'suggestion_needed': {suggestion_needed}. Defaulting to False."
+                    f"LLM returned non-boolean 'suggestion_needed': {suggestion_needed}. Defaulting to False.",
                 )
                 llm_errors.append(f"LLM returned non-boolean 'suggestion_needed': {suggestion_needed}")
                 suggestion_needed = False
@@ -193,7 +198,7 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
                 exc_info=True,
             )
             llm_errors.append(
-                f"Failed to parse LLM response: {e.message}. Snippet: {e.raw_response[:100] if e.raw_response else 'N/A'}"
+                f"Failed to parse LLM response: {e.message}. Snippet: {e.raw_response[:100] if e.raw_response else 'N/A'}",
             )
             return CheckOutput(
                 is_triggered=False,
@@ -208,7 +213,7 @@ class MentalHealthSupportGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):
         except Exception as e:
             self.logger.error(f"Unexpected error processing LLM response: {str(e)}", exc_info=True)
             llm_errors.append(
-                f"Unexpected error processing LLM response: {str(e)}. Snippet: {raw_llm_response_content[:100] if raw_llm_response_content else 'N/A'}"
+                f"Unexpected error processing LLM response: {str(e)}. Snippet: {raw_llm_response_content[:100] if raw_llm_response_content else 'N/A'}",
             )
             return CheckOutput(
                 is_triggered=False,

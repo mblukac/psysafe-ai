@@ -20,7 +20,10 @@ def test_prompt_template_from_file(tmp_path: Path):
     template_file.write_text(template_content)
 
     ctx = PromptRenderCtx(
-        driver_type="test", model_name="test_model", request_type="chat", variables={"item": "example"}
+        driver_type="test",
+        model_name="test_model",
+        request_type="chat",
+        variables={"item": "example"},
     )
     pt = PromptTemplate.from_file(template_file)
     assert pt.render(ctx) == "Test file content: example."
@@ -106,7 +109,10 @@ def test_prompt_template_autoescape_off_by_default_for_string():
     template_str = "Data: {{ value }}"
     html_value = "<script>alert('XSS')</script> & an ampersand"
     ctx = PromptRenderCtx(
-        driver_type="test", model_name="test_model", request_type="chat", variables={"value": html_value}
+        driver_type="test",
+        model_name="test_model",
+        request_type="chat",
+        variables={"value": html_value},
     )
     pt = PromptTemplate.from_string(template_str)
     assert pt.render(ctx) == f"Data: {html_value}"
@@ -119,7 +125,10 @@ def test_prompt_template_autoescape_off_by_default_for_file(tmp_path: Path):
 
     html_value = "<p>Test & Fun</p>"
     ctx = PromptRenderCtx(
-        driver_type="test", model_name="test_model", request_type="chat", variables={"value": html_value}
+        driver_type="test",
+        model_name="test_model",
+        request_type="chat",
+        variables={"value": html_value},
     )
     pt = PromptTemplate.from_file(template_file)
     # Expecting no escaping as from_file uses from_string logic internally for compilation

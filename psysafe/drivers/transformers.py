@@ -1,5 +1,5 @@
 # psysafe/drivers/transformers.py
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 from psysafe.drivers.base import ChatDriverABC
 from psysafe.typing.requests import TransformersChatRequest
@@ -28,9 +28,9 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
     def __init__(
         self,
         model_name_or_path: str,
-        tokenizer_name_or_path: Optional[str] = None,
+        tokenizer_name_or_path: str | None = None,
         task: str = "text-generation",  # or "conversational"
-        device: Optional[Union[str, int]] = None,  # e.g., "cuda:0" or 0, or -1 for CPU
+        device: str | int | None = None,  # e.g., "cuda:0" or 0, or -1 for CPU
         **pipeline_kwargs: Any,
     ):
         """
@@ -62,7 +62,7 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
             if self.task == "text-generation":  # Or other tasks requiring explicit model for advanced control
                 self._pipeline = pipeline(
                     task=self.task,
-                    model=model,
+                    model=self.model_name_or_path,
                     tokenizer=self._tokenizer,
                     device=self.device,
                     **self.pipeline_kwargs,
@@ -130,7 +130,8 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
                         # A common pattern is to pass the Conversation object.
                         # For now, let's assume a simple string input from the last message.
                         last_user_message = next(
-                            (m["content"] for m in reversed(messages) if m["role"] == "user"), None
+                            (m["content"] for m in reversed(messages) if m["role"] == "user"),
+                            None,
                         )
                         if not last_user_message:
                             raise ValueError("No user message found for conversational task.")
@@ -211,7 +212,7 @@ class TransformersChatDriver(ChatDriverABC[TransformersChatRequest, Transformers
         finally:
             thread.join()  # Ensure thread finishes
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         return {
             "driver_type": "transformers",
             "model_name_or_path": self.model_name_or_path,

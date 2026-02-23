@@ -2,7 +2,7 @@
 import json
 from collections.abc import AsyncIterator
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any
 
 from psysafe.catalog import GuardrailCatalog
 from psysafe.drivers.base import ChatDriverABC
@@ -11,11 +11,11 @@ from psysafe.evaluation.models import EvaluationResult, MetricResult, TestCase  
 
 
 class EvaluationRunner:
-    def __init__(self, driver: ChatDriverABC, catalog: Type[GuardrailCatalog]):
+    def __init__(self, driver: ChatDriverABC, catalog: type[GuardrailCatalog]):
         self.driver = driver
         self.catalog = catalog
 
-    def load_test_cases(self, file_path: Union[str, Path]) -> List[TestCase]:
+    def load_test_cases(self, file_path: str | Path) -> list[TestCase]:
         """Loads test cases from a JSONL file."""
         test_cases = []
         with Path(file_path).open("r", encoding="utf-8") as f:
@@ -32,14 +32,14 @@ class EvaluationRunner:
     def run_evaluation(
         self,
         guardrail_name: str,
-        test_cases: List[TestCase],
-        guardrail_init_kwargs: Optional[Dict[str, Any]] = None,
-    ) -> List[EvaluationResult]:
+        test_cases: list[TestCase],
+        guardrail_init_kwargs: dict[str, Any] | None = None,
+    ) -> list[EvaluationResult]:
         """
         Runs evaluation for a given guardrail against a list of test cases.
-        (Placeholder implementation)
+        (Placeholder implementation).
         """
-        results: List[EvaluationResult] = []
+        results: list[EvaluationResult] = []
         if guardrail_init_kwargs is None:
             guardrail_init_kwargs = {}
 
@@ -60,7 +60,7 @@ class EvaluationRunner:
                         test_case_id=tc.id,
                         passed=False,
                         details=f"Failed to load guardrail: {e}",
-                    )
+                    ),
                 )
             return results
 
@@ -68,13 +68,13 @@ class EvaluationRunner:
             print(f"Running test case: {tc.id} for guardrail: {guardrail_name}")
             passed_test = False
             eval_details = ""
-            metrics_results: List[MetricResult] = []
+            metrics_results: list[MetricResult] = []
             actual_report = None
 
             try:
                 # 1. Apply guardrail to input request (input transformation part)
                 # The input_request in TestCase should be compatible with the driver
-                guarded_request_obj = guardrail.apply(tc.input_request)
+                guardrail.apply(tc.input_request)
 
                 # 2. Send modified request through the driver to get an LLM response
                 # This is a simplification. The actual LLM call might be mocked or
@@ -137,7 +137,7 @@ class EvaluationRunner:
                     actual_validation_report=actual_report,
                     metrics=metrics_results,
                     details=eval_details,
-                )
+                ),
             )
         return results
 
@@ -156,5 +156,5 @@ if __name__ == "__main__":
         async def stream(self, request: Any) -> AsyncIterator[Any]:
             yield {"choices": [{"message": {"content": "dummy stream"}}]}
 
-        def get_metadata(self) -> Dict[str, Any]:
+        def get_metadata(self) -> dict[str, Any]:
             return {"type": "dummy"}

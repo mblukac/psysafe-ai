@@ -1,5 +1,5 @@
 # psysafe/catalog/registry.py
-from typing import Any, Dict, List, Type, Union
+from typing import Any
 
 from psysafe.core.base import GuardrailBase
 from psysafe.core.composite import CompositeGuardrail  # Needed for the compose method
@@ -11,10 +11,10 @@ class GuardrailCatalog:
     Guardrails can be registered by name and then loaded or composed.
     """
 
-    _registry: Dict[str, Type[GuardrailBase]] = {}
+    _registry: dict[str, type[GuardrailBase]] = {}
 
     @classmethod
-    def register(cls, name: str, guardrail_cls: Type[GuardrailBase]) -> None:
+    def register(cls, name: str, guardrail_cls: type[GuardrailBase]) -> None:
         """
         Registers a guardrail class with a given name.
 
@@ -36,7 +36,7 @@ class GuardrailCatalog:
         cls._registry[name] = guardrail_cls
 
     @classmethod
-    def load(cls, names: Union[str, List[str]], **kwargs: Any) -> List[GuardrailBase]:
+    def load(cls, names: str | list[str], **kwargs: Any) -> list[GuardrailBase]:
         """
         Loads one or more guardrails by name.
         Any provided kwargs will be passed to the constructor of each loaded guardrail.
@@ -59,7 +59,7 @@ class GuardrailCatalog:
         else:
             raise TypeError("Input 'names' must be a string or a list of strings.")
 
-        loaded_guardrails: List[GuardrailBase] = []
+        loaded_guardrails: list[GuardrailBase] = []
         for name in names_list:
             if name not in cls._registry:
                 raise ValueError(f"Unknown guardrail: '{name}'. Available: {list(cls._registry.keys())}")
@@ -78,7 +78,7 @@ class GuardrailCatalog:
         return loaded_guardrails
 
     @classmethod
-    def compose(cls, names: Union[str, List[str]], **kwargs: Any) -> CompositeGuardrail:
+    def compose(cls, names: str | list[str], **kwargs: Any) -> CompositeGuardrail:
         """
         Loads multiple guardrails by name and returns them wrapped in a CompositeGuardrail.
         Any provided kwargs will be passed to the constructor of each loaded guardrail.
@@ -99,12 +99,12 @@ class GuardrailCatalog:
         return CompositeGuardrail(guardrails=guardrails_to_compose)
 
     @classmethod
-    def list_available(cls) -> List[str]:
+    def list_available(cls) -> list[str]:
         """Returns a list of names of all registered guardrails."""
         return list(cls._registry.keys())
 
     @classmethod
-    def get_guardrail_class(cls, name: str) -> Type[GuardrailBase]:
+    def get_guardrail_class(cls, name: str) -> type[GuardrailBase]:
         """
         Retrieves the class for a registered guardrail.
 

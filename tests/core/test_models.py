@@ -1,5 +1,4 @@
 # tests/core/test_models.py
-from typing import Dict
 
 import pytest
 from pydantic import ValidationError
@@ -11,7 +10,9 @@ from psysafe.core.models import GuardedRequest, PromptRenderCtx, ValidationRepor
 def test_validation_report_merge_two_valid():
     report1 = ValidationReport(is_valid=True, violations=[], metadata={"source": "report1", "common_key": "val1"})
     report2 = ValidationReport(
-        is_valid=True, violations=[], metadata={"checker": "report2", "common_key": "val2_override"}
+        is_valid=True,
+        violations=[],
+        metadata={"checker": "report2", "common_key": "val2_override"},
     )
 
     merged_report = report1.merge(report2)
@@ -105,7 +106,7 @@ def test_validation_report_merge_self_does_not_mutate():
 def test_guarded_request_valid_data():
     original_req = {"query": "hello"}
     modified_req = {"query": "hello world"}
-    gr = GuardedRequest[Dict](original_request=original_req, modified_request=modified_req, metadata={"id": 1})
+    gr = GuardedRequest[dict](original_request=original_req, modified_request=modified_req, metadata={"id": 1})
     assert gr.original_request == original_req
     assert gr.modified_request == modified_req
     assert gr.metadata == {"id": 1}

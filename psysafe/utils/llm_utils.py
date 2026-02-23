@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Any, Dict, Optional
+from typing import Any
 from xml.etree import ElementTree as ET
 
 
@@ -9,7 +9,7 @@ from xml.etree import ElementTree as ET
 class LLMResponseParseError(Exception):
     """Custom exception for errors encountered during LLM response parsing."""
 
-    def __init__(self, message: str, raw_response: Optional[str] = None):
+    def __init__(self, message: str, raw_response: str | None = None):
         super().__init__(message)
         self.message = message
         self.raw_response = raw_response
@@ -19,9 +19,9 @@ class LLMResponseParseError(Exception):
 
 
 def parse_llm_response(
-    raw_response: Optional[str],
-    logger: Optional[logging.Logger] = None,
-) -> Dict[str, Any]:
+    raw_response: str | None,
+    logger: logging.Logger | None = None,
+) -> dict[str, Any]:
     """
     Parses a raw LLM response string into a Python dictionary.
 
@@ -113,7 +113,8 @@ def parse_llm_response(
                 except ET.ParseError as e_wrapped:
                     logger.debug(f"XML-like parsing failed after attempting to wrap original response: {e_wrapped}")
                     raise LLMResponseParseError(
-                        f"Failed to parse XML-like content: {e_wrapped}", raw_response=raw_response
+                        f"Failed to parse XML-like content: {e_wrapped}",
+                        raw_response=raw_response,
                     ) from e_wrapped
             else:
                 logger.debug(f"XML-like parsing failed (was already wrapped or initial parse failed): {e_initial}")
@@ -121,7 +122,8 @@ def parse_llm_response(
 
         if root is None:
             raise LLMResponseParseError(
-                "XML root element could not be determined after parsing attempts.", raw_response=raw_response
+                "XML root element could not be determined after parsing attempts.",
+                raw_response=raw_response,
             )
 
         xml_dict = {}
@@ -146,7 +148,7 @@ def parse_llm_response(
             if element.tag:
                 if element.attrib:
                     logger.debug(
-                        f"XML element '{element.tag}' has attributes {element.attrib}, failing simple XML parse."
+                        f"XML element '{element.tag}' has attributes {element.attrib}, failing simple XML parse.",
                     )
                     raise LLMResponseParseError(
                         f"XML element '{element.tag}' has attributes, which is not supported by simple parser.",
@@ -157,7 +159,7 @@ def parse_llm_response(
                     xml_dict[element.tag] = element.text.strip() if element.text else ""
                 else:
                     logger.warning(
-                        f"XML element '{element.tag}' has child elements, which is not flat. Raising error for simple parser."
+                        f"XML element '{element.tag}' has child elements, which is not flat. Raising error for simple parser.",
                     )
                     raise LLMResponseParseError(
                         f"XML element '{element.tag}' has child elements, which is not supported by simple flat parser.",
@@ -176,7 +178,7 @@ def parse_llm_response(
                 and len(elements_to_process) == 0
             ):
                 logger.debug(
-                    "XML parsed to an empty dictionary, but input was not an empty root. Input: " + raw_response[:50]
+                    "XML parsed to an empty dictionary, but input was not an empty root. Input: " + raw_response[:50],
                 )
                 # This case might indicate a valid but empty XML structure that didn't yield key-value pairs.
                 # Depending on strictness, this could be an error or an empty dict.
@@ -196,7 +198,8 @@ def parse_llm_response(
     except Exception as e_gen:
         logger.error(f"Unexpected error during XML parsing: {e_gen}", exc_info=True)
         raise LLMResponseParseError(
-            f"Unexpected error during XML processing: {e_gen}", raw_response=raw_response
+            f"Unexpected error during XML processing: {e_gen}",
+            raw_response=raw_response,
         ) from e_gen
 
     # If all attempts fail
