@@ -1,13 +1,14 @@
 # tests/catalog/test_mental_health_guardrail.py
-import pytest
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from psysafe.catalog.mental_health_support.guardrail import MentalHealthSupportGuardrail
+from psysafe.core.models import Conversation, Message
 from psysafe.core.template import PromptTemplate
 from psysafe.typing.requests import OpenAIChatRequest
-from psysafe.core.models import Conversation, Message, CheckOutput
-from utils.llm_utils import LLMResponseParseError
+
 
 @pytest.fixture(autouse=True)
 def mock_logger_mental_health():
@@ -16,12 +17,14 @@ def mock_logger_mental_health():
         mock_get_logger.return_value = mock_logger_instance
         yield mock_logger_instance
 
+
 def test_mental_health_support_guardrail_initialization(mock_logger_mental_health):
     guardrail = MentalHealthSupportGuardrail()
     assert isinstance(guardrail, MentalHealthSupportGuardrail)
     assert isinstance(guardrail.template, PromptTemplate)
     assert guardrail.logger is not None
     assert guardrail.name == "mental_health_support"
+
 
 @patch("psysafe.catalog.mental_health_support.guardrail.PromptTemplate.from_file")
 def test_mental_health_support_guardrail_apply_method(mock_from_file, mock_logger_mental_health):
@@ -32,33 +35,34 @@ def test_mental_health_support_guardrail_apply_method(mock_from_file, mock_logge
 
     guardrail = MentalHealthSupportGuardrail()
 
-    original_request: OpenAIChatRequest = { # type: ignore
+    original_request: OpenAIChatRequest = {  # type: ignore
         "messages": [
             {"role": "system", "content": "Initial system message."},
             {"role": "user", "content": "I'm feeling very down today."},
-            {"role": "user", "content": "It's been hard to get out of bed."}
+            {"role": "user", "content": "It's been hard to get out of bed."},
         ],
         "model": "test-model",
-        "driver_type": "openai"
+        "driver_type": "openai",
     }
 
     guarded_req_obj = guardrail.apply(original_request)
     modified_request = guarded_req_obj.modified_request
 
     mock_from_file.assert_called_once_with(
-        "psysafe/catalog/mental_health_support/prompt.md"
+        "psysafe/catalog/mental_health_support/prompt.md",
     )
     assert mock_template_instance.render.call_count == 1
     render_ctx = mock_template_instance.render.call_args[0][0]
-    
+
     # Check that user_input_context concatenates user messages
     expected_user_context = "I'm feeling very down today.\nIt's been hard to get out of bed."
     assert render_ctx.variables["user_input_context"] == expected_user_context
 
-    assert len(modified_request["messages"]) == 4 # Original 3 + 1 prepended system
+    assert len(modified_request["messages"]) == 4  # Original 3 + 1 prepended system
     assert modified_request["messages"][0].get("role") == "system"
     assert modified_request["messages"][0].get("content") == mock_render_output
     assert guarded_req_obj.applied_guardrails == ["mental_health_support"]
+
 
 @patch("psysafe.catalog.mental_health_support.guardrail.PromptTemplate.from_file")
 def test_mental_health_support_apply_no_user_input(mock_from_file, mock_logger_mental_health):
@@ -66,9 +70,9 @@ def test_mental_health_support_apply_no_user_input(mock_from_file, mock_logger_m
     mock_from_file.return_value = mock_template_instance
     guardrail = MentalHealthSupportGuardrail()
 
-    original_request: OpenAIChatRequest = { # type: ignore
+    original_request: OpenAIChatRequest = {  # type: ignore
         "messages": [{"role": "assistant", "content": "How can I help?"}],
-        "model": "test-model"
+        "model": "test-model",
     }
     guarded_req_obj = guardrail.apply(original_request)
     assert not guarded_req_obj.is_modified
@@ -84,44 +88,49 @@ def mh_guardrail_with_mock_driver(mock_logger_mental_health):
     guardrail.bind(mock_driver)
     return guardrail, mock_driver
 
+
 # --- Test Cases for check() method ---
 
-def test_check_distress_detected_suggestion_needed_direct_json(mh_guardrail_with_mock_driver, mock_logger_mental_health):
+
+def test_check_distress_detected_suggestion_needed_direct_json(
+    mh_guardrail_with_mock_driver, mock_logger_mental_health
+):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I feel hopeless and alone.")])
-    
+
     llm_response_json = {
         "distress_level": "high",
         "key_phrases_detected": ["hopeless", "alone"],
         "concerns_identified": ["depression", "loneliness"],
         "suggestion_needed": True,
-        "summary": "User expresses hopelessness and loneliness."
+        "summary": "User expresses hopelessness and loneliness.",
     }
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": json.dumps(llm_response_json)}}]
+        "choices": [{"message": {"content": json.dumps(llm_response_json)}}],
     }
 
     result = guardrail.check(conversation)
 
-    assert result.is_triggered is True # Because suggestion_needed is True
+    assert result.is_triggered is True  # Because suggestion_needed is True
     assert result.details["distress_level"] == "high"
     assert result.details["key_phrases_detected"] == ["hopeless", "alone"]
     assert result.details["suggestion_needed"] is True
     assert not result.errors
 
+
 def test_check_no_distress_markdown_json(mh_guardrail_with_mock_driver, mock_logger_mental_health):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I'm having a great day!")])
-    
+
     llm_response_json = {
         "distress_level": "none",
         "key_phrases_detected": [],
         "concerns_identified": [],
         "suggestion_needed": False,
-        "summary": "User is having a great day."
+        "summary": "User is having a great day.",
     }
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": f"```json\n{json.dumps(llm_response_json)}\n```"}}]
+        "choices": [{"message": {"content": f"```json\n{json.dumps(llm_response_json)}\n```"}}],
     }
 
     result = guardrail.check(conversation)
@@ -131,10 +140,11 @@ def test_check_no_distress_markdown_json(mh_guardrail_with_mock_driver, mock_log
     assert result.details["suggestion_needed"] is False
     assert not result.errors
 
+
 def test_check_llm_response_parse_error(mh_guardrail_with_mock_driver, mock_logger_mental_health):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I'm struggling a bit.")])
-    
+
     raw_bad_response = "This is not valid JSON."
     mock_driver.send.return_value = {"choices": [{"message": {"content": raw_bad_response}}]}
 
@@ -155,36 +165,38 @@ def test_check_llm_response_parse_error(mh_guardrail_with_mock_driver, mock_logg
     # e.message = "All parsing attempts failed (direct JSON, Markdown JSON, simple XML)."
     # e.raw_response = "This is not valid JSON."
     final_expected_logged_message = f"LLMResponseParseError in check method: {expected_generic_parser_error_message}, Raw Response: {raw_bad_response}"
-    
+
     mock_logger_mental_health.error.assert_any_call(
         final_expected_logged_message,
-        exc_info=True
+        exc_info=True,
     )
+
 
 def test_check_llm_returns_non_boolean_suggestion(mh_guardrail_with_mock_driver, mock_logger_mental_health):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="Not sure how I feel.")])
-    
+
     llm_response_json = {
         "distress_level": "low",
         "key_phrases_detected": [],
         "concerns_identified": ["uncertainty"],
-        "suggestion_needed": "maybe", # Invalid boolean
-        "summary": "User is uncertain."
+        "suggestion_needed": "maybe",  # Invalid boolean
+        "summary": "User is uncertain.",
     }
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": json.dumps(llm_response_json)}}]
+        "choices": [{"message": {"content": json.dumps(llm_response_json)}}],
     }
 
     result = guardrail.check(conversation)
 
-    assert result.is_triggered is False # Defaulted due to invalid "suggestion_needed"
-    assert result.details["suggestion_needed"] is False # Defaulted
+    assert result.is_triggered is False  # Defaulted due to invalid "suggestion_needed"
+    assert result.details["suggestion_needed"] is False  # Defaulted
     assert len(result.errors) == 1
     assert "LLM returned non-boolean 'suggestion_needed'" in result.errors[0]
     mock_logger_mental_health.warning.assert_called_once_with(
-        "LLM returned non-boolean 'suggestion_needed': maybe. Defaulting to False."
+        "LLM returned non-boolean 'suggestion_needed': maybe. Defaulting to False.",
     )
+
 
 def test_check_llm_call_fails(mh_guardrail_with_mock_driver, mock_logger_mental_health):
     guardrail, mock_driver = mh_guardrail_with_mock_driver
@@ -198,19 +210,21 @@ def test_check_llm_call_fails(mh_guardrail_with_mock_driver, mock_logger_mental_
     assert "Error during LLM call: LLM API Error" in result.errors[0]
     mock_logger_mental_health.error.assert_called_once_with("Error during LLM call: LLM API Error", exc_info=True)
 
+
 def test_check_driver_not_bound(mock_logger_mental_health):
-    guardrail = MentalHealthSupportGuardrail() # No driver bound
+    guardrail = MentalHealthSupportGuardrail()  # No driver bound
     conversation = Conversation(messages=[Message(role="user", content="Test")])
-    
+
     with pytest.raises(RuntimeError) as excinfo:
         guardrail.check(conversation)
     assert "LLM driver not bound" in str(excinfo.value)
+
 
 def test_check_successful_xml_like_input_parsed(mh_guardrail_with_mock_driver, mock_logger_mental_health):
     """Test check method with XML-like input that parse_llm_response can handle."""
     guardrail, mock_driver = mh_guardrail_with_mock_driver
     conversation = Conversation(messages=[Message(role="user", content="I'm feeling sad.")])
-    
+
     xml_like_response = """
     <distress_level>medium</distress_level>
     <key_phrases_detected><phrase>sad</phrase></key_phrases_detected>
@@ -230,10 +244,10 @@ def test_check_successful_xml_like_input_parsed(mh_guardrail_with_mock_driver, m
     <distress_level>medium</distress_level>
     <suggestion_needed>True</suggestion_needed>
     <summary>User is feeling sad.</summary>
-    """ # key_phrases and concerns would be harder with simple XML for arrays
+    """  # key_phrases and concerns would be harder with simple XML for arrays
 
     mock_driver.send.return_value = {
-        "choices": [{"message": {"content": simple_xml_response}}]
+        "choices": [{"message": {"content": simple_xml_response}}],
     }
     result = guardrail.check(conversation)
 
@@ -242,7 +256,9 @@ def test_check_successful_xml_like_input_parsed(mh_guardrail_with_mock_driver, m
     assert result.is_triggered is False
     assert result.details["distress_level"] == "medium"
     # The details will store the raw string "True" from XML, but the guardrail logic will treat suggestion_needed as False.
-    assert result.details["suggestion_needed"] is False # This reflects the guardrail's internal logic after processing the string "True"
+    assert (
+        result.details["suggestion_needed"] is False
+    )  # This reflects the guardrail's internal logic after processing the string "True"
     assert result.details["summary"] == "User is feeling sad."
     assert len(result.errors) == 1
     assert "LLM returned non-boolean 'suggestion_needed': True" in result.errors

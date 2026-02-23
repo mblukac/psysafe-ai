@@ -1,5 +1,5 @@
 # psysafe/core/composite.py
-from typing import List, Generic
+from typing import Generic, List
 
 # Core imports
 from psysafe.core.base import GuardrailBase
@@ -24,6 +24,7 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
         Args:
             guardrails: A list of GuardrailBase instances to be composed.
                         They will be applied in the order they appear in this list.
+
         """
         if not guardrails:
             raise ValueError("CompositeGuardrail requires at least one guardrail.")
@@ -45,28 +46,29 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
             A GuardedRequest object where `original_request` is the initial request
             and `modified_request` is the result after all guardrails have been applied.
             Metadata from all guardrails is collected (though a merging strategy might be needed).
+
         """
         current_request_data = request
         cumulative_metadata = {"composite_guardrail_sequence": [g.__class__.__name__ for g in self.guardrails]}
-        
+
         # The 'original_request' for the final GuardedRequest from the composite
         # should be the very first request it received.
-        initial_original_request = request 
+        initial_original_request = request
 
         for i, guardrail_instance in enumerate(self.guardrails):
             # The input to each subsequent guardrail's apply method is the
             # modified_request from the previous one.
             guarded_step_result = guardrail_instance.apply(current_request_data)
             current_request_data = guarded_step_result.modified_request
-            
+
             # Collect metadata - simple update, might need more sophisticated merging
             # Prefixing with guardrail name/index could be an option.
             cumulative_metadata[f"step_{i}_{guardrail_instance.__class__.__name__}"] = guarded_step_result.metadata
 
         return GuardedRequest[RequestT](
-            original_request=initial_original_request, # The very first request
-            modified_request=current_request_data,    # The final modified request
-            metadata=cumulative_metadata
+            original_request=initial_original_request,  # The very first request
+            modified_request=current_request_data,  # The final modified request
+            metadata=cumulative_metadata,
         )
 
     def validate(self, response: ResponseT) -> ValidationReport:
@@ -79,8 +81,9 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
 
         Returns:
             A single ValidationReport aggregating results from all composed guardrails.
+
         """
-        final_report = ValidationReport(is_valid=True) # Start with a clean, empty report
+        final_report = ValidationReport(is_valid=True)  # Start with a clean, empty report
 
         for guardrail_instance in self.guardrails:
             try:
@@ -89,16 +92,20 @@ class CompositeGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, R
             except Exception as e:
                 # Similar to CheckGuardrail, handle exceptions from individual guardrails
                 # during validation.
-                from psysafe.core.models import Violation # Local import to avoid circularity if models grow
+                from psysafe.core.models import Violation  # Local import to avoid circularity if models grow
+
                 exception_violation = Violation(
-                    severity="ERROR", # Assuming ValidationSeverity.ERROR exists
+                    severity="ERROR",  # Assuming ValidationSeverity.ERROR exists
                     code="COMPOSITE_VALIDATION_EXCEPTION",
                     message=f"Guardrail {guardrail_instance.__class__.__name__} in composite raised an exception during validation: {str(e)}",
-                    context={"guardrail_name": guardrail_instance.__class__.__name__, "exception_type": e.__class__.__name__}
+                    context={
+                        "guardrail_name": guardrail_instance.__class__.__name__,
+                        "exception_type": e.__class__.__name__,
+                    },
                 )
                 exception_report = ValidationReport(is_valid=False, violations=[exception_violation])
                 final_report = final_report.merge(exception_report)
-        
+
         # Add composite-specific metadata after all children have been merged
         final_report.metadata["guardrail_type"] = self.__class__.__name__
         final_report.metadata["num_composed_guardrails"] = len(self.guardrails)

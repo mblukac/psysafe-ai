@@ -1,11 +1,11 @@
 """Cleanup modules for different phases."""
 
-from .dead_code import DeadCodeAnalyzer
-from .documentation import DocumentationRefresher
 from .consolidation import CodeConsolidator
+from .dead_code import DeadCodeAnalyzer
+from .dependencies import DependencyManager
+from .documentation import DocumentationRefresher
 from .standards import StandardsEnforcer
 from .testing import TestValidator
-from .dependencies import DependencyManager
 
 __all__ = [
     "DeadCodeAnalyzer",

@@ -1,17 +1,21 @@
-from typing import TypedDict, Literal, Union, Optional
 from enum import Enum
+from typing import Literal, Optional, Union
+
 from pydantic import BaseModel
+
 
 class SensitivityLevel(Enum):
     LOW = "low"
-    MEDIUM = "medium" 
+    MEDIUM = "medium"
     HIGH = "high"
+
 
 class VulnerabilityIndicators(Enum):
     HEALTH_CONDITIONS = "health_conditions"
     LIFE_EVENTS = "life_events"
     RESILIENCE = "resilience"
     CAPABILITY = "capability"
+
 
 class VulnerabilityCheckOutput(BaseModel):
     is_vulnerable: bool
@@ -22,6 +26,7 @@ class VulnerabilityCheckOutput(BaseModel):
     raw_response: Optional[str] = None
     metadata: dict[str, Union[str, int, float, bool]] = {}
 
+
 class SuicideRiskOutput(BaseModel):
     risk_level: Literal["none", "low", "medium", "high", "critical"]
     risk_score: Optional[float] = None
@@ -31,8 +36,10 @@ class SuicideRiskOutput(BaseModel):
     raw_response: Optional[str] = None
     metadata: dict[str, Union[str, int, float, bool]] = {}
 
+
 class GuardrailResponse(BaseModel):
     """Unified response type for all guardrails"""
+
     is_triggered: bool
     risk_score: Optional[float] = None
     details: dict[str, Union[str, int, float, bool, list]] = {}

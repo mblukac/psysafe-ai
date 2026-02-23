@@ -1,19 +1,20 @@
+import logging  # Added import
 from enum import Enum
-from typing import Dict, Any, List, Optional
-import json
-import logging # Added import
+from typing import Any, Dict, List, Optional
 
-from psysafe.core.prompt import PromptGuardrail
-from psysafe.core.template import PromptTemplate, PromptRenderCtx
-from psysafe.core.models import GuardedRequest, Conversation, Message, CheckOutput # GuardedRequest is a model
-from psysafe.typing.requests import OpenAIChatRequest, OpenAIMessage
 from psysafe.catalog import GuardrailCatalog
-from utils.llm_utils import parse_llm_response, LLMResponseParseError # Added import
+from psysafe.core.models import CheckOutput, Conversation, GuardedRequest  # GuardedRequest is a model
+from psysafe.core.prompt import PromptGuardrail
+from psysafe.core.template import PromptRenderCtx, PromptTemplate
+from psysafe.typing.requests import OpenAIChatRequest
+from psysafe.utils.llm_parsing import LLMResponseParseError, parse_llm_response  # Added import
+
 
 class Sensitivity(Enum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
+
 
 RISK_INDICATORS = """
 - Direct statements of intent ("I want to die", "I'm going to kill myself")
@@ -48,7 +49,8 @@ of severe distress, hopelessness, or talk of being a burden, even without
 explicit suicidal statements. Interpret any doubt in favour of potential risk.
 """
 
-class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Added Any for ResponseT
+
+class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]):  # Added Any for ResponseT
     def __init__(
         self,
         sensitivity: Sensitivity,
@@ -56,13 +58,13 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         confidence: bool = False,
     ):
         template = PromptTemplate.from_file(
-            "psysafe/catalog/suicide_prevention/prompt.md"
+            "psysafe/catalog/suicide_prevention/prompt.md",
         )
         super().__init__(template=template)
         self.sensitivity = sensitivity
         self.reasoning = reasoning
         self.confidence = confidence
-        self.logger = logging.getLogger(__name__) # Added logger
+        self.logger = logging.getLogger(__name__)  # Added logger
 
     def _get_sensitivity_block_text(self) -> str:
         if self.sensitivity == Sensitivity.LOW:
@@ -80,7 +82,9 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         # This might need adjustment based on how user_context is expected to be formatted.
         # For now, concatenating content of all 'user' role messages.
         user_messages_content = [
-            msg.get("content") for msg in request.get("messages", []) if msg.get("role") == "user" and msg.get("content")
+            msg.get("content")
+            for msg in request.get("messages", [])
+            if msg.get("role") == "user" and msg.get("content")
         ]
         user_context = "\n".join(user_messages_content)
 
@@ -101,7 +105,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
                 "sensitivity_block_text": sensitivity_block_text,
                 "reasoning": self.reasoning,
                 "confidence": self.confidence,
-            }
+            },
         )
 
         rendered_prompt = self.template.render(render_ctx)
@@ -110,71 +114,74 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         # or prepended to an existing system message.
         # For simplicity, inserting as the first message.
         # More sophisticated logic might be needed to merge with existing system prompts.
-        modified_messages = [{"role": "system", "content": rendered_prompt}] + request.get("messages", []) # Ensure dicts
+        modified_messages = [{"role": "system", "content": rendered_prompt}] + request.get(
+            "messages", []
+        )  # Ensure dicts
 
         # Create a new request object with the modified messages
         # Assuming OpenAIChatRequest can be instantiated or copied this way
         # This might need to be request.copy(update={"messages": modified_messages})
         # or similar depending on Pydantic model behavior.
-        
+
         # Create a new request object or modify in place if mutable
         # For immutability, it's better to create a new one.
         # If OpenAIChatRequest is a Pydantic model, model_copy is preferred for deep copies.
-        
+
         # Simplest approach: create a new instance if all fields are known or can be copied
         # This assumes OpenAIChatRequest can be created by passing all its fields.
         # A more robust way would be to use model_copy if it's a Pydantic model.
-        
+
         # Let's assume request.messages is mutable for now for simplicity,
         # though creating a new request object is generally safer.
         # guarded_request_payload = request
 
         # A safer way with Pydantic models:
-        modified_request_data = request.copy() # Assuming request is a dict
-        modified_request_data["messages"] = modified_messages # Already dicts
-        
+        modified_request_data = request.copy()  # Assuming request is a dict
+        modified_request_data["messages"] = modified_messages  # Already dicts
+
         # Re-create the request object. This assumes OpenAIChatRequest can be created from its dict representation.
         # This part is tricky without knowing the exact structure and Pydantic version.
         # Let's try to modify the original request's messages list if it's mutable,
         # or create a new request if not.
         # For now, let's assume we create a new request object.
         # This might require all fields of OpenAIChatRequest.
-        
+
         # Create a new list of messages for the new request
         # The system prompt should be the first message.
         # Create a new list of messages for the new request
         # The system prompt should be the first message.
         final_messages = [{"role": "system", "content": rendered_prompt}]
-        for msg_dict in request.get("messages", []): # Assuming request.messages are already dicts
+        for msg_dict in request.get("messages", []):  # Assuming request.messages are already dicts
             # Avoid duplicating system messages if the original request already had one.
             # This simple logic just prepends; a more robust solution might merge system prompts.
-            final_messages.append(msg_dict.copy()) # Create a copy of the dict
+            final_messages.append(msg_dict.copy())  # Create a copy of the dict
 
         # Create a new request object
         # We need to ensure all required fields of OpenAIChatRequest are passed.
         # If OpenAIChatRequest has other fields, they need to be copied from the original request.
-        
+
         # Using model_copy for a safer update if OpenAIChatRequest is a Pydantic model
-        updated_request_dict = request.copy() # Assuming request is a dict
-        updated_request_dict['messages'] = final_messages # Already list of dicts
-        
+        updated_request_dict = request.copy()  # Assuming request is a dict
+        updated_request_dict["messages"] = final_messages  # Already list of dicts
+
         # Create a new OpenAIChatRequest instance from the dictionary
         # This assumes OpenAIChatRequest can be initialized this way.
         # If not, a more specific way to construct it is needed.
         # For example, if it has a .construct or .parse_obj method.
-        
+
         # Let's assume OpenAIChatRequest can be created by unpacking the dict.
         # This is a common pattern for Pydantic models.
-        guarded_request_payload: OpenAIChatRequest = {**request, "messages": final_messages} # type: ignore
-
+        guarded_request_payload: OpenAIChatRequest = {**request, "messages": final_messages}  # type: ignore
 
         # The GuardedRequest model expects the modified request directly
         return GuardedRequest(
-            original_request=request, # Pass the original request
+            original_request=request,  # Pass the original request
             modified_request=guarded_request_payload,
-            is_modified=True, # Indicate that the request was modified
-            applied_guardrails=[self.name if hasattr(self, 'name') else "SuicidePreventionGuardrail"], # self.name should be defined
-            metadata={"original_request_hash": hash(str(request))} # Example meta, ensure request is hashable
+            is_modified=True,  # Indicate that the request was modified
+            applied_guardrails=[
+                self.name if hasattr(self, "name") else "SuicidePreventionGuardrail"
+            ],  # self.name should be defined
+            metadata={"original_request_hash": hash(str(request))},  # Example meta, ensure request is hashable
         )
 
     def _format_conversation_for_apply(self, conversation: Conversation) -> OpenAIChatRequest:
@@ -185,11 +192,11 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         messages_for_llm: List[Dict[str, str]] = []
         for msg in conversation.messages:
             messages_for_llm.append({"role": msg.role, "content": msg.content})
-        
+
         # The apply method expects a dict-like structure for OpenAIChatRequest
         # We only need 'messages' for the current implementation of apply.
         # Other fields like 'model' might be needed if apply evolves.
-        return {"messages": messages_for_llm} # type: ignore
+        return {"messages": messages_for_llm}  # type: ignore
 
     def check(self, conversation: Conversation) -> CheckOutput:
         """
@@ -200,10 +207,11 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
 
         Returns:
             A CheckOutput object with the assessment results.
+
         """
         if not self.driver:
             raise RuntimeError(
-                "LLM driver not bound. Please call `guardrail.bind(driver)` before using `check`."
+                "LLM driver not bound. Please call `guardrail.bind(driver)` before using `check`.",
             )
 
         # 1. Format the input Conversation for the guardrail's apply method
@@ -211,8 +219,8 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
 
         # 2. Apply the guardrail to get the modified request (with system prompt)
         guarded_request = self.apply(llm_request_input)
-        modified_llm_request = guarded_request.modified_request # Assign the modified request
-        
+        modified_llm_request = guarded_request.modified_request  # Assign the modified request
+
         # The modified_request from apply() is already in the correct format for the driver
 
         # 3. Send to LLM via the driver
@@ -221,7 +229,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
         #    This part is highly dependent on the actual driver interface.
         #    For now, let's assume a `driver.chat_completion(request_payload)` method
         #    that returns a response from which we can extract text content.
-        
+
         raw_llm_response_content: Optional[str] = None
         llm_errors: List[str] = []
         llm_metadata: Dict[str, Any] = {}
@@ -231,12 +239,12 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
             # The exact method and response structure will depend on the driver.
             # Example: response = self.driver.chat.completions.create(**modified_llm_request)
             # raw_llm_response_content = response.choices[0].message.content
-            
+
             # For now, let's assume the driver has a method `invoke` or `call`
             # and returns an object with a `content` attribute or similar.
             # This needs to be adapted to the actual driver API.
             # OpenAIChatDriver has a `send` method.
-            if hasattr(self.driver, 'send'):
+            if hasattr(self.driver, "send"):
                 # The `send` method of OpenAIChatDriver expects an OpenAIChatRequest (dict)
                 # and returns an OpenAIChatResponse (dict).
                 # The response structure is like:
@@ -255,35 +263,45 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
                 #   }],
                 #   "usage": {"prompt_tokens": 9, "completion_tokens": 12, "total_tokens": 21}
                 # }
-                llm_response_dict = self.driver.send(modified_llm_request) # type: ignore
-                
+                llm_response_dict = self.driver.send(modified_llm_request)  # type: ignore
+
                 if llm_response_dict and llm_response_dict.get("choices"):
                     first_choice = llm_response_dict["choices"][0]
                     if first_choice and first_choice.get("message"):
                         raw_llm_response_content = first_choice["message"].get("content")
-                
+
                 if not raw_llm_response_content:
                     llm_errors.append("Could not extract content from LLM response.")
-                    llm_metadata["raw_llm_response_dict"] = llm_response_dict # Store for debugging
+                    llm_metadata["raw_llm_response_dict"] = llm_response_dict  # Store for debugging
                     # If content extraction fails, return immediately with error
                     return CheckOutput(
                         is_triggered=False,
                         errors=llm_errors,
-                        raw_llm_response=raw_llm_response_content, # Should be None or empty if extraction failed
-                        metadata=llm_metadata
+                        raw_llm_response=raw_llm_response_content,  # Should be None or empty if extraction failed
+                        metadata=llm_metadata,
                     )
             else:
-                llm_errors.append(f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method for LLM calls.")
-                return CheckOutput(is_triggered=False, errors=llm_errors, metadata={"info": "LLM call not possible with this driver.", **llm_metadata})
+                llm_errors.append(
+                    f"Bound driver of type {type(self.driver).__name__} does not have a 'send' method for LLM calls."
+                )
+                return CheckOutput(
+                    is_triggered=False,
+                    errors=llm_errors,
+                    metadata={"info": "LLM call not possible with this driver.", **llm_metadata},
+                )
 
         except Exception as e:
             llm_errors.append(f"Error during LLM call: {str(e)}")
             return CheckOutput(is_triggered=False, errors=llm_errors, raw_llm_response=str(e), metadata=llm_metadata)
 
-        if not raw_llm_response_content: # This check might be redundant if the above return is hit, but good for safety
+        if (
+            not raw_llm_response_content
+        ):  # This check might be redundant if the above return is hit, but good for safety
             llm_errors.append("LLM response content was empty or could not be extracted after driver call.")
             # Ensure raw_llm_response is the actual (empty) content
-            return CheckOutput(is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata)
+            return CheckOutput(
+                is_triggered=False, errors=llm_errors, raw_llm_response=raw_llm_response_content, metadata=llm_metadata
+            )
 
         # 4. Parse LLM response using the new utility
         try:
@@ -297,8 +315,8 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
             # For now, assuming parse_llm_response handles non-dict JSON correctly by raising an error or as per its spec.
 
             # Attempt to extract and process the risk value
-            raw_risk_from_llm = llm_output.get("risk") # Key from LLM is 'risk'
-            
+            raw_risk_from_llm = llm_output.get("risk")  # Key from LLM is 'risk'
+
             final_risk_score: Optional[float] = None
             final_is_triggered: bool = False
 
@@ -320,7 +338,7 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
             current_details = {
                 "reasoning": llm_output.get("reasoning", "N/A"),
                 "confidence_level": llm_output.get("confidence_level", "N/A"),
-                "parsed_llm_output": llm_output # Store the parsed dict
+                "parsed_llm_output": llm_output,  # Store the parsed dict
             }
             llm_metadata["constructed_details_preview"] = str(current_details)[:200]
 
@@ -329,26 +347,41 @@ class SuicidePreventionGuardrail(PromptGuardrail[OpenAIChatRequest, Any]): # Add
                 risk_score=final_risk_score,
                 details=current_details,
                 raw_llm_response=raw_llm_response_content,
-                errors=llm_errors, # Include any new errors from risk parsing
-                metadata=llm_metadata
+                errors=llm_errors,  # Include any new errors from risk parsing
+                metadata=llm_metadata,
             )
         except LLMResponseParseError as e:
-            self.logger.error(f"LLMResponseParseError in check method: {e.message}, Raw Response: {e.raw_response[:200]}")
-            llm_errors.append(f"Failed to parse LLM response: {e.message}. Response snippet: {e.raw_response[:500] if e.raw_response else 'N/A'}")
-            return CheckOutput(
-                is_triggered=False, # Default to not triggered on parse error
-                errors=llm_errors,
-                raw_llm_response=e.raw_response, # Use raw response from exception
-                metadata={"warning": "Could not parse LLM output.", "parser_error_type": type(e).__name__, **llm_metadata}
+            self.logger.error(
+                f"LLMResponseParseError in check method: {e.message}, Raw Response: {e.raw_response[:200]}"
             )
-        except Exception as e: # Catch any other unexpected errors during this stage
+            llm_errors.append(
+                f"Failed to parse LLM response: {e.message}. Response snippet: {e.raw_response[:500] if e.raw_response else 'N/A'}"
+            )
+            return CheckOutput(
+                is_triggered=False,  # Default to not triggered on parse error
+                errors=llm_errors,
+                raw_llm_response=e.raw_response,  # Use raw response from exception
+                metadata={
+                    "warning": "Could not parse LLM output.",
+                    "parser_error_type": type(e).__name__,
+                    **llm_metadata,
+                },
+            )
+        except Exception as e:  # Catch any other unexpected errors during this stage
             self.logger.error(f"Unexpected error processing LLM response after parsing attempt: {str(e)}")
-            llm_errors.append(f"Unexpected error processing LLM response: {str(e)}. Response snippet: {raw_llm_response_content[:500] if raw_llm_response_content else 'N/A'}")
+            llm_errors.append(
+                f"Unexpected error processing LLM response: {str(e)}. Response snippet: {raw_llm_response_content[:500] if raw_llm_response_content else 'N/A'}"
+            )
             return CheckOutput(
                 is_triggered=False,
                 errors=llm_errors,
                 raw_llm_response=raw_llm_response_content,
-                metadata={"warning": "Unexpected error during LLM response processing.", "error_type": type(e).__name__, **llm_metadata}
+                metadata={
+                    "warning": "Unexpected error during LLM response processing.",
+                    "error_type": type(e).__name__,
+                    **llm_metadata,
+                },
             )
+
 
 GuardrailCatalog.register("suicide_prevention", SuicidePreventionGuardrail)

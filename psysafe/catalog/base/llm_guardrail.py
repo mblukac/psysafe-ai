@@ -1,100 +1,151 @@
 from abc import abstractmethod
-from typing import TypeVar, Generic, Optional, Any
-from psysafe.core.config import GuardrailConfig
-from psysafe.core.types import GuardrailResponse
-from psysafe.core.models import Conversation
-from psysafe.core.exceptions import LLMDriverError
-from psysafe.catalog.base.prompt_guardrail import ModernPromptGuardrail
+from typing import Any, Generic, Optional, TypeVar
 
-T = TypeVar('T', bound=GuardrailConfig)
+from psysafe.catalog.base.prompt_guardrail import ModernPromptGuardrail
+from psysafe.core.config import GuardrailConfig
+from psysafe.core.exceptions import LLMDriverError
+from psysafe.core.models import Conversation
+from psysafe.core.types import GuardrailResponse
+
+T = TypeVar("T", bound=GuardrailConfig)
+
 
 class LLMGuardrail(ModernPromptGuardrail[T], Generic[T]):
-    """Base class for LLM-based guardrails
-    
+    """
+    Base class for LLM-based guardrails
+
     This class extends ModernPromptGuardrail to provide additional
     functionality specific to guardrails that interact with LLM drivers.
     """
-    
+
     def __init__(self, config: T, driver: Optional[Any] = None):
-        """Initialize LLM guardrail with configuration and optional driver
-        
+        """
+        Initialize LLM guardrail with configuration and optional driver
+
         Args:
             config: Guardrail configuration
             driver: Optional LLM driver instance
+
         """
         super().__init__(config)
         self.driver = driver
-    
+
     def set_driver(self, driver: Any) -> None:
-        """Set or update the LLM driver
-        
+        """
+        Set or update the LLM driver
+
         Args:
             driver: LLM driver instance
+
         """
         self.driver = driver
-    
+
     def _ensure_driver(self) -> None:
         """Ensure driver is available before LLM operations"""
         if self.driver is None:
             raise LLMDriverError(
                 "No LLM driver configured for this guardrail",
-                guardrail_name=self.__class__.__name__
+                guardrail_name=self.__class__.__name__,
             )
-    
+
     @abstractmethod
     def _generate_prompt(self, conversation: Conversation) -> str:
-        """Generate prompt for LLM based on conversation
-        
+        """
+        Generate prompt for LLM based on conversation
+
         Args:
             conversation: Input conversation
-            
+
         Returns:
             Formatted prompt string
+
         """
         pass
-    
-    @abstractmethod
+
     def _call_llm(self, prompt: str) -> str:
-        """Call LLM with prompt and return raw response
-        
+        """
+        Call LLM with prompt and return raw response
+
         Args:
             prompt: Formatted prompt
-            
+
         Returns:
             Raw LLM response
+
+        Raises:
+            LLMDriverError: If LLM call fails
+
         """
-        pass
-    
+        if not hasattr(self.driver, "send"):
+            raise LLMDriverError(
+                f"Driver {type(self.driver).__name__} does not support 'send' method",
+                guardrail_name=self.__class__.__name__,
+            )
+
+        # Construct request for LLM
+        llm_request = {
+            "messages": [{"role": "system", "content": prompt}],
+            "temperature": getattr(self.config, "temperature", 0.0),
+            "max_tokens": getattr(self.config, "max_tokens", 500),
+        }
+
+        try:
+            response = self.driver.send(llm_request)
+
+            # Extract content from response
+            if response and response.get("choices"):
+                first_choice = response["choices"][0]
+                if first_choice and first_choice.get("message"):
+                    content = first_choice["message"].get("content")
+                    if content is not None:  # Allow empty string
+                        return content
+
+            raise LLMDriverError(
+                "Could not extract content from LLM response",
+                guardrail_name=self.__class__.__name__,
+                context={"raw_response": str(response)},
+            )
+
+        except Exception as e:
+            if isinstance(e, LLMDriverError):
+                raise
+            raise LLMDriverError(
+                f"LLM call failed: {str(e)}",
+                guardrail_name=self.__class__.__name__,
+            )
+
     def check(self, conversation: Conversation) -> GuardrailResponse:
-        """Check conversation using LLM
-        
+        """
+        Check conversation using LLM
+
         Args:
             conversation: Input conversation
-            
+
         Returns:
             GuardrailResponse with check results
+
         """
         self._ensure_driver()
-        
+
         try:
             # Generate prompt
             prompt = self._generate_prompt(conversation)
-            
+
             # Call LLM
             raw_response = self._call_llm(prompt)
-            
+
             # Parse response to GuardrailResponse
             response = self.parser.parse_to_model(raw_response, GuardrailResponse)
-            
+
             # Add raw response for debugging
             response.raw_llm_response = raw_response
-            
+
             return response
-            
+
         except Exception as e:
             # Return error response
             return GuardrailResponse(
                 is_triggered=False,
                 errors=[str(e)],
-                metadata={"error_type": type(e).__name__}
+                metadata={"error_type": type(e).__name__},
             )

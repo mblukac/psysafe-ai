@@ -1,8 +1,9 @@
 # psysafe/cli/main.py
+from typing import Annotated, Optional
+
 import typer
-from typing import Optional
-from typing_extensions import Annotated
-from psysafe.cli import guard # Import the guard subcommand module
+
+from psysafe.cli import guard  # Import the guard subcommand module
 
 # It's good practice to initialize the catalog somewhere central if guardrails
 # need to be available upon CLI startup, or ensure guardrail modules are imported.
@@ -16,8 +17,9 @@ from psysafe.cli import guard # Import the guard subcommand module
 # To ensure guardrails are registered when CLI starts, we can import their modules.
 # This is a simple way; a plugin system (e.g., entry_points) is more robust for extensibility.
 try:
-    from psysafe.catalog.vulnerability_detection.guardrail import VulnerabilityDetectionGuardrail
     from psysafe.catalog.suicide_prevention.guardrail import SuicidePreventionGuardrail
+    from psysafe.catalog.vulnerability_detection.guardrail import VulnerabilityDetectionGuardrail
+
     # These imports ensure the @GuardrailCatalog.register lines in those files are executed.
 except ImportError as e:
     print(f"Warning: Could not pre-load all catalog guardrails for CLI: {e}")
@@ -26,7 +28,7 @@ except ImportError as e:
 app = typer.Typer(
     name="psysafe",
     help="PsySafe AI SDK - Command Line Interface for managing and applying psychological safety guardrails.",
-    add_completion=False # Can be enabled if desired
+    add_completion=False,  # Can be enabled if desired
 )
 
 # Add subcommands
@@ -34,6 +36,7 @@ app.add_typer(guard.app, name="guard")
 
 # Create a new Typer app for test commands
 test_app = typer.Typer(help="Commands for running evaluations and tests.")
+
 
 @test_app.command("run")
 def run_tests(
@@ -60,6 +63,7 @@ def run_tests(
     #    d. Generate and print/save report: reports.generate_summary_report(...)
     print("CLI 'test run' command needs full implementation.")
 
+
 app.add_typer(test_app, name="test")
 # Future: app.add_typer(report_app, name="report")
 
@@ -72,9 +76,11 @@ def version():
     # Placeholder for version. This would typically come from __version__ in psysafe/__init__.py
     try:
         from psysafe import __version__ as sdk_version
+
         print(f"PsySafe AI SDK version: {sdk_version}")
     except ImportError:
         print("PsySafe AI SDK version: (unknown - __version__ not found)")
+
 
 if __name__ == "__main__":
     app()

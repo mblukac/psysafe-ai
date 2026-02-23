@@ -1,18 +1,21 @@
 # psysafe/core/base.py
 from abc import ABC, abstractmethod
-from typing import Any, Generic # Removed TypeVar as it's not directly used here, but in requests/responses
+from typing import Any, Generic  # Removed TypeVar as it's not directly used here, but in requests/responses
+
+from psysafe.core.models import GuardedRequest, ValidationReport
 
 # Assuming RequestT and ResponseT will be imported from psysafe.typing
 from psysafe.typing.requests import RequestT
 from psysafe.typing.responses import ResponseT
-from psysafe.core.models import GuardedRequest, ValidationReport
+
 
 class GuardrailBase(Generic[RequestT, ResponseT], ABC):
     """Abstract base class for all guardrails."""
 
     @abstractmethod
     def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
-        """Apply the guardrail to a request.
+        """
+        Apply the guardrail to a request.
         This method should modify the incoming request as needed (e.g., add system prompts,
         reformat input) and return a GuardedRequest object containing both the original
         and modified request, along with any relevant metadata.
@@ -21,7 +24,8 @@ class GuardrailBase(Generic[RequestT, ResponseT], ABC):
 
     @abstractmethod
     def validate(self, response: ResponseT) -> ValidationReport:
-        """Validate a response against the guardrail.
+        """
+        Validate a response against the guardrail.
         This method should inspect the LLM's response and return a ValidationReport
         indicating whether the response is valid according to the guardrail's criteria,
         along with any violations found and associated metadata.
@@ -43,4 +47,4 @@ class GuardrailBase(Generic[RequestT, ResponseT], ABC):
         # Actual implementation might involve wrapping the driver or
         # storing a reference to it if the guardrail needs to call driver methods.
         # For a simple case, it might do nothing or return a modified driver.
-        return driver # Or a wrapped/modified driver
+        return driver  # Or a wrapped/modified driver

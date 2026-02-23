@@ -1,8 +1,9 @@
 # File: examples/04_mental_health_support.py
 
 # SECTION 1: Imports
-from dotenv import load_dotenv
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 from psysafe.catalog.mental_health_support.guardrail import MentalHealthSupportGuardrail
 from psysafe.core.models import Conversation, Message
@@ -14,6 +15,7 @@ if ENV_PATH.exists():
     load_dotenv(ENV_PATH)
 else:
     print(f"Warning: .env file not found at {ENV_PATH}. OpenAI API key might not be loaded.")
+
 
 def main():
     """
@@ -43,7 +45,7 @@ def main():
     triggering_messages_support = [
         Message(role="user", content="I've been feeling really down and anxious lately. It's hard to cope."),
         Message(role="assistant", content="I understand that can be tough. How long have you been feeling this way?"),
-        Message(role="user", content="For a few weeks now. I just don't know who to turn to or what to do.")
+        Message(role="user", content="For a few weeks now. I just don't know who to turn to or what to do."),
     ]
     triggering_conversation_support = Conversation(messages=triggering_messages_support)
     print("Triggering conversation (Need for Support) created.")
@@ -53,7 +55,7 @@ def main():
     non_triggering_messages_chat = [
         Message(role="user", content="What's the weather like today?"),
         Message(role="assistant", content="It's sunny with a high of 25 degrees Celsius."),
-        Message(role="user", content="Great, thanks!")
+        Message(role="user", content="Great, thanks!"),
     ]
     non_triggering_conversation_chat = Conversation(messages=non_triggering_messages_chat)
     print("Non-triggering conversation (General Chat) created.")
@@ -95,6 +97,7 @@ def main():
     print(f"Full Details: {non_triggering_result_chat.details}")
     print(f"Errors: {non_triggering_result_chat.errors}")
     print(f"Metadata: {non_triggering_result_chat.metadata}")
+
 
 # SECTION 3: Execute main function
 if __name__ == "__main__":

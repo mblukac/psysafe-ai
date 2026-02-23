@@ -1,9 +1,9 @@
 # psysafe/core/check.py
-from typing import Any, Callable, List, Generic
+from typing import Callable, Generic, List
 
 # Core imports
 from psysafe.core.base import GuardrailBase
-from psysafe.core.models import GuardedRequest, ValidationReport, Violation # Added Violation for Validator type hint
+from psysafe.core.models import GuardedRequest, ValidationReport, Violation  # Added Violation for Validator type hint
 
 # Typing imports
 from psysafe.typing.requests import RequestT
@@ -30,6 +30,7 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
         Args:
             validators: A list of validator functions. Each function must accept
                         a response object (ResponseT) and return a ValidationReport.
+
         """
         if not all(callable(v) for v in validators):
             raise TypeError("All items in 'validators' must be callable.")
@@ -45,14 +46,15 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
 
         Returns:
             A GuardedRequest object with the original request unchanged.
+
         """
         return GuardedRequest[RequestT](
             original_request=request,
-            modified_request=request, # Request is not modified
+            modified_request=request,  # Request is not modified
             metadata={
                 "guardrail_type": self.__class__.__name__,
-                "num_validators": len(self.validators)
-            }
+                "num_validators": len(self.validators),
+            },
         )
 
     def validate(self, response: ResponseT) -> ValidationReport:
@@ -65,6 +67,7 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
 
         Returns:
             A single ValidationReport aggregating results from all validators.
+
         """
         if not self.validators:
             return ValidationReport(
@@ -73,11 +76,11 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
                 metadata={
                     "message": "No validators configured.",
                     "num_validators_executed": 0,
-                    "guardrail_type": self.__class__.__name__
-                }
+                    "guardrail_type": self.__class__.__name__,
+                },
             )
 
-        final_report = ValidationReport(is_valid=True) # Start with a valid report
+        final_report = ValidationReport(is_valid=True)  # Start with a valid report
 
         for validator_func in self.validators:
             try:
@@ -87,10 +90,10 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
                     # Handle cases where a validator might return something else, or log a warning
                     # For now, we'll create a default error violation for this misbehaving validator
                     error_violation = Violation(
-                        severity="ERROR", # Assuming ValidationSeverity.ERROR exists
+                        severity="ERROR",  # Assuming ValidationSeverity.ERROR exists
                         code="INVALID_VALIDATOR_RETURN",
                         message=f"Validator {validator_func.__name__} did not return a ValidationReport.",
-                        context={"validator_name": validator_func.__name__}
+                        context={"validator_name": validator_func.__name__},
                     )
                     # Create a report for this specific error
                     misbehaving_validator_report = ValidationReport(is_valid=False, violations=[error_violation])
@@ -100,14 +103,14 @@ class CheckGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Respo
             except Exception as e:
                 # If a validator raises an exception, treat it as a validation failure for that validator
                 exception_violation = Violation(
-                    severity="ERROR", # Assuming ValidationSeverity.ERROR exists
+                    severity="ERROR",  # Assuming ValidationSeverity.ERROR exists
                     code="VALIDATOR_EXCEPTION",
                     message=f"Validator {validator_func.__name__} raised an exception: {str(e)}",
-                    context={"validator_name": validator_func.__name__, "exception_type": e.__class__.__name__}
+                    context={"validator_name": validator_func.__name__, "exception_type": e.__class__.__name__},
                 )
                 exception_report = ValidationReport(is_valid=False, violations=[exception_violation])
                 final_report = final_report.merge(exception_report)
-        
+
         final_report.metadata["guardrail_type"] = self.__class__.__name__
         final_report.metadata["num_validators_executed"] = len(self.validators)
         return final_report

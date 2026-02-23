@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from psysafe.core.config import GuardrailConfig, VulnerabilityConfig, SuicidePreventionConfig
+from psysafe.core.config import GuardrailConfig, SuicidePreventionConfig, VulnerabilityConfig
 from psysafe.core.types import SensitivityLevel, VulnerabilityIndicators
 
 
@@ -10,11 +10,12 @@ def test_guardrail_config_defaults():
     config = GuardrailConfig()
     assert config.sensitivity == SensitivityLevel.MEDIUM
     assert config.reasoning_enabled is True
-    assert config.confidence_enabled is False # Corrected based on actual default
+    assert config.confidence_enabled is False  # Corrected based on actual default
     assert config.temperature == 0.1
     assert config.max_tokens is None
     assert config.timeout_seconds == 30
     assert config.retry_attempts == 3
+
 
 def test_guardrail_config_custom_values():
     """Tests GuardrailConfig with custom values."""
@@ -25,7 +26,7 @@ def test_guardrail_config_custom_values():
         "temperature": 1.5,
         "max_tokens": 100,
         "timeout_seconds": 60,
-        "retry_attempts": 1
+        "retry_attempts": 1,
     }
     config = GuardrailConfig(**custom_data)
     assert config.sensitivity == SensitivityLevel.HIGH
@@ -36,20 +37,24 @@ def test_guardrail_config_custom_values():
     assert config.timeout_seconds == 60
     assert config.retry_attempts == 1
 
+
 def test_guardrail_config_invalid_temperature_too_low():
     """Tests GuardrailConfig with temperature below valid range (ge=0.0)."""
     with pytest.raises(ValidationError):
         GuardrailConfig(temperature=-0.1)
+
 
 def test_guardrail_config_invalid_temperature_too_high():
     """Tests GuardrailConfig with temperature above valid range (le=2.0)."""
     with pytest.raises(ValidationError):
         GuardrailConfig(temperature=2.1)
 
+
 def test_guardrail_config_invalid_sensitivity_type():
     """Tests GuardrailConfig with invalid type for sensitivity."""
     with pytest.raises(ValidationError):
         GuardrailConfig(sensitivity="very_high_string")
+
 
 def test_guardrail_config_invalid_max_tokens():
     """Tests GuardrailConfig with invalid max_tokens (gt=0)."""
@@ -94,8 +99,9 @@ def test_vulnerability_config_defaults():
     assert config.timeout_seconds == 30
     assert config.retry_attempts == 3
     # VulnerabilityConfig specific defaults
-    assert config.indicators == list(VulnerabilityIndicators) # Default factory
-    assert config.threshold_score == 0.5 # Corrected based on actual default
+    assert config.indicators == list(VulnerabilityIndicators)  # Default factory
+    assert config.threshold_score == 0.5  # Corrected based on actual default
+
 
 def test_vulnerability_config_custom_values():
     """Tests VulnerabilityConfig with custom values."""
@@ -107,8 +113,11 @@ def test_vulnerability_config_custom_values():
         "max_tokens": 200,
         "timeout_seconds": 10,
         "retry_attempts": 0,
-        "indicators": [VulnerabilityIndicators.HEALTH_CONDITIONS, VulnerabilityIndicators.LIFE_EVENTS], # Using actual members
-        "threshold_score": 0.75
+        "indicators": [
+            VulnerabilityIndicators.HEALTH_CONDITIONS,
+            VulnerabilityIndicators.LIFE_EVENTS,
+        ],  # Using actual members
+        "threshold_score": 0.75,
     }
     config = VulnerabilityConfig(**custom_data)
     assert config.sensitivity == SensitivityLevel.LOW
@@ -121,15 +130,18 @@ def test_vulnerability_config_custom_values():
     assert config.indicators == [VulnerabilityIndicators.HEALTH_CONDITIONS, VulnerabilityIndicators.LIFE_EVENTS]
     assert config.threshold_score == 0.75
 
+
 def test_vulnerability_config_invalid_threshold_score_too_low():
     """Tests VulnerabilityConfig with threshold_score below valid range (ge=0.0)."""
     with pytest.raises(ValidationError):
         VulnerabilityConfig(threshold_score=-0.1)
 
+
 def test_vulnerability_config_invalid_threshold_score_too_high():
     """Tests VulnerabilityConfig with threshold_score above valid range (le=1.0)."""
     with pytest.raises(ValidationError):
         VulnerabilityConfig(threshold_score=1.1)
+
 
 def test_vulnerability_config_invalid_indicators_type():
     """Tests VulnerabilityConfig with invalid type for indicators."""
@@ -153,7 +165,8 @@ def test_suicide_prevention_config_defaults():
     # SuicidePreventionConfig specific defaults
     assert config.risk_threshold == 0.3
     assert config.emergency_contact_enabled is False
-    assert config.crisis_resources_enabled is True # Corrected based on actual default
+    assert config.crisis_resources_enabled is True  # Corrected based on actual default
+
 
 def test_suicide_prevention_config_custom_values():
     """Tests SuicidePreventionConfig with custom values."""
@@ -167,7 +180,7 @@ def test_suicide_prevention_config_custom_values():
         "retry_attempts": 2,
         "risk_threshold": 0.85,
         "emergency_contact_enabled": True,
-        "crisis_resources_enabled": False
+        "crisis_resources_enabled": False,
     }
     config = SuicidePreventionConfig(**custom_data)
     assert config.sensitivity == SensitivityLevel.HIGH
@@ -181,15 +194,18 @@ def test_suicide_prevention_config_custom_values():
     assert config.emergency_contact_enabled is True
     assert config.crisis_resources_enabled is False
 
+
 def test_suicide_prevention_config_invalid_risk_threshold_too_low():
     """Tests SuicidePreventionConfig with risk_threshold below valid range (ge=0.0)."""
     with pytest.raises(ValidationError):
         SuicidePreventionConfig(risk_threshold=-0.01)
 
+
 def test_suicide_prevention_config_invalid_risk_threshold_too_high():
     """Tests SuicidePreventionConfig with risk_threshold above valid range (le=1.0)."""
     with pytest.raises(ValidationError):
         SuicidePreventionConfig(risk_threshold=1.01)
+
 
 def test_suicide_prevention_config_boolean_fields():
     """Tests boolean fields in SuicidePreventionConfig."""
@@ -201,7 +217,7 @@ def test_suicide_prevention_config_boolean_fields():
     assert config_false.emergency_contact_enabled is False
     assert config_false.crisis_resources_enabled is False
 
-    with pytest.raises(ValidationError): # Test invalid type
+    with pytest.raises(ValidationError):  # Test invalid type
         SuicidePreventionConfig(emergency_contact_enabled="not_a_bool")
-    with pytest.raises(ValidationError): # Test invalid type
+    with pytest.raises(ValidationError):  # Test invalid type
         SuicidePreventionConfig(crisis_resources_enabled="not_a_bool")

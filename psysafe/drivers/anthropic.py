@@ -1,15 +1,19 @@
 # psysafe/drivers/anthropic.py
-from typing import Any, AsyncIterator, Dict, List, Optional
+from collections.abc import AsyncIterator
+from typing import Any, Dict, Optional
 
 from psysafe.drivers.base import ChatDriverABC
-from psysafe.typing.requests import AnthropicChatRequest, AnthropicMessage
+from psysafe.typing.requests import AnthropicChatRequest
 from psysafe.typing.responses import AnthropicChatResponse, AnthropicStreamEvent
 
 try:
     import anthropic
     from anthropic import Anthropic, AsyncAnthropic
 except ImportError:
-    raise ImportError("Anthropic library is required for AnthropicChatDriver. Please install it (e.g., `pip install anthropic`).")
+    raise ImportError(
+        "Anthropic library is required for AnthropicChatDriver. Please install it (e.g., `pip install anthropic`)."
+    )
+
 
 class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatResponse]):
     """Driver for Anthropic Claude models."""
@@ -23,12 +27,13 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
             api_key: Optional Anthropic API key. If not provided, anthropic library
                      will look for ANTHROPIC_API_KEY environment variable.
             **kwargs: Additional keyword arguments to pass to the Anthropic client.
+
         """
         self.model = model
         self.client_kwargs = kwargs
         if api_key:
             self.client_kwargs["api_key"] = api_key
-        
+
         self._client: Optional[Anthropic] = None
         self._async_client: Optional[AsyncAnthropic] = None
 
@@ -57,13 +62,13 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
         payload = {"model": self.model, **request}
         if "messages" not in payload or not isinstance(payload["messages"], list):
             raise ValueError("Request 'messages' must be a list.")
-        if "max_tokens" not in payload: # Anthropic requires max_tokens
-            payload["max_tokens"] = 1024 # Default if not provided
+        if "max_tokens" not in payload:  # Anthropic requires max_tokens
+            payload["max_tokens"] = 1024  # Default if not provided
 
         try:
             response = self.client.messages.create(**payload)
-            return response.model_dump() if hasattr(response, 'model_dump') else dict(response)
-        except Exception as e:
+            return response.model_dump() if hasattr(response, "model_dump") else dict(response)
+        except Exception:
             raise
 
     async def stream(self, request: AnthropicChatRequest) -> AsyncIterator[AnthropicStreamEvent]:
@@ -83,8 +88,8 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
                 async for event in stream_response:
                     # Convert event to dict for consistency
                     # event objects are Pydantic models in anthropic >0.16
-                    yield event.model_dump() if hasattr(event, 'model_dump') else dict(event)
-        except Exception as e:
+                    yield event.model_dump() if hasattr(event, "model_dump") else dict(event)
+        except Exception:
             pass  # Handle the exception gracefully
 
     def get_metadata(self) -> Dict[str, Any]:
@@ -92,5 +97,5 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
             "driver_type": "anthropic",
             "model_name": self.model,
             "supports_streaming": True,
-            "client_config": self.client_kwargs # Be careful with sensitive info
+            "client_config": self.client_kwargs,  # Be careful with sensitive info
         }

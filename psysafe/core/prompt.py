@@ -1,9 +1,9 @@
 # psysafe/core/prompt.py
-from typing import Any, Generic, Dict # Optional removed as not directly used in this snippet
+from typing import Any, Dict, Generic  # Optional removed as not directly used in this snippet
 
 # Core imports
 from psysafe.core.base import GuardrailBase
-from psysafe.core.models import GuardedRequest, ValidationReport, PromptRenderCtx
+from psysafe.core.models import GuardedRequest, PromptRenderCtx, ValidationReport
 from psysafe.core.template import PromptTemplate
 
 # Typing imports
@@ -27,10 +27,11 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
                                 during template rendering, in addition to those
                                 provided in PromptRenderCtx. These can be static
                                 configurations for the guardrail.
+
         """
         self.template = template
         self.template_variables = template_variables or {}
-        self.driver: Any = None # Initialize driver attribute
+        self.driver: Any = None  # Initialize driver attribute
 
     def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
         """
@@ -46,6 +47,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
         Returns:
             A GuardedRequest object containing the original and modified request.
+
         """
         # For demonstration, we assume RequestT might be a dictionary or an object
         # where prompts can be injected. This part will need to be more robust
@@ -56,10 +58,10 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
         # or a higher-level orchestrator.
         # For now, some fields might be placeholders.
         render_ctx = PromptRenderCtx(
-            driver_type="unknown", # This should ideally come from the bound driver
+            driver_type="unknown",  # This should ideally come from the bound driver
             model_name="unknown",  # This should ideally come from the bound driver
-            request_type="chat",   # Example, could be 'completion', etc.
-            variables=self.template_variables # Pass guardrail-specific static vars
+            request_type="chat",  # Example, could be 'completion', etc.
+            variables=self.template_variables,  # Pass guardrail-specific static vars
         )
 
         rendered_prompt = self.template.render(render_ctx)
@@ -78,14 +80,14 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
         # For now, let's assume a simple pass-through or a very basic modification.
         # A more robust solution would involve request adapters.
 
-        modified_request = request # Default to original if no modification logic implemented yet
+        modified_request = request  # Default to original if no modification logic implemented yet
 
         # Example of a simple modification if request is a dict and has 'prompt' key
         if isinstance(request, dict) and "prompt" in request:
             modified_request_data = request.copy()
             modified_request_data["prompt"] = rendered_prompt + "\n\n" + modified_request_data["prompt"]
             modified_request = modified_request_data
-        elif isinstance(request, dict) and "messages" in request: # Basic OpenAI chat format
+        elif isinstance(request, dict) and "messages" in request:  # Basic OpenAI chat format
             modified_request_data = request.copy()
             # Ensure messages is a list and make a deep copy of it
             if isinstance(modified_request_data.get("messages"), list):
@@ -108,12 +110,14 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
         return GuardedRequest[RequestT](
             original_request=request,
-            modified_request=modified_request, # This would be the actual modified request
+            modified_request=modified_request,  # This would be the actual modified request
             metadata={
                 "guardrail_type": self.__class__.__name__,
                 "template_used": str(self.template.template_path) if self.template.template_path else "string_template",
-                "rendered_prompt_snippet": rendered_prompt[:100] + "..." if len(rendered_prompt) > 100 else rendered_prompt
-            }
+                "rendered_prompt_snippet": (
+                    rendered_prompt[:100] + "..." if len(rendered_prompt) > 100 else rendered_prompt
+                ),
+            },
         )
 
     def validate(self, response: ResponseT) -> ValidationReport:
@@ -127,6 +131,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
         Returns:
             A ValidationReport indicating the response is valid (as this guardrail doesn't perform checks).
+
         """
         return ValidationReport(is_valid=True, violations=[], metadata={"guardrail_type": self.__class__.__name__})
 
@@ -148,12 +153,15 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
         Returns:
             An instance of PromptGuardrail.
+
         """
         template = PromptTemplate.from_string(prompt_text)
         return cls(template=template, template_variables=template_variables)
 
     @classmethod
-    def from_file(cls, template_file_path: str, template_variables: Dict[str, Any] = None) -> "PromptGuardrail[Any, Any]":
+    def from_file(
+        cls, template_file_path: str, template_variables: Dict[str, Any] = None
+    ) -> "PromptGuardrail[Any, Any]":
         """
         Factory method to create a PromptGuardrail from a template file.
 
@@ -163,6 +171,7 @@ class PromptGuardrail(GuardrailBase[RequestT, ResponseT], Generic[RequestT, Resp
 
         Returns:
             An instance of PromptGuardrail.
+
         """
         template = PromptTemplate.from_file(template_file_path)
         return cls(template=template, template_variables=template_variables)

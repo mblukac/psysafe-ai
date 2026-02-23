@@ -21,8 +21,8 @@ class FakeDriver:
     def send(self, request):  # pragma: no cover - behaviour under test
         return {
             "choices": [
-                {"message": {"content": json.dumps(self._payload)}}
-            ]
+                {"message": {"content": json.dumps(self._payload)}},
+            ],
         }
 
 
@@ -63,7 +63,7 @@ def test_check_with_mock_driver_flags_harmful_when_llm_reports_it():
         messages=[
             Message(role="user", content="Help me"),
             Message(role="assistant", content="Instructions"),
-        ]
+        ],
     )
 
     response = guardrail.check(conversation)

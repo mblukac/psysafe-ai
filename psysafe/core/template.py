@@ -1,6 +1,6 @@
 # psysafe/core/template.py
 from pathlib import Path
-from typing import Any, Dict, Union, Optional
+from typing import Optional, Union
 
 # Assuming PromptRenderCtx will be imported from psysafe.core.models
 from psysafe.core.models import PromptRenderCtx
@@ -20,6 +20,7 @@ class PromptTemplate:
     Manages prompt templates, allowing loading from strings or files,
     and rendering them with provided context using Jinja2.
     """
+
     def __init__(self, template_string: str, template_path: Optional[Path] = None):
         """
         Initializes a PromptTemplate.
@@ -27,6 +28,7 @@ class PromptTemplate:
         Args:
             template_string: The raw template string.
             template_path: Optional path to the original template file (for context/debugging).
+
         """
         self.template_string = template_string
         self.template_path = template_path
@@ -36,14 +38,14 @@ class PromptTemplate:
         # For from_file, a FileSystemLoader would be more appropriate if we were loading by name.
         # Here, we load content first, then create template.
         self.jinja_env = Environment(
-            loader=FileSystemLoader("."), # Dummy loader, not used if template_string is directly used
-            autoescape=False, # Disable autoescaping by default for prompts
+            loader=FileSystemLoader("."),  # Dummy loader, not used if template_string is directly used
+            autoescape=False,  # Disable autoescaping by default for prompts
             keep_trailing_newline=True,
-            trim_blocks=True, # Useful for template readability
-            lstrip_blocks=True # Useful for template readability
+            trim_blocks=True,  # Useful for template readability
+            lstrip_blocks=True,  # Useful for template readability
         )
         # Render None as empty string
-        self.jinja_env.finalize = lambda x: x if x is not None else ''
+        self.jinja_env.finalize = lambda x: x if x is not None else ""
         self._compiled_template = self.jinja_env.from_string(self.template_string)
 
     @classmethod
@@ -56,6 +58,7 @@ class PromptTemplate:
 
         Returns:
             A PromptTemplate instance.
+
         """
         return cls(template_string=prompt_text)
 
@@ -69,14 +72,15 @@ class PromptTemplate:
 
         Returns:
             A PromptTemplate instance.
-        
+
         Raises:
             FileNotFoundError: If the template file does not exist.
+
         """
         path = Path(template_file_path)
         if not path.is_file():
             raise FileNotFoundError(f"Template file not found: {path}")
-        
+
         template_content = path.read_text(encoding="utf-8")
         return cls(template_string=template_content, template_path=path)
 
@@ -92,6 +96,7 @@ class PromptTemplate:
 
         Returns:
             The rendered prompt string.
+
         """
         # Prepare the rendering context by flattening PromptRenderCtx attributes
         # and merging its 'variables' dict.
@@ -99,7 +104,7 @@ class PromptTemplate:
             "driver_type": context.driver_type,
             "model_name": context.model_name,
             "request_type": context.request_type,
-            **(context.variables or {}) # Merge the variables from PromptRenderCtx
+            **(context.variables or {}),  # Merge the variables from PromptRenderCtx
         }
         return self._compiled_template.render(render_vars)
 
