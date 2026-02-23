@@ -86,8 +86,8 @@ class AiHarmDetectionConfig(GuardrailConfig):
         validate_assignment = True
 
     @model_validator(mode="after")
-    def _validate_thresholds(self, model: "AiHarmDetectionConfig") -> "AiHarmDetectionConfig":
+    def _validate_thresholds(self) -> "AiHarmDetectionConfig":
         """Ensure thresholds preserve SAFE < BORDERLINE < HARMFUL."""
-        if model.borderline_threshold >= model.harmful_threshold:
+        if self.borderline_threshold >= self.harmful_threshold:
             raise ValueError("borderline_threshold must be less than harmful_threshold")
-        return model
+        return self
