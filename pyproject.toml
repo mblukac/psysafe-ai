@@ -27,9 +27,9 @@ classifiers = [
 dependencies = [
     "pydantic>=2.0,<3.0",
     "jinja2>=3.0,<4.0",
-    "openai>=1.0,<2.0",
+    "openai>=1.0,<3.0",
     "anthropic>=0.20,<1.0", # Check latest stable version constraint
-    "transformers>=4.30,<5.0", # Check latest stable version constraint
+    "transformers>=4.30,<6.0", # Check latest stable version constraint
     "torch>=2.0,<3.0", # Or "tensorflow>=2.0", or "jax[cpu]>=0.4" depending on your Transformers backend
     "typer>=0.9,<1.0", # shellingham is now in dev dependencies
     "typing_extensions>=4.0,<5.0", # Often a good idea for broader compatibility
@@ -39,9 +39,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0,<9.0",
+    "pytest>=8.0,<10.0",
     "pytest-mock>=3.0,<4.0",
-    "pytest-asyncio>=0.20,<1.0", # For testing async code like driver stream methods
+    "pytest-asyncio>=0.20,<2.0", # For testing async code like driver stream methods
     "ruff>=0.1,<1.0",          # Linter
     "black",                   # Formatter
     "mypy>=1.0,<2.0",           # Static type checker
