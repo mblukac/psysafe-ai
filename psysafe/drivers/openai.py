@@ -100,7 +100,9 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
                 # Convert chunk to dict for consistency
                 yield chunk.model_dump() if hasattr(chunk, "model_dump") else dict(chunk)
         except Exception:
-            pass  # Handle the exception gracefully
+            # A missing stream is not a clean result. Let callers choose an
+            # explicit retry, review, or blocking policy.
+            raise
 
     def get_metadata(self) -> dict[str, Any]:
         """Get metadata about the driver."""
@@ -108,5 +110,4 @@ class OpenAIChatDriver(ChatDriverABC[OpenAIChatRequest, OpenAIChatResponse]):
             "driver_type": "openai",
             "model_name": self.model,
             "supports_streaming": True,
-            "client_config": self.client_kwargs,  # Be careful about exposing sensitive info like API keys
         }

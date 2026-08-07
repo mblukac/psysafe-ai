@@ -90,12 +90,13 @@ class AnthropicChatDriver(ChatDriverABC[AnthropicChatRequest, AnthropicChatRespo
                     # event objects are Pydantic models in anthropic >0.16
                     yield event.model_dump() if hasattr(event, "model_dump") else dict(event)
         except Exception:
-            pass  # Handle the exception gracefully
+            # A missing stream is not a clean result. Let callers choose an
+            # explicit retry, review, or blocking policy.
+            raise
 
     def get_metadata(self) -> dict[str, Any]:
         return {
             "driver_type": "anthropic",
             "model_name": self.model,
             "supports_streaming": True,
-            "client_config": self.client_kwargs,  # Be careful with sensitive info
         }

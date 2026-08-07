@@ -1,72 +1,89 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27,<2"]
 build-backend = "hatchling.build"
 
 [project]
-name = "psysafe-ai" # Or your desired package name
-version = "0.1.0.dev0" # Matches what we put in psysafe/__init__.py
-description = "PsySafe AI SDK for implementing psychological safety guardrails in LLM applications."
+name = "psysafe-ai"
+version = "0.2.0.dev0"
+description = "Calibrated psychological-safety classifiers for AI workflows."
 readme = "README.md"
-requires-python = ">=3.10" # Ensure this matches your Python version
-license = { text = "MIT" } # Or your chosen license
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
-    { name = "Your Name", email = "your.email@example.com" },
+    { name = "Martin Lukac" },
+]
+keywords = [
+    "ai-safety",
+    "classification",
+    "guardrails",
+    "llm",
+    "psychological-safety",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License", # Adjust if different
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 dependencies = [
-    "pydantic>=2.0,<3.0",
-    "jinja2>=3.0,<4.0",
-    "openai>=1.0,<2.0",
-    "anthropic>=0.20,<1.0", # Check latest stable version constraint
-    "transformers>=4.30,<5.0", # Check latest stable version constraint
-    "torch>=2.0,<3.0", # Or "tensorflow>=2.0", or "jax[cpu]>=0.4" depending on your Transformers backend
-    "typer>=0.9,<1.0", # shellingham is now in dev dependencies
-    "typing_extensions>=4.0,<5.0", # Often a good idea for broader compatibility
-    "python-dotenv",
-    "aisuite",
+    "jinja2>=3.1,<4",
+    "pydantic>=2.10,<3",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.0,<9.0",
-    "pytest-mock>=3.0,<4.0",
-    "pytest-asyncio>=0.20,<1.0", # For testing async code like driver stream methods
-    "ruff>=0.1,<1.0",          # Linter
-    "black",                   # Formatter
-    "mypy>=1.0,<2.0",           # Static type checker
-    "hatch>=1.7",              # Build tool
-    "shellingham>=1.5,<2.0",  # For typer shell completion
+openai = [
+    "openai>=2,<3",
+]
+anthropic = [
+    "anthropic>=0.49,<1",
+]
+transformers = [
+    "torch>=2.2,<3",
+    "transformers>=4.48,<6",
+]
+cli = [
+    "typer>=0.15,<1",
+]
+legacy = [
+    "aisuite>=0.1.11,<1",
+    "python-dotenv>=1,<2",
+]
+all = [
+    "aisuite>=0.1.11,<1",
+    "anthropic>=0.49,<1",
+    "openai>=2,<3",
+    "python-dotenv>=1,<2",
+    "torch>=2.2,<3",
+    "transformers>=4.48,<6",
+    "typer>=0.15,<1",
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/psysafe-ai" # Replace with your repo URL
-Repository = "https://github.com/yourusername/psysafe-ai"
-
-[project.scripts]
-psysafe = "psysafe.cli.main:app"
-
-[tool.hatch.version]
-path = "psysafe/__init__.py"
+Homepage = "https://github.com/mblukac/psysafe-ai"
+Repository = "https://github.com/mblukac/psysafe-ai.git"
+Issues = "https://github.com/mblukac/psysafe-ai/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["psysafe"]
 
 [tool.black]
 line-length = 120
+target-version = ["py310", "py311", "py312", "py313"]
 
 [tool.ruff]
 line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "C90", "N", "S", "B", "A", "COM", "LOG", "Q", "PT", "ISC", "ICN", "T20", "PYI", "BLE", "FBT"]
 ignore = ["D203", "D212", "D407", "D416", "E501", "T201", "C901", "S314", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "B904", "BLE001", "E402", "FBT001", "FBT002", "A001", "S110", "S701", "F401"]
 
@@ -82,20 +99,31 @@ known-first-party = ["psysafe", "tests"]
 python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
-# Add other mypy configurations as needed
-# Consider adding:
-# ignore_missing_imports = true # If some dependencies don't have stubs
 
 [tool.pytest.ini_options]
-minversion = "8.0" # Adjusted to match common pytest versions
-addopts = "-ra -q --color=yes" 
-testpaths = [
-    "tests",
-]
-pythonpath = [
-  "."
-]
+minversion = "8.0"
+addopts = "-ra -q --color=yes"
+testpaths = ["tests"]
+pythonpath = ["."]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-asyncio_mode = "auto" # if using pytest-asyncio
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[dependency-groups]
+dev = [
+    "aisuite>=0.1.11,<1",
+    "anthropic>=0.49,<1",
+    "black>=24.10,<27",
+    "hatch>=1.14,<2",
+    "mypy>=1.14,<2",
+    "openai>=2,<3",
+    "pytest>=8.3,<9",
+    "pytest-asyncio>=0.25,<2",
+    "pytest-cov>=7.0.0",
+    "pytest-mock>=3.14,<4",
+    "python-dotenv>=1,<2",
+    "ruff>=0.9,<1",
+    "typer>=0.15,<1",
+]

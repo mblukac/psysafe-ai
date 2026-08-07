@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   lint:
@@ -23,7 +22,7 @@ jobs:
       run: uv python install 3.12
       
     - name: Install dependencies
-      run: uv sync --all-extras --dev
+      run: uv sync --locked --group dev
       
     - name: Format with black
       run: uv run black --check .

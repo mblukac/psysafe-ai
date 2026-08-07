@@ -1,11 +1,23 @@
 # psysafe/__init__.py
-__version__ = "0.1.0.dev0"  # Example version
+__version__ = "0.2.0.dev0"
 
 # Expose key components for easier import by users of the SDK
 from .catalog import GuardrailCatalog
 from .core.base import GuardrailBase
 from .core.check import CheckGuardrail
+from .core.classifier import AsyncClassifier, Classifier, FailurePolicy
 from .core.composite import CompositeGuardrail
+from .core.contracts import (
+    Assessment,
+    AssessmentMetadata,
+    Conversation,
+    EvidenceDirectness,
+    IndeterminateReason,
+    Message,
+    MessageRole,
+    Outcome,
+    Sensitivity,
+)
 from .core.models import GuardedRequest, PromptRenderCtx, ValidationReport, ValidationSeverity, Violation
 from .core.prompt import PromptGuardrail
 from .core.template import PromptTemplate
@@ -21,6 +33,18 @@ __all__ = [
     "PromptGuardrail",
     "CheckGuardrail",
     "CompositeGuardrail",
+    "Assessment",
+    "AssessmentMetadata",
+    "AsyncClassifier",
+    "Classifier",
+    "Conversation",
+    "EvidenceDirectness",
+    "FailurePolicy",
+    "IndeterminateReason",
+    "Message",
+    "MessageRole",
+    "Outcome",
+    "Sensitivity",
     "PromptTemplate",
     "GuardedRequest",
     "ValidationReport",
