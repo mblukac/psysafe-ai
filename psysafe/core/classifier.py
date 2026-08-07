@@ -10,6 +10,7 @@ from psysafe.core.contracts import (
     AssessmentMetadata,
     Conversation,
     IndeterminateReason,
+    MessageRole,
     Sensitivity,
 )
 
@@ -32,6 +33,16 @@ class ClassificationError(RuntimeError):
 
 class IndeterminateAssessmentError(ClassificationError):
     """Raised when a caller requests a boolean from an indeterminate result."""
+
+
+def _classification_error_reason(error: ClassificationError) -> IndeterminateReason:
+    """Read categorical state only from an exact library-created error."""
+
+    if type(error) is not ClassificationError:
+        return IndeterminateReason.INTERNAL_ERROR
+    state = object.__getattribute__(error, "__dict__")
+    reason = state.get("reason") if isinstance(state, dict) else None
+    return reason if isinstance(reason, IndeterminateReason) else IndeterminateReason.INTERNAL_ERROR
 
 
 class FailurePolicy(str, Enum):
@@ -109,10 +120,44 @@ class AsyncClassifier(Protocol):
     ) -> Assessment: ...
 
 
+@runtime_checkable
+class TargetedClassifier(Classifier, Protocol):
+    """Classifier that can bind a decision to one message while using context."""
+
+    @property
+    def evidence_role(self) -> MessageRole | None: ...
+
+    def classify_target(
+        self,
+        conversation: Conversation,
+        *,
+        target_message_index: int,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> Assessment: ...
+
+
+@runtime_checkable
+class AsyncTargetedClassifier(AsyncClassifier, Protocol):
+    """Async classifier that binds a decision to one contextualized message."""
+
+    @property
+    def evidence_role(self) -> MessageRole | None: ...
+
+    async def aclassify_target(
+        self,
+        conversation: Conversation,
+        *,
+        target_message_index: int,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> Assessment: ...
+
+
 __all__ = [
     "AsyncClassifier",
+    "AsyncTargetedClassifier",
     "ClassificationError",
     "Classifier",
     "FailurePolicy",
     "IndeterminateAssessmentError",
+    "TargetedClassifier",
 ]

@@ -61,7 +61,11 @@ def test_self_harm_finding_has_strict_per_signal_context() -> None:
         "subject",
         "timeframe",
     }
-    assert set(SelfHarmObservation.model_fields) == {"findings", "insufficient_context"}
+    assert set(SelfHarmObservation.model_fields) == {
+        "findings",
+        "insufficient_context",
+        "output_truncated",
+    }
     assert observation.findings[0].subject is SelfHarmSubject.THIRD_PARTY
     assert observation.findings[0].timeframe is SelfHarmTimeframe.RECENT
 
@@ -440,3 +444,68 @@ def test_self_harm_policy_requires_user_authored_evidence_and_exports_that_rule(
     spec = classifier.export_spec()
     assert spec.evidence_role is MessageRole.USER
     assert "ideation" in spec.allowed_signals
+
+
+def test_self_harm_truncated_and_exact_cap_outputs_are_indeterminate() -> None:
+    truncated = SelfHarmObservation(
+        findings=(),
+        insufficient_context=False,
+        output_truncated=True,
+    )
+    capped = SelfHarmObservation(
+        findings=tuple(
+            SelfHarmFinding(
+                signal=SelfHarmSignal.IDEATION,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=(f"m{index}",),
+                subject=SelfHarmSubject.SELF,
+                source_context=SelfHarmSourceContext.DIRECT,
+                timeframe=SelfHarmTimeframe.CURRENT,
+            )
+            for index in range(64)
+        ),
+        insufficient_context=False,
+    )
+    conversation = Conversation(
+        messages=tuple(Message(role=MessageRole.USER, content=f"Synthetic {index}") for index in range(64)),
+    )
+
+    results = []
+    for observation in (truncated, capped):
+        classifier = SelfHarmClassifier(CallableBackend(lambda value=observation, **_: value))
+        results.extend((classifier.calibrate(classifier.bind(observation)), classifier.classify(conversation)))
+
+    for result in results:
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+def test_assistant_harm_truncated_and_exact_cap_outputs_are_indeterminate() -> None:
+    truncated = AssistantHarmObservation(
+        findings=(),
+        insufficient_context=False,
+        output_truncated=True,
+    )
+    capped = AssistantHarmObservation(
+        findings=tuple(
+            AssistantHarmFinding(
+                signal=AssistantHarmSignal.SELF_HARM_ENDORSEMENT,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=(f"m{index}",),
+            )
+            for index in range(64)
+        ),
+        insufficient_context=False,
+    )
+    conversation = Conversation(
+        messages=tuple(Message(role=MessageRole.ASSISTANT, content=f"Synthetic {index}") for index in range(64)),
+    )
+
+    results = []
+    for observation in (truncated, capped):
+        classifier = AssistantHarmClassifier(CallableBackend(lambda value=observation, **_: value))
+        results.extend((classifier.calibrate(classifier.bind(observation)), classifier.classify(conversation)))
+
+    for result in results:
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE

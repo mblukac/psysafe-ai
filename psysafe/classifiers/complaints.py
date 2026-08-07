@@ -13,12 +13,20 @@ from psysafe.classifiers.base import (
     Observation,
     ObservationRecord,
     PolicyClassifier,
+    _target_evidence_id,
     select_findings,
 )
 from psysafe.classifiers.context import EvidenceSubject, SourceContext, is_direct_user_evidence
 from psysafe.classifiers.prompting import PromptSpec, encoded_message_ids, encoded_messages
 from psysafe.core.classifier import FailurePolicy
-from psysafe.core.contracts import Assessment, Conversation, MessageRole, Outcome, Sensitivity
+from psysafe.core.contracts import (
+    Assessment,
+    Conversation,
+    IndeterminateReason,
+    MessageRole,
+    Outcome,
+    Sensitivity,
+)
 
 
 class ComplaintCategory(str, Enum):
@@ -42,6 +50,9 @@ class EscalationReason(str, Enum):
     SAFETY_OR_SUPPORT_NEED = "safety_or_support_need"
 
 
+MAX_COMPLAINT_ESCALATIONS = MAX_FINDINGS * len(EscalationReason)
+
+
 class ComplaintEscalation(Finding):
     """One independently calibrated escalation reason."""
 
@@ -55,22 +66,11 @@ class ComplaintEscalation(Finding):
 
 
 class ComplaintFinding(Finding):
-    """One categorized complaint with safe evidence locations and routing reasons."""
+    """One categorized complaint with safe evidence locations."""
 
     signal: ComplaintCategory = Field(description="Category for this complaint finding.")
     subject: EvidenceSubject = Field(description="Whose dissatisfaction is expressed.")
     source_context: SourceContext = Field(description="How the evidence is presented.")
-    escalations: tuple[ComplaintEscalation, ...] = Field(default_factory=tuple, max_length=4)
-
-    @field_validator("escalations")
-    @classmethod
-    def escalations_must_be_unique(
-        cls,
-        values: tuple[ComplaintEscalation, ...],
-    ) -> tuple[ComplaintEscalation, ...]:
-        if len(values) != len(set(values)):
-            raise ValueError("duplicate complaint escalations are not allowed")
-        return values
 
     @property
     def category(self) -> ComplaintCategory:
@@ -82,15 +82,26 @@ class ComplaintFinding(Finding):
 class ComplaintsObservation(Observation[ComplaintFinding]):
     """Sensitivity-independent complaint observations."""
 
-    @field_validator("findings")
+    escalations: tuple[ComplaintEscalation, ...] = Field(
+        default_factory=tuple,
+        max_length=MAX_COMPLAINT_ESCALATIONS,
+    )
+
+    @field_validator("findings", "escalations")
     @classmethod
     def exact_duplicates_are_not_allowed(
         cls,
-        values: tuple[ComplaintFinding, ...],
-    ) -> tuple[ComplaintFinding, ...]:
+        values: tuple[ComplaintFinding, ...] | tuple[ComplaintEscalation, ...],
+    ) -> tuple[ComplaintFinding, ...] | tuple[ComplaintEscalation, ...]:
         if len(values) != len(set(values)):
-            raise ValueError("duplicate complaint findings are not allowed")
+            raise ValueError("duplicate complaint observations are not allowed")
         return values
+
+    @model_validator(mode="after")
+    def insufficient_context_has_no_escalations(self) -> ComplaintsObservation:
+        if self.insufficient_context and self.escalations:
+            raise ValueError("an insufficient-context observation cannot assert escalations")
+        return self
 
 
 class ComplaintsAssessment(Assessment):
@@ -122,9 +133,6 @@ class ComplaintsAssessment(Assessment):
             raise ValueError("only matched assessments may include complaint findings")
         if self.outcome is Outcome.INDETERMINATE and self.escalations:
             raise ValueError("indeterminate assessments cannot assert escalation evidence")
-        nested_escalations = {escalation for finding in self.findings for escalation in finding.escalations}
-        if not nested_escalations <= set(self.escalations):
-            raise ValueError("finding escalations must be included in calibrated escalations")
         return self
 
     @property
@@ -132,6 +140,12 @@ class ComplaintsAssessment(Assessment):
         """Deduplicated routing reasons retained after calibration."""
 
         return tuple(dict.fromkeys(escalation.signal for escalation in self.escalations))
+
+    @property
+    def review_signals(self) -> tuple[str, ...]:
+        """Categorical human-review reasons, independent of complaint match."""
+
+        return tuple(reason.value for reason in self.escalation_reasons)
 
 
 _COMPLAINTS_PROMPT = PromptSpec.from_package(
@@ -146,6 +160,12 @@ class ComplaintsClassifier(PolicyClassifier[ComplaintsObservation]):
 
     _result_model = ComplaintsAssessment
 
+    @property
+    def allowed_review_signals(self) -> tuple[str, ...]:
+        """Finite escalation vocabulary emitted by complaint assessments."""
+
+        return tuple(reason.value for reason in EscalationReason)
+
     def __init__(
         self,
         backend: StructuredBackend,
@@ -154,7 +174,7 @@ class ComplaintsClassifier(PolicyClassifier[ComplaintsObservation]):
     ) -> None:
         super().__init__(
             classifier_id="complaints",
-            policy_version="2026.08.1",
+            policy_version="2026.08.2",
             prompt=_COMPLAINTS_PROMPT,
             backend=backend,
             observation_model=ComplaintsObservation,
@@ -163,18 +183,67 @@ class ComplaintsClassifier(PolicyClassifier[ComplaintsObservation]):
             failure_policy=failure_policy,
         )
 
+    def _observation_is_saturated(self, observation: ComplaintsObservation) -> bool:
+        """Treat either bounded observation collection as possibly truncated."""
+
+        return (
+            super()._observation_is_saturated(observation) or len(observation.escalations) >= MAX_COMPLAINT_ESCALATIONS
+        )
+
     def calibrate(
         self,
         record: ObservationRecord[ComplaintsObservation],
         *,
         sensitivity: Sensitivity = Sensitivity.BALANCED,
     ) -> ComplaintsAssessment:
+        return self._calibrate(
+            record,
+            sensitivity=sensitivity,
+            target_message_id=None,
+        )
+
+    def _calibrate_target_record(
+        self,
+        record: ObservationRecord[ComplaintsObservation],
+        *,
+        target_message_index: int,
+        sensitivity: Sensitivity,
+    ) -> ComplaintsAssessment:
+        """Calibrate complaint and escalation evidence for a validated target."""
+
+        target_message_id = _target_evidence_id(target_message_index)
+        if record.target_message_id not in {None, target_message_id}:
+            return ComplaintsAssessment(
+                **self._indeterminate_from_record(
+                    record,
+                    sensitivity=Sensitivity(sensitivity),
+                    reason=IndeterminateReason.INVALID_RESPONSE,
+                ).model_dump(),
+            )
+        unscoped_record = record.model_copy(update={"target_message_id": None})
+        return self._calibrate(
+            unscoped_record,
+            sensitivity=sensitivity,
+            target_message_id=target_message_id,
+        )
+
+    def _calibrate(
+        self,
+        record: ObservationRecord[ComplaintsObservation],
+        *,
+        sensitivity: Sensitivity,
+        target_message_id: str | None,
+    ) -> ComplaintsAssessment:
         normalized_sensitivity = Sensitivity(sensitivity)
+        preflight = super().calibrate(record, sensitivity=normalized_sensitivity)
+        if preflight.outcome is Outcome.INDETERMINATE:
+            return ComplaintsAssessment(**preflight.model_dump())
         observation = self._observation_from_record(record)
         gate_ready_findings = tuple(
             finding
             for finding in observation.findings
             if is_direct_user_evidence(finding.subject, finding.source_context)
+            and (target_message_id is None or target_message_id in finding.message_ids)
         )
         gate_ready_observation = observation.model_copy(update={"findings": gate_ready_findings})
         gate_ready_record = record.model_copy(update={"observation": gate_ready_observation})
@@ -184,40 +253,23 @@ class ComplaintsClassifier(PolicyClassifier[ComplaintsObservation]):
             if assessment.outcome is Outcome.MATCHED
             else ()
         )
-        selected = tuple(
-            finding.model_copy(
-                update={
-                    "escalations": select_findings(
-                        tuple(
-                            escalation
-                            for escalation in finding.escalations
-                            if is_direct_user_evidence(escalation.subject, escalation.source_context)
-                        ),
-                        normalized_sensitivity,
-                    ),
-                },
+        selected_escalations = (
+            select_findings(
+                tuple(
+                    escalation
+                    for escalation in observation.escalations
+                    if is_direct_user_evidence(escalation.subject, escalation.source_context)
+                    and (target_message_id is None or target_message_id in escalation.message_ids)
+                ),
+                normalized_sensitivity,
             )
-            for finding in selected_findings
+            if assessment.outcome is not Outcome.INDETERMINATE
+            else ()
         )
-        selected_escalations = tuple(
-            dict.fromkeys(
-                escalation
-                for finding in observation.findings
-                for escalation in select_findings(
-                    tuple(
-                        escalation
-                        for escalation in finding.escalations
-                        if is_direct_user_evidence(escalation.subject, escalation.source_context)
-                    ),
-                    normalized_sensitivity,
-                )
-            ),
-        )
-        return ComplaintsAssessment(
-            **assessment.model_dump(),
-            findings=selected,
-            escalations=selected_escalations,
-        )
+        payload = assessment.model_dump()
+        payload["findings"] = selected_findings
+        payload["escalations"] = selected_escalations
+        return ComplaintsAssessment.model_validate(payload)
 
     def _validate_observation(self, observation: ComplaintsObservation, conversation: Conversation) -> None:
         super()._validate_observation(observation, conversation)
@@ -227,13 +279,23 @@ class ComplaintsClassifier(PolicyClassifier[ComplaintsObservation]):
             for encoded, message in zip(encoded_messages(conversation), conversation.messages, strict=True)
             if message.role is MessageRole.USER
         }
-        for finding in observation.findings:
-            for escalation in finding.escalations:
-                if not set(escalation.message_ids) <= known_ids or not (set(escalation.message_ids) & user_ids):
-                    raise BackendInvalidResponseError from None
+        for escalation in observation.escalations:
+            if not set(escalation.message_ids) <= known_ids or not (set(escalation.message_ids) & user_ids):
+                raise BackendInvalidResponseError from None
+
+    def _validate_target_observation(
+        self,
+        observation: ComplaintsObservation,
+        target_message_index: int,
+    ) -> None:
+        super()._validate_target_observation(observation, target_message_index)
+        target_id = _target_evidence_id(target_message_index)
+        if any(target_id not in escalation.message_ids for escalation in observation.escalations):
+            raise BackendInvalidResponseError from None
 
 
 __all__ = [
+    "MAX_COMPLAINT_ESCALATIONS",
     "ComplaintCategory",
     "ComplaintEscalation",
     "ComplaintFinding",

@@ -109,7 +109,7 @@ class DistressSupportClassifier(PolicyClassifier[DistressObservation]):
     ) -> None:
         super().__init__(
             classifier_id="distress_support",
-            policy_version="2026.08.1",
+            policy_version="2026.08.2",
             prompt=_DISTRESS_PROMPT,
             backend=backend,
             observation_model=DistressObservation,
@@ -124,6 +124,9 @@ class DistressSupportClassifier(PolicyClassifier[DistressObservation]):
         *,
         sensitivity: Sensitivity = Sensitivity.BALANCED,
     ) -> DistressAssessment:
+        preflight = super().calibrate(record, sensitivity=sensitivity)
+        if preflight.outcome is Outcome.INDETERMINATE:
+            return DistressAssessment(**preflight.model_dump())
         observation = self._observation_from_record(record)
         gate_ready_findings = tuple(
             finding
@@ -138,10 +141,9 @@ class DistressSupportClassifier(PolicyClassifier[DistressObservation]):
             if assessment.outcome is Outcome.MATCHED
             else ()
         )
-        return DistressAssessment(
-            **assessment.model_dump(),
-            findings=selected,
-        )
+        payload = assessment.model_dump()
+        payload["findings"] = selected
+        return DistressAssessment.model_validate(payload)
 
 
 __all__ = [

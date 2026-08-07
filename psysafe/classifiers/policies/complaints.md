@@ -12,14 +12,14 @@ Classify user-authored dissatisfaction about an organization, product, service, 
 
 Return no findings for questions, neutral feedback, non-dissatisfied feature requests, or unrelated dissatisfaction.
 
-Report applicable evidence in each finding's `escalations`. Each escalation has one `signal` plus its own subject, source context, directness, and `message_ids`:
+Report applicable evidence in the observation's top-level `escalations` collection. Escalations are independent of complaint findings: emit one even when `findings` is empty, and never invent a complaint to carry an escalation. Each escalation has one `signal` plus its own subject, source context, directness, and `message_ids`:
 
 - `explicit_human_request`: the person asks for a human, manager, supervisor, or formal escalation
 - `repeated_unresolved`: the exchange shows the same issue remained unresolved after prior attempts
 - `legal_or_regulatory_concern`: the person raises legal rights, a regulator, formal redress, discrimination, fraud, or a data-rights concern
 - `safety_or_support_need`: the complaint includes an immediate safety issue or a disclosed need for adapted support
 
-Set subject to `user`, `third_party`, or `unclear`, and source context independently to `direct`, `quoted`, `fictional`, or `unclear`; use `fictional` when invented material is also presented as a quotation, and reserve `quoted` for a real statement being repeated. Do not attribute quoted, fictional, or third-party dissatisfaction or escalation evidence to the user. Each complaint finding has its own category, directness, and `message_ids`, including at least one user-message ID plus any contextual IDs needed. Every escalation must also cite at least one user-message ID. Use `explicit` for direct evidence, `contextual` when meaning is clear only from the exchange, and `ambiguous` when an interpretation is plausible but uncertain. Do not merge instances with different directness or IDs. Do not produce a complaint or escalation boolean. Do not infer an escalation reason from anger alone. The runtime preserves every attributed observation, calibrates complaint and escalation evidence independently, and exposes only direct user evidence for routing.
+For every item, set subject to `user`, `third_party`, or `unclear` and source context to `direct`, `quoted`, `fictional`, or `unclear`. Use `fictional` for invented quotations and `quoted` for repeated real statements. Only direct evidence about the user is eligible for routing. Cite a user-message ID plus any needed context. Use `explicit` for direct evidence, `contextual` when meaning depends on the exchange, and `ambiguous` when a match is plausible but uncertain. Keep items with different directness or IDs separate. Never return complaint or escalation booleans or infer escalation from anger alone.
 
 Reserve `insufficient_context` for input that is empty of usable meaning, incoherent, or otherwise not assessable. Uncertainty about a possible match is `ambiguous`; no complaint is an empty findings list with `insufficient_context` false.
 

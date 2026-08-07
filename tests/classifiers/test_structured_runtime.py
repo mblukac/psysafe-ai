@@ -1,7 +1,8 @@
+import asyncio
 import json
 
 import pytest
-from pydantic import ValidationError
+from pydantic import ValidationError, model_validator
 
 from psysafe.backends import (
     BackendConfigurationError,
@@ -11,13 +12,17 @@ from psysafe.backends import (
     BackendTimeoutError,
     CallableBackend,
 )
-from psysafe.classifiers.base import Finding, Observation, PolicyClassifier
+from psysafe.classifiers.base import MAX_FINDINGS, Finding, Observation, PolicyClassifier
 from psysafe.classifiers.prompting import PromptSpec
 from psysafe.core.classifier import ClassificationError, FailurePolicy
 from psysafe.core.contracts import (
+    Assessment,
+    AssessmentMetadata,
     Conversation,
     EvidenceDirectness,
     IndeterminateReason,
+    Message,
+    MessageRole,
     Outcome,
     Sensitivity,
 )
@@ -60,7 +65,9 @@ def test_untrusted_conversation_is_json_data_not_instructions() -> None:
     result = _classifier(CallableBackend(handler)).classify(Conversation.from_text(attack))
 
     assert result.outcome is Outcome.MATCHED
-    assert captured["instructions"] == "Classify only according to the fixed test policy."
+    assert str(captured["instructions"]).startswith("Classify only according to the fixed test policy.")
+    assert "target_message_id" in str(captured["instructions"])
+    assert "output_truncated" in str(captured["instructions"])
     assert attack not in str(captured["instructions"])
     payload = json.loads(str(captured["input_text"]))
     assert payload == {
@@ -92,6 +99,165 @@ def test_each_finding_is_calibrated_monotonically_without_another_call() -> None
     assert precise.evidence_directness is EvidenceDirectness.EXPLICIT
     assert balanced.evidence_directness is EvidenceDirectness.CONTEXTUAL
     assert precautionary.evidence_directness is EvidenceDirectness.AMBIGUOUS
+
+
+def test_target_classification_keeps_context_but_routes_only_target_evidence() -> None:
+    captured: dict[str, object] = {}
+    observation = _observation(
+        _finding("contextual_signal", EvidenceDirectness.CONTEXTUAL, "m0", "m1"),
+    )
+
+    def handler(**kwargs: object) -> Observation[Finding]:
+        captured.update(kwargs)
+        return observation
+
+    classifier = _classifier(CallableBackend(handler))
+    conversation = Conversation(
+        messages=(
+            Message(role="user", content="earlier context"),
+            Message(role="user", content="current target"),
+        ),
+    )
+
+    result = classifier.classify_target(
+        conversation,
+        target_message_index=1,
+        sensitivity=Sensitivity.BALANCED,
+    )
+
+    assert result.outcome is Outcome.MATCHED
+    assert result.signals == ("contextual_signal",)
+    payload = json.loads(str(captured["input_text"]))
+    assert [message["content"] for message in payload["messages"]] == [
+        "earlier context",
+        "current target",
+    ]
+    assert payload["target_message_id"] == "m1"
+    assert "actionable evidence cites that ID" in str(captured["instructions"])
+
+
+def test_target_scoped_records_cannot_be_reused_as_exhaustive_or_for_another_target() -> None:
+    observation = _observation(
+        _finding("contextual_signal", EvidenceDirectness.CONTEXTUAL, "m0", "m1"),
+    )
+    classifier = _classifier(CallableBackend(lambda **_: observation))
+    conversation = Conversation(
+        messages=(
+            Message(role=MessageRole.USER, content="earlier context"),
+            Message(role=MessageRole.USER, content="current target"),
+        ),
+    )
+
+    record = classifier.observe(conversation, target_message_index=1)
+    restored = type(record).model_validate_json(record.model_dump_json())
+    exhaustive = classifier.calibrate(record)
+    same_target = classifier.calibrate_target(restored, conversation, target_message_index=1)
+    other_target = classifier.calibrate_target(restored, conversation, target_message_index=0)
+
+    assert record.target_message_id == "m1"
+    assert restored.target_message_id == "m1"
+    assert exhaustive.outcome is Outcome.INDETERMINATE
+    assert exhaustive.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+    assert same_target.outcome is Outcome.MATCHED
+    assert same_target.signals == ("contextual_signal",)
+    assert other_target.outcome is Outcome.INDETERMINATE
+    assert other_target.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+def test_target_calibration_checks_the_unfiltered_observation_cap() -> None:
+    conversation = Conversation(
+        messages=(
+            Message(role=MessageRole.USER, content="earlier context"),
+            Message(role=MessageRole.USER, content="current target"),
+        ),
+    )
+    unrelated = _observation(
+        *(_finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m0") for _ in range(MAX_FINDINGS)),
+    )
+    scoped = _observation(
+        *(_finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m1") for _ in range(MAX_FINDINGS)),
+    )
+    classifier = _classifier(CallableBackend(lambda **_: unrelated))
+    scoped_classifier = _classifier(CallableBackend(lambda **_: scoped))
+
+    unrelated_result = classifier.calibrate_target(
+        classifier.observe(conversation),
+        conversation,
+        target_message_index=1,
+    )
+    scoped_result = scoped_classifier.calibrate_target(
+        scoped_classifier.observe(conversation, target_message_index=1),
+        conversation,
+        target_message_index=1,
+    )
+
+    for result in (unrelated_result, scoped_result):
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+def test_target_index_is_validated_before_backend_io() -> None:
+    backend = CallableBackend(lambda **_: _observation())
+    classifier = _classifier(backend)
+
+    with pytest.raises(ValueError, match="target message"):
+        classifier.classify_target(
+            Conversation.from_text("private"),
+            target_message_index=2,
+        )
+
+    assert backend.call_count == 0
+
+
+def test_prompt_encode_invalid_target_does_not_retain_raw_payload() -> None:
+    prompt = PromptSpec(instructions="Fixed policy.")
+
+    with pytest.raises(ValueError, match="target message index") as caught:
+        prompt.encode(
+            Conversation.from_text("PRIVATE LOW LEVEL PROMPT INPUT"),
+            target_message_index=2,
+        )
+
+    assert "PRIVATE LOW LEVEL PROMPT INPUT" not in _library_traceback_locals(caught.value)
+
+
+def test_record_target_calibration_requires_the_original_target_to_exist() -> None:
+    conversation = Conversation.from_text("only message")
+    classifier = _classifier(
+        CallableBackend(
+            lambda **_: _observation(_finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m0")),
+        ),
+    )
+    record = classifier.observe(conversation)
+
+    with pytest.raises(ValueError, match="target message"):
+        classifier.calibrate_target(record, conversation, target_message_index=1)
+
+
+def test_record_target_calibration_enforces_the_classifier_evidence_role() -> None:
+    conversation = Conversation(
+        messages=(
+            Message(role=MessageRole.USER, content="user evidence"),
+            Message(role=MessageRole.ASSISTANT, content="assistant context"),
+        ),
+    )
+    classifier = PolicyClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify only according to the fixed test policy."),
+        backend=CallableBackend(
+            lambda **_: _observation(
+                _finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m0", "m1"),
+            ),
+        ),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+        evidence_role=MessageRole.USER,
+    )
+    record = classifier.observe(conversation)
+
+    with pytest.raises(ValueError, match="target message"):
+        classifier.calibrate_target(record, conversation, target_message_index=1)
 
 
 def test_invalid_sensitivity_is_rejected_before_backend_io() -> None:
@@ -246,6 +412,7 @@ def test_exported_spec_is_portable_and_contains_no_execution_data() -> None:
         "message_id_sequence": "m0_to_mN_in_message_order",
     }
     assert spec.allowed_signals == ("ambiguous_signal", "contextual_signal", "explicit_signal")
+    assert spec.allowed_review_signals == ()
     assert spec.evidence_role is None
     assert set(spec.input_schema["required"]) == {"messages"}
     assert spec.input_schema["properties"]["format"]["const"] == "psysafe.conversation.v1"
@@ -301,7 +468,7 @@ def test_observation_record_round_trips_and_rejects_foreign_policy() -> None:
             ),
         },
     )
-    with pytest.raises(ValueError, match="citations do not match"):
+    with pytest.raises(ValueError, match="record does not match this conversation"):
         classifier.validate_record(forged_citation, Conversation.from_text("test"))
 
     local_record = classifier.bind(observation)
@@ -371,3 +538,374 @@ def test_raise_policy_traceback_frames_do_not_retain_private_classifier_input() 
     library_locals = _library_traceback_locals(caught.value)
     assert "PRIVATE CONVERSATION" not in library_locals
     assert "SECRET PROVIDER BODY" not in library_locals
+
+
+class _ExplosiveMetadataClassifier(PolicyClassifier[Observation[Finding]]):
+    @property
+    def assessment_metadata(self) -> AssessmentMetadata:
+        raise RuntimeError("PRIVATE METADATA ACCESSOR")
+
+
+def _explosive_metadata_classifier(backend: CallableBackend) -> _ExplosiveMetadataClassifier:
+    return _ExplosiveMetadataClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=backend,
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+    )
+
+
+def test_observe_uses_snapshotted_metadata_instead_of_overridable_accessors() -> None:
+    classifier = _explosive_metadata_classifier(
+        CallableBackend(
+            lambda **_: _observation(
+                _finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m0"),
+            ),
+        ),
+    )
+
+    record = classifier.observe(Conversation.from_text("PRIVATE OBSERVATION INPUT"))
+
+    assert record.metadata == AssessmentMetadata(provider="callable", model="deterministic")
+
+
+@pytest.mark.asyncio
+async def test_aobserve_uses_snapshotted_metadata_instead_of_overridable_accessors() -> None:
+    classifier = _explosive_metadata_classifier(
+        CallableBackend(
+            lambda **_: _observation(),
+            async_handler=lambda **_: _async_observation(),
+        ),
+    )
+
+    record = await classifier.aobserve(Conversation.from_text("PRIVATE ASYNC OBSERVATION INPUT"))
+
+    assert record.metadata == AssessmentMetadata(provider="callable", model="deterministic")
+
+
+async def _async_observation() -> Observation[Finding]:
+    return _observation(_finding("explicit_signal", EvidenceDirectness.EXPLICIT, "m0"))
+
+
+def test_sync_cancellation_is_re_raised_without_retaining_classifier_input() -> None:
+    def cancel(**_: object) -> Observation[Finding]:
+        raise asyncio.CancelledError("PRIVATE CANCELLATION DETAIL")
+
+    with pytest.raises(asyncio.CancelledError) as caught:
+        _classifier(CallableBackend(cancel)).classify(
+            Conversation.from_text("PRIVATE CANCELLED INPUT"),
+        )
+
+    locals_text = _library_traceback_locals(caught.value)
+    assert "PRIVATE CANCELLED INPUT" not in locals_text
+    assert "PRIVATE CANCELLATION DETAIL" not in locals_text
+
+
+@pytest.mark.asyncio
+async def test_async_cancellation_is_re_raised_without_retaining_classifier_input() -> None:
+    async def cancel(**_: object) -> Observation[Finding]:
+        raise asyncio.CancelledError("PRIVATE ASYNC CANCELLATION DETAIL")
+
+    with pytest.raises(asyncio.CancelledError) as caught:
+        await _classifier(CallableBackend(lambda **_: _observation(), async_handler=cancel)).aclassify(
+            Conversation.from_text("PRIVATE ASYNC CANCELLED INPUT"),
+        )
+
+    locals_text = _library_traceback_locals(caught.value)
+    assert "PRIVATE ASYNC CANCELLED INPUT" not in locals_text
+    assert "PRIVATE ASYNC CANCELLATION DETAIL" not in locals_text
+
+
+class _ExplosiveEvidenceRoleClassifier(PolicyClassifier[Observation[Finding]]):
+    @property
+    def evidence_role(self) -> MessageRole | None:
+        raise RuntimeError("PRIVATE EVIDENCE ROLE ACCESSOR")
+
+
+def _explosive_role_classifier() -> _ExplosiveEvidenceRoleClassifier:
+    return _ExplosiveEvidenceRoleClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=CallableBackend(lambda **_: _observation()),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+    )
+
+
+def test_target_apis_use_snapshotted_role_instead_of_overridable_accessors() -> None:
+    classifier = _explosive_role_classifier()
+    conversation = Conversation.from_text("PRIVATE TARGET INPUT")
+    record = classifier.observe(conversation)
+
+    classified = classifier.classify_target(conversation, target_message_index=0)
+    calibrated = classifier.calibrate_target(record, conversation, target_message_index=0)
+
+    assert classified.outcome is Outcome.NOT_MATCHED
+    assert calibrated.outcome is Outcome.NOT_MATCHED
+
+
+@pytest.mark.asyncio
+async def test_async_target_api_uses_snapshotted_role() -> None:
+    classifier = _explosive_role_classifier()
+
+    result = await classifier.aclassify_target(
+        Conversation.from_text("PRIVATE ASYNC TARGET INPUT"),
+        target_message_index=0,
+    )
+
+    assert result.outcome is Outcome.NOT_MATCHED
+
+
+def test_output_truncation_and_exact_cap_are_indeterminate() -> None:
+    truncated = ObservationModel(findings=(), insufficient_context=False, output_truncated=True)
+    capped = ObservationModel(
+        findings=tuple(
+            _finding(
+                "explicit_signal",
+                EvidenceDirectness.EXPLICIT,
+                *(("m0",) if index == 0 else ("m0", f"m{index}")),
+            )
+            for index in range(64)
+        ),
+        insufficient_context=False,
+    )
+    conversation = Conversation(
+        messages=tuple(Message(role=MessageRole.USER, content=f"Synthetic {index}") for index in range(64)),
+    )
+
+    truncated_result = _classifier(CallableBackend(lambda **_: truncated)).classify(
+        Conversation.from_text("test"),
+    )
+    capped_result = _classifier(CallableBackend(lambda **_: capped)).classify_target(
+        conversation,
+        target_message_index=0,
+    )
+
+    for result in (truncated_result, capped_result):
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+class _MalformedCalibrationClassifier(PolicyClassifier[Observation[Finding]]):
+    def __init__(self, value: object, *, failure_policy: FailurePolicy = FailurePolicy.RETURN_INDETERMINATE) -> None:
+        self._calibrated_value = value
+        super().__init__(
+            classifier_id="test_policy",
+            policy_version="2026.08.1",
+            prompt=PromptSpec(instructions="Classify the fixed policy."),
+            backend=CallableBackend(lambda **_: _observation()),
+            observation_model=ObservationModel,
+            allowed_signals=frozenset({"explicit_signal"}),
+            failure_policy=failure_policy,
+        )
+
+    def calibrate(
+        self,
+        record: object,
+        *,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> Assessment:
+        del record, sensitivity
+        return self._calibrated_value  # type: ignore[return-value]
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "not an assessment",
+        Assessment(
+            classifier_id="wrong_policy",
+            policy_version="2026.08.1",
+            outcome=Outcome.NOT_MATCHED,
+        ),
+        Assessment(
+            classifier_id="test_policy",
+            policy_version="2026.08.1",
+            sensitivity=Sensitivity.PRECISE,
+            outcome=Outcome.NOT_MATCHED,
+        ),
+    ],
+)
+def test_malformed_custom_calibration_cannot_return_a_forged_negative(value: object) -> None:
+    result = _MalformedCalibrationClassifier(value).classify(Conversation.from_text("private"))
+
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.INTERNAL_ERROR
+
+
+def test_malformed_calibration_raise_policy_drops_data_bearing_result() -> None:
+    class DataBearingAssessment(Assessment):
+        raw_input: str
+
+    forged = DataBearingAssessment(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        outcome=Outcome.NOT_MATCHED,
+        raw_input="PRIVATE FORGED CALIBRATION",
+    )
+
+    with pytest.raises(ClassificationError) as caught:
+        _MalformedCalibrationClassifier(forged, failure_policy=FailurePolicy.RAISE).classify(
+            Conversation.from_text("PRIVATE CLASSIFICATION INPUT"),
+        )
+
+    locals_text = _library_traceback_locals(caught.value)
+    assert "PRIVATE FORGED CALIBRATION" not in locals_text
+    assert "PRIVATE CLASSIFICATION INPUT" not in locals_text
+
+
+def test_calibration_cancellation_drops_observation_and_input_before_re_raising() -> None:
+    class CancellingCalibrationClassifier(PolicyClassifier[Observation[Finding]]):
+        def calibrate(
+            self,
+            record: object,
+            *,
+            sensitivity: Sensitivity = Sensitivity.BALANCED,
+        ) -> Assessment:
+            del record, sensitivity
+            raise asyncio.CancelledError("PRIVATE CALIBRATION CANCELLATION")
+
+    observation = _observation(
+        Finding(
+            signal="private_observation_marker",
+            directness=EvidenceDirectness.EXPLICIT,
+            message_ids=("m0",),
+        ),
+    )
+    classifier = CancellingCalibrationClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=CallableBackend(lambda **_: observation),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"private_observation_marker"}),
+    )
+
+    with pytest.raises(asyncio.CancelledError) as caught:
+        classifier.classify(Conversation.from_text("PRIVATE CALIBRATION INPUT"))
+
+    locals_text = _library_traceback_locals(caught.value)
+    assert "PRIVATE CALIBRATION CANCELLATION" not in locals_text
+    assert "private_observation_marker" not in locals_text
+    assert "PRIVATE CALIBRATION INPUT" not in locals_text
+
+
+class _ForgingIndeterminateAssessment(Assessment):
+    @model_validator(mode="before")
+    @classmethod
+    def forge_negative(cls, value: object) -> object:
+        if isinstance(value, dict):
+            forged = dict(value)
+            forged.update(
+                outcome=Outcome.NOT_MATCHED,
+                indeterminate_reason=None,
+            )
+            return forged
+        return value
+
+
+class _ExplodingIndeterminateAssessment(Assessment):
+    @model_validator(mode="before")
+    @classmethod
+    def explode(cls, value: object) -> object:
+        del value
+        raise RuntimeError("PRIVATE RESULT MODEL VALIDATOR")
+
+
+@pytest.mark.parametrize(
+    "result_model",
+    [_ForgingIndeterminateAssessment, _ExplodingIndeterminateAssessment],
+)
+def test_untrusted_result_models_cannot_forge_or_break_backend_failures(
+    result_model: type[Assessment],
+) -> None:
+    class HostileResultClassifier(PolicyClassifier[Observation[Finding]]):
+        _result_model = result_model
+
+    classifier = HostileResultClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=CallableBackend(lambda **_: (_ for _ in ()).throw(RuntimeError("PRIVATE BACKEND"))),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+    )
+
+    result = classifier.classify(Conversation.from_text("PRIVATE RESULT MODEL INPUT"))
+
+    assert type(result) is Assessment
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.PROVIDER_ERROR
+
+
+def test_untrusted_result_model_cannot_forge_truncated_calibration() -> None:
+    class HostileResultClassifier(PolicyClassifier[Observation[Finding]]):
+        _result_model = _ForgingIndeterminateAssessment
+
+    classifier = HostileResultClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=CallableBackend(lambda **_: _observation()),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+    )
+    record = classifier.bind(
+        ObservationModel(findings=(), insufficient_context=False, output_truncated=True),
+    )
+
+    result = classifier.calibrate(record)
+
+    assert type(result) is Assessment
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+class _ExplosiveIdentityClassifier(PolicyClassifier[Observation[Finding]]):
+    @property
+    def classifier_id(self) -> str:
+        raise RuntimeError("PRIVATE CLASSIFIER ID")
+
+    @property
+    def policy_version(self) -> str:
+        raise RuntimeError("PRIVATE POLICY VERSION")
+
+    @property
+    def assessment_metadata(self) -> AssessmentMetadata:
+        raise RuntimeError("PRIVATE ASSESSMENT METADATA")
+
+
+def _explosive_identity_classifier() -> _ExplosiveIdentityClassifier:
+    return _ExplosiveIdentityClassifier(
+        classifier_id="test_policy",
+        policy_version="2026.08.1",
+        prompt=PromptSpec(instructions="Classify the fixed policy."),
+        backend=CallableBackend(lambda **_: (_ for _ in ()).throw(RuntimeError("PRIVATE BACKEND"))),
+        observation_model=ObservationModel,
+        allowed_signals=frozenset({"explicit_signal"}),
+    )
+
+
+def test_failure_resolution_uses_constructor_identity_snapshots() -> None:
+    result = _explosive_identity_classifier().classify(
+        Conversation.from_text("PRIVATE SNAPSHOT INPUT"),
+    )
+
+    assert result.classifier_id == "test_policy"
+    assert result.policy_version == "2026.08.1"
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.PROVIDER_ERROR
+
+
+@pytest.mark.asyncio
+async def test_async_failure_resolution_uses_constructor_identity_snapshots() -> None:
+    result = await _explosive_identity_classifier().aclassify(
+        Conversation.from_text("PRIVATE ASYNC SNAPSHOT INPUT"),
+    )
+
+    assert result.classifier_id == "test_policy"
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.PROVIDER_ERROR

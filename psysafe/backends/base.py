@@ -8,6 +8,7 @@ contract.
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Awaitable, Callable, Mapping
 from typing import NoReturn, Protocol, TypeVar, runtime_checkable
 
@@ -62,19 +63,27 @@ class BackendConfigurationError(RuntimeError):
 
 
 def _fresh_backend_error(error: BackendError) -> BackendError:
-    """Copy only a known categorical reason, dropping causes and custom state."""
+    """Copy only an exact known error type, dropping custom subclass state."""
 
-    error_types: dict[IndeterminateReason, type[BackendError]] = {
-        IndeterminateReason.REFUSED: BackendRefusalError,
-        IndeterminateReason.TIMEOUT: BackendTimeoutError,
-        IndeterminateReason.INVALID_RESPONSE: BackendInvalidResponseError,
-        IndeterminateReason.PROVIDER_ERROR: BackendProviderError,
+    error_types: dict[type[BackendError], type[BackendError]] = {
+        BackendRefusalError: BackendRefusalError,
+        BackendTimeoutError: BackendTimeoutError,
+        BackendInvalidResponseError: BackendInvalidResponseError,
+        BackendProviderError: BackendProviderError,
     }
-    return error_types.get(error.reason, BackendProviderError)()
+    return error_types.get(type(error), BackendProviderError)()
 
 
-def _fresh_configuration_error(error: BackendConfigurationError) -> BackendConfigurationError:
-    return BackendConfigurationError(error.extra)
+def _fresh_configuration_error(error: BackendConfigurationError) -> BackendConfigurationError | None:
+    """Copy only a well-formed exact configuration error."""
+
+    if type(error) is not BackendConfigurationError:
+        return None
+    state = object.__getattribute__(error, "__dict__")
+    extra = state.get("extra") if isinstance(state, dict) else None
+    if extra not in {"anthropic", "openai"}:
+        return None
+    return BackendConfigurationError(extra)
 
 
 def _raise_backend_error(error: BackendError) -> NoReturn:
@@ -86,7 +95,16 @@ def _raise_backend_error(error: BackendError) -> NoReturn:
 def _raise_configuration_error(error: BackendConfigurationError) -> NoReturn:
     """Raise an actionable fixed message without retaining integration frames."""
 
-    raise _fresh_configuration_error(error) from None
+    fresh = _fresh_configuration_error(error)
+    if fresh is None:
+        raise BackendProviderError from None
+    raise fresh from None
+
+
+def _raise_cancelled() -> NoReturn:
+    """Re-raise cancellation without retaining provider or request frames."""
+
+    raise asyncio.CancelledError from None
 
 
 @runtime_checkable
@@ -184,6 +202,7 @@ class CallableBackend:
     ) -> OutputT:
         self._call_count += 1
         failure: BackendError | None = None
+        cancelled = False
         value: object | None = None
         result: OutputT | None = None
         try:
@@ -193,6 +212,8 @@ class CallableBackend:
                 output_type=output_type,
             )
             result = _validated_output(value, output_type)
+        except asyncio.CancelledError:
+            cancelled = True
         except BackendError as caught:
             failure = _fresh_backend_error(caught)
         except TimeoutError:
@@ -202,6 +223,9 @@ class CallableBackend:
         # A caller-supplied handler is a provider boundary; never expose its exception.
         except Exception:  # noqa: BLE001
             failure = BackendProviderError()
+        if cancelled:
+            del self, instructions, input_text, output_type, value, result, failure
+            _raise_cancelled()
         if failure is not None:
             del self, instructions, input_text, output_type, value, result
             _raise_backend_error(failure)
@@ -220,6 +244,7 @@ class CallableBackend:
     ) -> OutputT:
         self._call_count += 1
         failure: BackendError | None = None
+        cancelled = False
         value: object | None = None
         result: OutputT | None = None
         try:
@@ -236,6 +261,8 @@ class CallableBackend:
                     output_type=output_type,
                 )
             result = _validated_output(value, output_type)
+        except asyncio.CancelledError:
+            cancelled = True
         except BackendError as caught:
             failure = _fresh_backend_error(caught)
         except TimeoutError:
@@ -245,6 +272,9 @@ class CallableBackend:
         # A caller-supplied handler is a provider boundary; never expose its exception.
         except Exception:  # noqa: BLE001
             failure = BackendProviderError()
+        if cancelled:
+            del self, instructions, input_text, output_type, value, result, failure
+            _raise_cancelled()
         if failure is not None:
             del self, instructions, input_text, output_type, value, result
             _raise_backend_error(failure)

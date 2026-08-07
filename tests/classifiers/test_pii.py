@@ -1,4 +1,8 @@
-from psysafe.classifiers.pii import MAX_PII_LOCATIONS, PIIClassifier, PIIType
+from typing import cast
+
+import pytest
+
+from psysafe.classifiers.pii import MAX_PII_LOCATIONS, PIIAssessment, PIIClassifier, PIIType
 from psysafe.core.contracts import Conversation, EvidenceDirectness, Message, Outcome, Sensitivity
 
 
@@ -7,6 +11,16 @@ def _fullwidth(value: str) -> str:
         "\u3000" if character == " " else chr(ord(character) + 0xFEE0) if "!" <= character <= "~" else character
         for character in value
     )
+
+
+def _pii_traceback_locals(error: BaseException) -> str:
+    values: list[str] = []
+    traceback = error.__traceback__
+    while traceback is not None:
+        if "/psysafe/" in traceback.tb_frame.f_code.co_filename:
+            values.append(repr(traceback.tb_frame.f_locals))
+        traceback = traceback.tb_next
+    return "\n".join(values)
 
 
 def test_pii_detection_is_local_and_returns_only_types_and_locations() -> None:
@@ -112,6 +126,26 @@ async def test_async_pii_classification_has_no_backend_requirement() -> None:
 
     assert result.outcome is Outcome.MATCHED
     assert result.signals == (PIIType.EMAIL_ADDRESS.value,)
+
+
+def test_targeted_pii_uses_only_target_and_preserves_original_message_index() -> None:
+    conversation = Conversation(
+        messages=(
+            Message(role="user", content="old@example.org"),
+            Message(role="assistant", content="No identifier here."),
+            Message(role="tool", content="new@example.org"),
+        ),
+    )
+
+    result = PIIClassifier().classify_target(
+        conversation,
+        target_message_index=2,
+        sensitivity=Sensitivity.PRECISE,
+    )
+
+    assert result.outcome is Outcome.MATCHED
+    assert len(result.locations) == 1
+    assert result.locations[0].message_index == 2
 
 
 def test_local_detector_bounds_locations_for_large_inputs() -> None:
@@ -267,3 +301,77 @@ def test_overlapping_card_and_phone_shapes_resolve_without_inconsistent_signals(
     assert result.outcome is Outcome.MATCHED
     assert result.locations_truncated is False
     assert {location.pii_type.value for location in result.locations} == set(result.signals)
+
+
+def test_broader_sensitivity_preserves_overlapping_precise_locations() -> None:
+    conversation = Conversation.from_text("212 555 1234@example.com")
+    classifier = PIIClassifier()
+
+    precise = classifier.classify(conversation, sensitivity=Sensitivity.PRECISE)
+    balanced = classifier.classify(conversation, sensitivity=Sensitivity.BALANCED)
+
+    assert precise.outcome is Outcome.MATCHED
+    assert set(precise.locations) <= set(balanced.locations)
+    assert {location.pii_type for location in balanced.locations} == {
+        PIIType.EMAIL_ADDRESS,
+        PIIType.PHONE_NUMBER,
+    }
+
+
+def test_location_cap_prioritizes_narrower_matches_monotonically() -> None:
+    phones = ", ".join(f"212555{index:04d}" for index in range(MAX_PII_LOCATIONS))
+    conversation = Conversation.from_text(f"{phones}; final@example.com")
+    classifier = PIIClassifier()
+
+    precise = classifier.classify(conversation, sensitivity=Sensitivity.PRECISE)
+    precautionary = classifier.classify(conversation, sensitivity=Sensitivity.PRECAUTIONARY)
+
+    assert precautionary.locations_truncated is True
+    assert set(precise.locations) <= set(precautionary.locations)
+    assert PIIType.EMAIL_ADDRESS.value in precautionary.signals
+    assert "redaction-complete" in str(PIIAssessment.model_fields["locations_truncated"].description)
+
+
+def test_invalid_pii_boundaries_do_not_invoke_subclasses_or_retain_input() -> None:
+    class HostileString(str):
+        def __eq__(self, other: object) -> bool:
+            del other
+            raise RuntimeError("PRIVATE SENSITIVITY ACCESSOR")
+
+        __hash__ = str.__hash__
+
+    class HostileInt(int):
+        def __lt__(self, other: object) -> bool:
+            del other
+            raise RuntimeError("PRIVATE INDEX ACCESSOR")
+
+    conversation = Conversation.from_text("PRIVATE PII INPUT")
+    classifier = PIIClassifier()
+
+    with pytest.raises(ValueError, match="valid Sensitivity") as sensitivity_error:
+        classifier.classify(
+            conversation,
+            sensitivity=cast(Sensitivity, HostileString("balanced")),
+        )
+    with pytest.raises(ValueError, match="target message") as target_error:
+        classifier.classify_target(
+            conversation,
+            target_message_index=cast(int, HostileInt(0)),
+        )
+
+    for error in (sensitivity_error.value, target_error.value):
+        locals_text = _pii_traceback_locals(error)
+        assert "PRIVATE PII INPUT" not in locals_text
+        assert "PRIVATE SENSITIVITY ACCESSOR" not in locals_text
+        assert "PRIVATE INDEX ACCESSOR" not in locals_text
+
+
+@pytest.mark.asyncio
+async def test_async_invalid_pii_target_does_not_retain_input() -> None:
+    with pytest.raises(ValueError, match="target message") as caught:
+        await PIIClassifier().aclassify_target(
+            Conversation.from_text("PRIVATE ASYNC PII INPUT"),
+            target_message_index=cast(int, True),
+        )
+
+    assert "PRIVATE ASYNC PII INPUT" not in _pii_traceback_locals(caught.value)
