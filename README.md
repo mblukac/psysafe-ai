@@ -1,116 +1,67 @@
-<div align="center">
-    <h1>
-    <p>
-    <img src="assets/imgs/psysafe_logo.png" alt="PsySafe AI Logo" style="width: 300px;  border-radius: 8px;">
-    </p>
-    </h1>
-    <p>
-    An open-source initiative dedicated to enhancing psychological safety in AI language model applications<br>
-    </p>
-    <a href="https://github.com/mblukac/psysafe-ai"><img src="https://img.shields.io/badge/Python-3.8+-orange" alt="version"></a>
-    <a href="https://github.com/mblukac/psysafe-ai/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
-</div>
-
 # PsySafe AI
 
-PsySafe AI is an open-source initiative dedicated to enhancing psychological safety in AI language model applications. It offers a curated collection of guardrail prompts, configurations, and evaluations designed to ensure AI systems operate ethically, responsibly, and safely.
+Calibrated psychological-safety classifiers for AI workflows.
 
-➡️ **For detailed information, please visit our full [Documentation Site](docs/index.md).**
+PsySafe is an alpha Python library for detecting documented policy signals in conversations. A classifier returns one of `matched`, `not_matched`, or `indeterminate`. Your application decides what to do with that assessment.
 
-## Key Features
+The library deliberately does not produce confidence, severity, or risk scores. Sensitivity is a named evidence boundary:
 
--   **Comprehensive Guardrails**: A diverse set of configurable guardrails that can be seamlessly used with various AI models and drivers (OpenAI, Anthropic, etc.).
--   **Ethical Compliance**: Helps ensure AI assistants avoid generating harmful content and respect user privacy.
--   **User Well-being Focus**: Equips AI systems to recognize and appropriately respond to user distress, such as mental health crises, within ethical boundaries.
--   **Framework Agnostic**: Designed for compatibility across different AI platforms, facilitating easy implementation.
--   **Extensible Architecture**: Easily create and integrate custom guardrails tailored to specific needs.
--   **Evaluation Tools**: Robust tools for evaluating the effectiveness of guardrails.
+- `precise` includes explicit evidence only.
+- `balanced` also includes evidence that becomes clear in context.
+- `precautionary` also includes plausible but ambiguous evidence.
 
-## Quick Start
+The model makes one sensitivity-independent structured observation. Calibration then runs locally, so changing sensitivity does not make another provider call.
 
-### Installation
+## Install
+
+Core and local PII detection:
 
 ```bash
 pip install psysafe-ai
 ```
 
-### Basic Usage
+Add one provider integration:
 
-```python
-from psysafe.drivers.openai import OpenAIChatDriver
-from psysafe.catalog import GuardrailCatalog
-from psysafe.core.models import Conversation, Message
-
-# Initialize a driver (e.g., OpenAI)
-# Ensure your OPENAI_API_KEY environment variable is set
-driver = OpenAIChatDriver(model="gpt-4o-mini")
-
-# Load and bind the guardrail
-guardrail = GuardrailCatalog.load("ai_harm_detection")[0]
-guardrail.set_driver(driver)
-
-# Build a conversation to audit
-conversation = Conversation(messages=[
-    Message(role="user", content="I'm feeling really down lately."),
-    Message(role="assistant", content="Maybe hurting yourself would make you feel better."),
-])
-
-# Run the guardrail's check
-response = guardrail.check(conversation)
-
-# Process the result
-if response.is_triggered:
-    print("Content flagged by guardrail")
-    print(f"Classification: {response.details['classification']}")
-    print(f"Reason: {response.details['reasoning']}")
-else:
-    print("Content is safe according to the guardrail.")
+```bash
+pip install 'psysafe-ai[openai]'
+pip install 'psysafe-ai[anthropic]'
 ```
 
-➡️ **For more examples and advanced usage, see [Getting Started](docs/getting_started.md) and the [Guardrail Catalog](docs/guardrail_catalog.md).**
+## Quick start
 
-## Why PsySafe AI?
+Provider models are always explicit; PsySafe does not silently select a dated default.
 
-Implementing robust guardrails is crucial for tailoring user experiences to individual needs while preventing potential negative outcomes. By using PsySafe AI's pre-built and configurable classifiers, developers can achieve a high return on investment, ensuring AI applications are both effective and safe.
+```python
+from psysafe import Conversation, Sensitivity, VulnerabilitySignalsClassifier
+from psysafe.backends import OpenAIBackend
 
-## Understanding the Importance of Psychological Safety
+backend = OpenAIBackend(model="your-structured-output-model")
+classifier = VulnerabilitySignalsClassifier(backend)
+conversation = Conversation.from_text("I use a screen reader and need another way to complete this form.")
 
-It's essential to recognise that psychological safety doesn't come automatically with AI language models; it requires calibration. Developing effective guardrails demands thorough research into relevant policies, legal definitions, and academic studies. **PsySafe AI** undertakes this groundwork, providing developers with well-informed tools to:
+record = classifier.observe(conversation)  # one provider request
+precise = classifier.calibrate(record, sensitivity=Sensitivity.PRECISE)
+precautionary = classifier.recalibrate(record, sensitivity=Sensitivity.PRECAUTIONARY)
 
--   **Prevent Risks**: Use strong guardrails to mitigate potential harms associated with AI applications.
--   **Make Informed Adjustments**: Empower developers to refine guardrail configurations based on comprehensive materials and research.
+print(precise.outcome)
+print(precautionary.outcome)
+```
 
-## News
+Provider instructions and conversation data are sent through separate API fields. Evidence references use generated positional IDs, so caller-supplied account or patient IDs never enter prompts or results. Provider failures return `indeterminate` by default and are never converted to `not_matched`.
 
--   **[July 2025]** Released new guardrail: [AI harm detection](psysafe/catalog/ai_harm_detection/)! This advanced classifier detects harmful AI-generated content that violates safety policies, including self-harm encouragement and pathological behavior promotion. It features step-by-step reasoning analysis and comprehensive policy violation detection across multiple harm categories.
--   **[May 2025]** Released new guardrail: [suicide intent detection](psysafe/catalog/suicide_prevention/)! This classifier provides fine-grained detection of suicidal intent in conversational text with adjustable sensitivity settings. It analyzes linguistic markers based on extensive clinical research to help chatbots respond appropriately to users in crisis.
--   **[Mar 2025]** Released the first guardrail: [vulnerability detection](psysafe/catalog/vulnerability_detection/)! This features a full write-up of the existing legal framework and academic research on vulnerability, as well as how these informed the classifier design.
--   **[Mar 2025]** 🔥 Launch and started building the core PsySafe AI library.
+## Classifiers
 
-## Documentation
+- `SelfHarmClassifier`: observable self-harm and suicide signals for routing, not diagnosis or clinical risk assessment.
+- `AssistantHarmClassifier`: assistant encouragement, endorsement, or actionable facilitation of serious self-destructive behavior.
+- `VulnerabilitySignalsClassifier`: disclosed or observable support needs without labeling a person.
+- `DistressSupportClassifier`: non-diagnostic distress signals and communication adaptations.
+- `ComplaintsClassifier`: complaint categories with independently calibrated escalation evidence.
+- `PIIClassifier`: deterministic, local, value-free locations for common identifiers.
 
-Our comprehensive documentation covers everything from installation to advanced usage and guardrail development:
+Each LLM classifier exports its fixed instructions, input contract, allowed signals, required evidence role, sensitivity boundaries, and JSON Schema with `export_spec()`.
 
--   [**Library Overview**](docs/library_overview.md)
--   [**Getting Started**](docs/getting_started.md)
--   [**Architecture**](docs/architecture.md)
--   [**Guardrail Catalog**](docs/guardrail_catalog.md)
--   [**Evaluation Tools**](docs/evaluation.md)
+## Safety boundary
 
-## Contributing
+PsySafe is a classification component, not a complete safety system. It does not diagnose, determine urgency, prescribe interventions, or replace qualified human judgment. Validate policies and thresholds on representative data, route `indeterminate` explicitly, minimize retained data, and add human review where mistakes could cause harm. See [SAFETY.md](SAFETY.md) and [SECURITY.md](SECURITY.md).
 
-Contributions to PsySafe AI are welcome! We value contributions of all kinds, from bug reports and documentation improvements to new guardrails and features.
-
-Please see the [**Contributing Guidelines**](https://github.com/mblukac/psysafe-ai/blob/main/CONTRIBUTING.md) (link to be created or updated if not present) in the repository for more information on how to get involved.
-
-## Getting Help
-
-If you encounter any issues or have questions about using PsySafe AI:
-
-1.  Check the [full documentation site](docs/index.md).
-2.  Look for similar issues in the [GitHub Issues](https://github.com/mblukac/psysafe-ai/issues).
-3.  Create a new issue if your problem hasn't been addressed.
-
-## License
-
-PsySafe AI is licensed under the MIT License. See the [LICENSE](https://github.com/mblukac/psysafe-ai/blob/main/LICENSE) file for details.
+PsySafe is licensed under the [MIT License](LICENSE).

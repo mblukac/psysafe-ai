@@ -6,9 +6,9 @@ from psysafe.core.classifier import (
     Classifier,
     FailurePolicy,
     IndeterminateAssessmentError,
-    resolve_classification_failure,
 )
 from psysafe.core.contracts import (
+    MAX_ASSESSMENT_SIGNALS,
     MAX_CONVERSATION_CONTENT_CHARS,
     MAX_CONVERSATION_MESSAGES,
     MAX_MESSAGE_CONTENT_CHARS,
@@ -24,6 +24,7 @@ from psysafe.core.contracts import (
 )
 
 __all__ = [
+    "MAX_ASSESSMENT_SIGNALS",
     "MAX_CONVERSATION_CONTENT_CHARS",
     "MAX_CONVERSATION_MESSAGES",
     "MAX_MESSAGE_CONTENT_CHARS",
@@ -41,5 +42,4 @@ __all__ = [
     "MessageRole",
     "Outcome",
     "Sensitivity",
-    "resolve_classification_failure",
 ]

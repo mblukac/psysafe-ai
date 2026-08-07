@@ -45,7 +45,7 @@ class FailurePolicy(str, Enum):
     RETURN_INDETERMINATE = "return_indeterminate"
 
 
-def resolve_classification_failure(
+def _resolve_classification_failure(
     *,
     classifier_id: str,
     policy_version: str,
@@ -53,9 +53,8 @@ def resolve_classification_failure(
     reason: IndeterminateReason,
     policy: FailurePolicy,
     metadata: AssessmentMetadata | None = None,
-    error: BaseException | None = None,
 ) -> Assessment:
-    """Apply a fail-closed policy without retaining raw exception content."""
+    """Apply a fail-closed policy after the active provider exception is gone."""
 
     if policy is FailurePolicy.RAISE:
         sanitized_error = ClassificationError(
@@ -63,9 +62,7 @@ def resolve_classification_failure(
             policy_version=policy_version,
             reason=reason,
         )
-        if error is None:
-            raise sanitized_error
-        raise sanitized_error from error
+        raise sanitized_error from None
 
     return Assessment.indeterminate(
         classifier_id=classifier_id,
@@ -118,5 +115,4 @@ __all__ = [
     "Classifier",
     "FailurePolicy",
     "IndeterminateAssessmentError",
-    "resolve_classification_failure",
 ]

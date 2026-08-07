@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 MAX_MESSAGE_CONTENT_CHARS = 100_000
 MAX_CONVERSATION_MESSAGES = 128
 MAX_CONVERSATION_CONTENT_CHARS = 500_000
+MAX_ASSESSMENT_SIGNALS = 64
 
 
 class MessageRole(str, Enum):
@@ -82,6 +83,9 @@ class Conversation(BaseModel):
 
 class Sensitivity(str, Enum):
     """Named classifier boundaries, from narrowest to broadest.
+
+    Sensitivity changes only the breadth of evidence directness included in a
+    policy match. It is not urgency, severity, or a clinical risk assessment.
 
     The legacy labels ``low``, ``medium``, and ``high`` are accepted when
     parsing input and normalize to the named values.  Serialized output always
@@ -171,7 +175,7 @@ class Assessment(BaseModel):
     sensitivity: Sensitivity = Sensitivity.BALANCED
     outcome: Outcome
     evidence_directness: EvidenceDirectness = EvidenceDirectness.NONE
-    signals: tuple[str, ...] = Field(default_factory=tuple, max_length=32)
+    signals: tuple[str, ...] = Field(default_factory=tuple, max_length=MAX_ASSESSMENT_SIGNALS)
     indeterminate_reason: IndeterminateReason | None = None
     metadata: AssessmentMetadata = Field(default_factory=AssessmentMetadata)
 
@@ -244,6 +248,7 @@ class Assessment(BaseModel):
 
 
 __all__ = [
+    "MAX_ASSESSMENT_SIGNALS",
     "MAX_CONVERSATION_CONTENT_CHARS",
     "MAX_CONVERSATION_MESSAGES",
     "MAX_MESSAGE_CONTENT_CHARS",
