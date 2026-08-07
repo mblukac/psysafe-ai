@@ -4,7 +4,9 @@ import pytest
 from pydantic import ValidationError
 
 from psysafe.backends.base import CallableBackend
+from psysafe.classifiers.base import MAX_FINDINGS
 from psysafe.classifiers.complaints import (
+    MAX_COMPLAINT_ESCALATIONS,
     ComplaintCategory,
     ComplaintEscalation,
     ComplaintFinding,
@@ -155,15 +157,6 @@ def test_complaints_are_mapped_from_categorized_findings_not_booleans() -> None:
                 message_ids=("m0",),
                 subject=EvidenceSubject.USER,
                 source_context=SourceContext.DIRECT,
-                escalations=(
-                    ComplaintEscalation(
-                        signal=EscalationReason.EXPLICIT_HUMAN_REQUEST,
-                        directness=EvidenceDirectness.EXPLICIT,
-                        message_ids=("m0",),
-                        subject=EvidenceSubject.USER,
-                        source_context=SourceContext.DIRECT,
-                    ),
-                ),
             ),
             ComplaintFinding(
                 signal=ComplaintCategory.STAFF_CONDUCT,
@@ -171,15 +164,22 @@ def test_complaints_are_mapped_from_categorized_findings_not_booleans() -> None:
                 message_ids=("m1",),
                 subject=EvidenceSubject.USER,
                 source_context=SourceContext.DIRECT,
-                escalations=(
-                    ComplaintEscalation(
-                        signal=EscalationReason.LEGAL_OR_REGULATORY_CONCERN,
-                        directness=EvidenceDirectness.AMBIGUOUS,
-                        message_ids=("m1",),
-                        subject=EvidenceSubject.USER,
-                        source_context=SourceContext.DIRECT,
-                    ),
-                ),
+            ),
+        ),
+        escalations=(
+            ComplaintEscalation(
+                signal=EscalationReason.EXPLICIT_HUMAN_REQUEST,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=("m0",),
+                subject=EvidenceSubject.USER,
+                source_context=SourceContext.DIRECT,
+            ),
+            ComplaintEscalation(
+                signal=EscalationReason.LEGAL_OR_REGULATORY_CONCERN,
+                directness=EvidenceDirectness.AMBIGUOUS,
+                message_ids=("m1",),
+                subject=EvidenceSubject.USER,
+                source_context=SourceContext.DIRECT,
             ),
         ),
         insufficient_context=False,
@@ -208,6 +208,7 @@ def test_complaints_are_mapped_from_categorized_findings_not_booleans() -> None:
         "escalation_needed",
         "confidence",
     }.isdisjoint(ComplaintFinding.model_fields)
+    assert set(classifier.export_spec().allowed_review_signals) == {reason.value for reason in EscalationReason}
 
 
 def test_empty_complaint_findings_are_not_a_complaint() -> None:
@@ -319,13 +320,10 @@ def test_domain_findings_reject_duplicate_adaptations_and_reasons() -> None:
         source_context=SourceContext.DIRECT,
     )
     with pytest.raises(ValidationError):
-        ComplaintFinding(
-            signal=ComplaintCategory.OTHER,
-            directness=EvidenceDirectness.EXPLICIT,
-            message_ids=("m0",),
-            subject=EvidenceSubject.USER,
-            source_context=SourceContext.DIRECT,
+        ComplaintsObservation(
+            findings=(),
             escalations=(escalation, escalation),
+            insufficient_context=False,
         )
 
 
@@ -357,24 +355,28 @@ def test_repeated_support_signals_keep_per_instance_directness() -> None:
 
 
 def test_complaint_and_escalation_evidence_calibrate_independently() -> None:
+    escalation = ComplaintEscalation(
+        signal=EscalationReason.LEGAL_OR_REGULATORY_CONCERN,
+        directness=EvidenceDirectness.AMBIGUOUS,
+        message_ids=("m0",),
+        subject=EvidenceSubject.USER,
+        source_context=SourceContext.DIRECT,
+    )
     finding = ComplaintFinding(
         signal=ComplaintCategory.SERVICE_QUALITY,
         directness=EvidenceDirectness.EXPLICIT,
         message_ids=("m0",),
         subject=EvidenceSubject.USER,
         source_context=SourceContext.DIRECT,
-        escalations=(
-            ComplaintEscalation(
-                signal=EscalationReason.LEGAL_OR_REGULATORY_CONCERN,
-                directness=EvidenceDirectness.AMBIGUOUS,
-                message_ids=("m0",),
-                subject=EvidenceSubject.USER,
-                source_context=SourceContext.DIRECT,
-            ),
-        ),
     )
     classifier = ComplaintsClassifier(
-        CallableBackend(lambda **_: ComplaintsObservation(findings=(finding,), insufficient_context=False)),
+        CallableBackend(
+            lambda **_: ComplaintsObservation(
+                findings=(finding,),
+                escalations=(escalation,),
+                insufficient_context=False,
+            ),
+        ),
     )
     conversation = _conversation("The service failed; perhaps this affects my rights.")
 
@@ -386,7 +388,7 @@ def test_complaint_and_escalation_evidence_calibrate_independently() -> None:
     assert precautionary.escalation_reasons == (EscalationReason.LEGAL_OR_REGULATORY_CONCERN,)
 
 
-def test_explicit_escalation_survives_a_broader_parent_complaint_boundary() -> None:
+def test_explicit_human_request_is_reviewable_without_inventing_a_complaint() -> None:
     escalation = ComplaintEscalation(
         signal=EscalationReason.EXPLICIT_HUMAN_REQUEST,
         directness=EvidenceDirectness.EXPLICIT,
@@ -394,16 +396,14 @@ def test_explicit_escalation_survives_a_broader_parent_complaint_boundary() -> N
         subject=EvidenceSubject.USER,
         source_context=SourceContext.DIRECT,
     )
-    finding = ComplaintFinding(
-        signal=ComplaintCategory.OTHER,
-        directness=EvidenceDirectness.AMBIGUOUS,
-        message_ids=("m0",),
-        subject=EvidenceSubject.USER,
-        source_context=SourceContext.DIRECT,
-        escalations=(escalation,),
-    )
     classifier = ComplaintsClassifier(
-        CallableBackend(lambda **_: ComplaintsObservation(findings=(finding,), insufficient_context=False)),
+        CallableBackend(
+            lambda **_: ComplaintsObservation(
+                findings=(),
+                escalations=(escalation,),
+                insufficient_context=False,
+            ),
+        ),
     )
 
     precise = classifier.classify(
@@ -415,6 +415,164 @@ def test_explicit_escalation_survives_a_broader_parent_complaint_boundary() -> N
     assert precise.findings == ()
     assert precise.escalations == (escalation,)
     assert precise.escalation_reasons == (EscalationReason.EXPLICIT_HUMAN_REQUEST,)
+
+
+def test_truncated_or_saturated_complaint_observations_are_indeterminate() -> None:
+    escalations = tuple(
+        ComplaintEscalation(
+            signal=EscalationReason.EXPLICIT_HUMAN_REQUEST,
+            directness=(
+                EvidenceDirectness.EXPLICIT if index < MAX_COMPLAINT_ESCALATIONS // 2 else EvidenceDirectness.CONTEXTUAL
+            ),
+            message_ids=(("m0",) if index % 128 == 0 else ("m0", f"m{index % 128}")),
+            subject=EvidenceSubject.USER,
+            source_context=SourceContext.DIRECT,
+        )
+        for index in range(MAX_COMPLAINT_ESCALATIONS)
+    )
+    saturated = ComplaintsObservation(
+        findings=(),
+        escalations=escalations,
+        insufficient_context=False,
+    )
+    classifier = ComplaintsClassifier(CallableBackend(lambda **_: saturated))
+    conversation = _conversation(*(f"Synthetic turn {index}." for index in range(128)))
+
+    calibrated = classifier.calibrate(classifier.bind(saturated))
+    classified = classifier.classify(conversation)
+    truncated = classifier.calibrate(
+        classifier.bind(
+            ComplaintsObservation(
+                findings=(),
+                escalations=(escalations[0],),
+                insufficient_context=False,
+                output_truncated=True,
+            ),
+        ),
+    )
+
+    for result in (calibrated, classified, truncated):
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+        assert result.escalations == ()
+
+
+def test_attribution_filtering_cannot_erase_raw_finding_saturation() -> None:
+    conversation = _conversation(*(f"Synthetic turn {index}." for index in range(MAX_FINDINGS)))
+    distress = DistressObservation(
+        findings=tuple(
+            DistressFinding(
+                signal=DistressSignal.GRIEF,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=(f"m{index}",),
+                subject=EvidenceSubject.THIRD_PARTY,
+                source_context=SourceContext.QUOTED,
+            )
+            for index in range(MAX_FINDINGS)
+        ),
+        insufficient_context=False,
+    )
+    vulnerability = VulnerabilityObservation(
+        findings=tuple(
+            VulnerabilityFinding(
+                signal=VulnerabilityDriver.HEALTH,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=(f"m{index}",),
+                subject=EvidenceSubject.THIRD_PARTY,
+                source_context=SourceContext.QUOTED,
+            )
+            for index in range(MAX_FINDINGS)
+        ),
+        insufficient_context=False,
+    )
+    complaints = ComplaintsObservation(
+        findings=tuple(
+            ComplaintFinding(
+                signal=ComplaintCategory.OTHER,
+                directness=EvidenceDirectness.EXPLICIT,
+                message_ids=(f"m{index}",),
+                subject=EvidenceSubject.THIRD_PARTY,
+                source_context=SourceContext.QUOTED,
+            )
+            for index in range(MAX_FINDINGS)
+        ),
+        insufficient_context=False,
+    )
+
+    results = (
+        DistressSupportClassifier(CallableBackend(lambda **_: distress)).classify(conversation),
+        VulnerabilitySignalsClassifier(CallableBackend(lambda **_: vulnerability)).classify(conversation),
+        ComplaintsClassifier(CallableBackend(lambda **_: complaints)).classify(conversation),
+    )
+
+    for result in results:
+        assert result.outcome is Outcome.INDETERMINATE
+        assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+
+
+def test_targeted_complaint_preserves_context_for_repeated_unresolved_escalation() -> None:
+    escalation = ComplaintEscalation(
+        signal=EscalationReason.REPEATED_UNRESOLVED,
+        directness=EvidenceDirectness.CONTEXTUAL,
+        message_ids=("m0", "m1"),
+        subject=EvidenceSubject.USER,
+        source_context=SourceContext.DIRECT,
+    )
+    finding = ComplaintFinding(
+        signal=ComplaintCategory.SERVICE_QUALITY,
+        directness=EvidenceDirectness.CONTEXTUAL,
+        message_ids=("m1",),
+        subject=EvidenceSubject.USER,
+        source_context=SourceContext.DIRECT,
+    )
+    captured: dict[str, object] = {}
+
+    def handler(**kwargs: object) -> ComplaintsObservation:
+        captured.update(kwargs)
+        return ComplaintsObservation(
+            findings=(finding,),
+            escalations=(escalation,),
+            insufficient_context=False,
+        )
+
+    classifier = ComplaintsClassifier(CallableBackend(handler))
+    conversation = _conversation(
+        "I reported this outage yesterday.",
+        "It is still broken after that report.",
+    )
+
+    result = classifier.classify_target(
+        conversation,
+        target_message_index=1,
+        sensitivity=Sensitivity.BALANCED,
+    )
+
+    assert result.outcome is Outcome.MATCHED
+    assert result.escalation_reasons == (EscalationReason.REPEATED_UNRESOLVED,)
+    payload = json.loads(str(captured["input_text"]))
+    assert len(payload["messages"]) == 2
+
+
+def test_targeted_support_rejects_a_provider_finding_about_another_message() -> None:
+    finding = VulnerabilityFinding(
+        signal=VulnerabilityDriver.HEALTH,
+        directness=EvidenceDirectness.EXPLICIT,
+        message_ids=("m0",),
+        subject=EvidenceSubject.USER,
+        source_context=SourceContext.DIRECT,
+    )
+    classifier = VulnerabilitySignalsClassifier(
+        CallableBackend(lambda **_: VulnerabilityObservation(findings=(finding,), insufficient_context=False)),
+    )
+
+    result = classifier.classify_target(
+        _conversation("I need an accessible format.", "Thanks, that is all."),
+        target_message_index=1,
+    )
+
+    assert result.outcome is Outcome.INDETERMINATE
+    assert result.indeterminate_reason is IndeterminateReason.INVALID_RESPONSE
+    assert result.findings == ()
 
 
 def test_quoted_third_party_escalation_is_observed_but_not_routed() -> None:
@@ -431,20 +589,24 @@ def test_quoted_third_party_escalation_is_observed_but_not_routed() -> None:
         message_ids=("m0",),
         subject=EvidenceSubject.USER,
         source_context=SourceContext.DIRECT,
-        escalations=(escalation,),
     )
     classifier = ComplaintsClassifier(
-        CallableBackend(lambda **_: ComplaintsObservation(findings=(finding,), insufficient_context=False)),
+        CallableBackend(
+            lambda **_: ComplaintsObservation(
+                findings=(finding,),
+                escalations=(escalation,),
+                insufficient_context=False,
+            ),
+        ),
     )
     conversation = _conversation("Your service is terrible.", 'My friend said, "get me a manager."')
 
     record = classifier.observe(conversation)
     precise = classifier.calibrate(record, sensitivity=Sensitivity.PRECISE)
 
-    assert record.observation.findings[0].escalations == (escalation,)
+    assert record.observation.escalations == (escalation,)
     assert precise.outcome is Outcome.MATCHED
     assert precise.escalations == ()
-    assert precise.findings[0].escalations == ()
     assert precise.escalation_reasons == ()
 
 

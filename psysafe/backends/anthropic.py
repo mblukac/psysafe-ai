@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 
 from psysafe.backends._errors import sanitized_backend_error
@@ -9,11 +10,13 @@ from psysafe.backends.base import (
     BackendConfigurationError,
     BackendError,
     BackendInvalidResponseError,
+    BackendProviderError,
     BackendRefusalError,
     OutputT,
     _fresh_backend_error,
     _fresh_configuration_error,
     _raise_backend_error,
+    _raise_cancelled,
     _raise_configuration_error,
     _safe_identifier,
 )
@@ -57,6 +60,7 @@ class AnthropicBackend:
         output_type: type[OutputT],
     ) -> OutputT:
         failure: BackendError | None = None
+        cancelled = False
         configuration_failure: BackendConfigurationError | None = None
         response: object | None = None
         result: OutputT | None = None
@@ -69,13 +73,20 @@ class AnthropicBackend:
                 ),
             )
             result = self._parsed(response, output_type)
+        except asyncio.CancelledError:
+            cancelled = True
         except BackendConfigurationError as caught:
             configuration_failure = _fresh_configuration_error(caught)
+            if configuration_failure is None:
+                failure = BackendProviderError()
         except BackendError as caught:
             failure = _fresh_backend_error(caught)
         # Provider SDK exceptions are intentionally collapsed to safe categories.
         except Exception as caught:  # noqa: BLE001
             failure = sanitized_backend_error(caught)
+        if cancelled:
+            del self, instructions, input_text, output_type, response, result, failure, configuration_failure
+            _raise_cancelled()
         if configuration_failure is not None:
             del self, instructions, input_text, output_type, response, result, failure
             _raise_configuration_error(configuration_failure)
@@ -96,6 +107,7 @@ class AnthropicBackend:
         output_type: type[OutputT],
     ) -> OutputT:
         failure: BackendError | None = None
+        cancelled = False
         configuration_failure: BackendConfigurationError | None = None
         response: object | None = None
         result: OutputT | None = None
@@ -108,13 +120,20 @@ class AnthropicBackend:
                 ),
             )
             result = self._parsed(response, output_type)
+        except asyncio.CancelledError:
+            cancelled = True
         except BackendConfigurationError as caught:
             configuration_failure = _fresh_configuration_error(caught)
+            if configuration_failure is None:
+                failure = BackendProviderError()
         except BackendError as caught:
             failure = _fresh_backend_error(caught)
         # Provider SDK exceptions are intentionally collapsed to safe categories.
         except Exception as caught:  # noqa: BLE001
             failure = sanitized_backend_error(caught)
+        if cancelled:
+            del self, instructions, input_text, output_type, response, result, failure, configuration_failure
+            _raise_cancelled()
         if configuration_failure is not None:
             del self, instructions, input_text, output_type, response, result, failure
             _raise_configuration_error(configuration_failure)
@@ -149,6 +168,8 @@ class AnthropicBackend:
     def _parsed(response: object | None, output_type: type[OutputT]) -> OutputT:
         if _anthropic_refused(response):
             raise BackendRefusalError from None
+        if response is None or getattr(response, "stop_reason", None) != "end_turn":
+            raise BackendInvalidResponseError from None
         parsed = getattr(response, "parsed_output", None)
         if not isinstance(parsed, output_type):
             raise BackendInvalidResponseError from None

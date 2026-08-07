@@ -21,7 +21,6 @@ from psysafe.core.classifier import FailurePolicy
 from psysafe.core.contracts import (
     Assessment,
     EvidenceDirectness,
-    IndeterminateReason,
     MessageRole,
     Outcome,
     Sensitivity,
@@ -122,7 +121,7 @@ class SelfHarmClassifier(PolicyClassifier[SelfHarmObservation]):
     ) -> None:
         super().__init__(
             classifier_id="self_harm_and_suicide_signals",
-            policy_version="2026.08.1",
+            policy_version="2026.08.2",
             prompt=_SELF_HARM_PROMPT,
             backend=backend,
             observation_model=SelfHarmObservation,
@@ -139,38 +138,15 @@ class SelfHarmClassifier(PolicyClassifier[SelfHarmObservation]):
     ) -> SelfHarmAssessment:
         normalized_sensitivity = Sensitivity(sensitivity)
         observation = self._observation_from_record(record)
-        if observation.insufficient_context:
-            return SelfHarmAssessment(
-                classifier_id=self.classifier_id,
-                policy_version=self.policy_version,
-                sensitivity=normalized_sensitivity,
-                outcome=Outcome.INDETERMINATE,
-                indeterminate_reason=IndeterminateReason.INSUFFICIENT_INPUT,
-                metadata=record.metadata,
-            )
-
-        findings = select_findings(observation.findings, normalized_sensitivity)
-        if not findings:
-            return SelfHarmAssessment(
-                classifier_id=self.classifier_id,
-                policy_version=self.policy_version,
-                sensitivity=normalized_sensitivity,
-                outcome=Outcome.NOT_MATCHED,
-                metadata=record.metadata,
-            )
-
-        return SelfHarmAssessment(
-            classifier_id=self.classifier_id,
-            policy_version=self.policy_version,
-            sensitivity=normalized_sensitivity,
-            outcome=Outcome.MATCHED,
-            evidence_directness=least_direct(
-                tuple(EvidenceDirectness(finding.directness) for finding in findings),
-            ),
-            signals=tuple(dict.fromkeys(finding.signal.value for finding in findings)),
-            metadata=record.metadata,
-            findings=findings,
+        assessment = super().calibrate(record, sensitivity=normalized_sensitivity)
+        findings = (
+            select_findings(observation.findings, normalized_sensitivity)
+            if assessment.outcome is Outcome.MATCHED
+            else ()
         )
+        payload = assessment.model_dump()
+        payload["findings"] = findings
+        return SelfHarmAssessment.model_validate(payload)
 
 
 __all__ = [

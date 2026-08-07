@@ -10,13 +10,27 @@ from __future__ import annotations
 import ipaddress
 import re
 import unicodedata
+from bisect import bisect_left
 from dataclasses import dataclass
 from enum import Enum
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from psysafe.classifiers.base import (
+    _coerce_sensitivity,
+    _raise_sensitivity_error,
+    _raise_target_error,
+    _validated_target_index,
+)
 from psysafe.classifiers.calibration import least_direct
-from psysafe.core.contracts import Assessment, Conversation, EvidenceDirectness, Outcome, Sensitivity
+from psysafe.core.contracts import (
+    Assessment,
+    Conversation,
+    EvidenceDirectness,
+    MessageRole,
+    Outcome,
+    Sensitivity,
+)
 
 MAX_PII_LOCATIONS = 256
 
@@ -52,7 +66,10 @@ class PIIAssessment(Assessment):
     """An assessment with value-free locations for each local match."""
 
     locations: tuple[PIILocation, ...] = Field(default_factory=tuple, max_length=MAX_PII_LOCATIONS)
-    locations_truncated: bool = False
+    locations_truncated: bool = Field(
+        default=False,
+        description="True means returned offsets are not a redaction-complete inventory.",
+    )
 
     @model_validator(mode="after")
     def locations_must_match_outcome(self) -> PIIAssessment:
@@ -225,7 +242,25 @@ class PIIClassifier:
     """
 
     classifier_id = "pii"
-    policy_version = "2026.08.1"
+    policy_version = "2026.08.2"
+
+    @property
+    def allowed_signals(self) -> tuple[str, ...]:
+        """Finite identifier-kind vocabulary exposed to workflow gates."""
+
+        return tuple(pii_type.value for pii_type in PIIType)
+
+    @property
+    def allowed_review_signals(self) -> tuple[str, ...]:
+        """PII detection emits no independent review-only reasons."""
+
+        return ()
+
+    @property
+    def evidence_role(self) -> MessageRole | None:
+        """PII can occur at any workflow role boundary."""
+
+        return None
 
     def classify(
         self,
@@ -233,7 +268,15 @@ class PIIClassifier:
         *,
         sensitivity: Sensitivity = Sensitivity.BALANCED,
     ) -> PIIAssessment:
-        normalized_sensitivity = Sensitivity(sensitivity)
+        invalid_sensitivity = False
+        normalized_sensitivity = Sensitivity.BALANCED
+        try:
+            normalized_sensitivity = _coerce_sensitivity(sensitivity)
+        except Exception:  # noqa: BLE001 - enum-like inputs are an untrusted boundary.
+            invalid_sensitivity = True
+        if invalid_sensitivity:
+            del conversation, sensitivity
+            _raise_sensitivity_error()
         candidates: list[_Candidate] = []
         for message_index, message in enumerate(conversation.messages):
             candidates.extend(self._candidates(message.content, message_index))
@@ -244,26 +287,46 @@ class PIIClassifier:
         ]
         eligible.sort(
             key=lambda candidate: (
-                candidate.message_index,
-                candidate.start,
+                _SENSITIVITY_RANK[candidate.minimum_sensitivity],
                 _TYPE_PRIORITY[candidate.pii_type],
                 -(candidate.end - candidate.start),
+                candidate.message_index,
+                candidate.start,
             ),
         )
 
         accepted_all: list[_Candidate] = []
+        seen_locations: set[tuple[PIIType, int, int, int]] = set()
+        intervals: dict[tuple[PIIType, int], list[tuple[int, int]]] = {}
         for candidate in eligible:
-            previous = accepted_all[-1] if accepted_all else None
-            if (
-                previous is not None
-                and candidate.message_index == previous.message_index
-                and candidate.start < previous.end
-            ):
+            location_key = (
+                candidate.pii_type,
+                candidate.message_index,
+                candidate.start,
+                candidate.end,
+            )
+            if location_key in seen_locations:
                 continue
+            same_type = intervals.setdefault((candidate.pii_type, candidate.message_index), [])
+            insertion_index = bisect_left(same_type, (candidate.start, candidate.end))
+            overlaps_previous = insertion_index > 0 and same_type[insertion_index - 1][1] > candidate.start
+            overlaps_next = insertion_index < len(same_type) and same_type[insertion_index][0] < candidate.end
+            if overlaps_previous or overlaps_next:
+                continue
+            seen_locations.add(location_key)
+            same_type.insert(insertion_index, (candidate.start, candidate.end))
             accepted_all.append(candidate)
 
         signal_values = tuple(dict.fromkeys(candidate.pii_type.value for candidate in accepted_all))
-        accepted = accepted_all[:MAX_PII_LOCATIONS]
+        accepted = sorted(
+            accepted_all[:MAX_PII_LOCATIONS],
+            key=lambda candidate: (
+                candidate.message_index,
+                candidate.start,
+                candidate.end,
+                _TYPE_PRIORITY[candidate.pii_type],
+            ),
+        )
         locations_truncated = len(accepted_all) > MAX_PII_LOCATIONS
 
         if not accepted:
@@ -305,7 +368,96 @@ class PIIClassifier:
     ) -> PIIAssessment:
         """Provide async parity without introducing I/O or an executor."""
 
-        return self.classify(conversation, sensitivity=sensitivity)
+        invalid_sensitivity = False
+        normalized_sensitivity = Sensitivity.BALANCED
+        try:
+            normalized_sensitivity = _coerce_sensitivity(sensitivity)
+        except Exception:  # noqa: BLE001 - enum-like inputs are an untrusted boundary.
+            invalid_sensitivity = True
+        if invalid_sensitivity:
+            del conversation, sensitivity
+            _raise_sensitivity_error()
+        return self.classify(conversation, sensitivity=normalized_sensitivity)
+
+    def classify_target(
+        self,
+        conversation: Conversation,
+        *,
+        target_message_index: int,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> PIIAssessment:
+        """Detect PII only in one target while retaining original message indexes."""
+
+        invalid_sensitivity = False
+        normalized_sensitivity = Sensitivity.BALANCED
+        try:
+            normalized_sensitivity = _coerce_sensitivity(sensitivity)
+        except Exception:  # noqa: BLE001 - enum-like inputs are an untrusted boundary.
+            invalid_sensitivity = True
+        if invalid_sensitivity:
+            del conversation, sensitivity
+            _raise_sensitivity_error()
+        target_failure = False
+        normalized_target = 0
+        try:
+            normalized_target = _validated_target_index(
+                conversation,
+                target_message_index,
+                self.evidence_role,
+            )
+        except Exception:  # noqa: BLE001 - subclass properties are untrusted.
+            target_failure = True
+        if target_failure:
+            del conversation, target_message_index
+            _raise_target_error()
+        message = conversation.messages[normalized_target]
+        scoped = Conversation.from_text(message.content, role=message.role)
+        result = self.classify(scoped, sensitivity=normalized_sensitivity)
+        if not result.locations:
+            return result
+        return result.model_copy(
+            update={
+                "locations": tuple(
+                    location.model_copy(update={"message_index": normalized_target}) for location in result.locations
+                ),
+            },
+        )
+
+    async def aclassify_target(
+        self,
+        conversation: Conversation,
+        *,
+        target_message_index: int,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> PIIAssessment:
+        """Async parity for target-bound local PII detection."""
+
+        invalid_sensitivity = False
+        normalized_sensitivity = Sensitivity.BALANCED
+        try:
+            normalized_sensitivity = _coerce_sensitivity(sensitivity)
+        except Exception:  # noqa: BLE001 - enum-like inputs are an untrusted boundary.
+            invalid_sensitivity = True
+        if invalid_sensitivity:
+            del conversation, sensitivity
+            _raise_sensitivity_error()
+        target_failure = False
+        try:
+            _validated_target_index(
+                conversation,
+                target_message_index,
+                self.evidence_role,
+            )
+        except Exception:  # noqa: BLE001 - subclass properties are untrusted.
+            target_failure = True
+        if target_failure:
+            del conversation, target_message_index
+            _raise_target_error()
+        return self.classify_target(
+            conversation,
+            target_message_index=target_message_index,
+            sensitivity=normalized_sensitivity,
+        )
 
     @staticmethod
     def _candidates(content: str, message_index: int) -> list[_Candidate]:

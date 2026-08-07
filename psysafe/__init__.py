@@ -15,6 +15,7 @@ from psysafe.core import (
     Assessment,
     AssessmentMetadata,
     AsyncClassifier,
+    AsyncTargetedClassifier,
     ClassificationError,
     Classifier,
     Conversation,
@@ -26,13 +27,18 @@ from psysafe.core import (
     MessageRole,
     Outcome,
     Sensitivity,
+    TargetedClassifier,
 )
+from psysafe.gates import AsyncWorkflowGate, Checkpoint, GateAction, GatePolicy, WorkflowGate
 
 __all__ = [
     "Assessment",
     "AssessmentMetadata",
     "AssistantHarmClassifier",
     "AsyncClassifier",
+    "AsyncTargetedClassifier",
+    "AsyncWorkflowGate",
+    "Checkpoint",
     "ClassificationError",
     "Classifier",
     "ClassifierSpec",
@@ -41,6 +47,8 @@ __all__ = [
     "DistressSupportClassifier",
     "EvidenceDirectness",
     "FailurePolicy",
+    "GateAction",
+    "GatePolicy",
     "IndeterminateAssessmentError",
     "IndeterminateReason",
     "Message",
@@ -49,6 +57,8 @@ __all__ = [
     "PIIClassifier",
     "SelfHarmClassifier",
     "Sensitivity",
+    "TargetedClassifier",
     "VulnerabilitySignalsClassifier",
+    "WorkflowGate",
     "__version__",
 ]

@@ -2,10 +2,12 @@
 
 from psysafe.core.classifier import (
     AsyncClassifier,
+    AsyncTargetedClassifier,
     ClassificationError,
     Classifier,
     FailurePolicy,
     IndeterminateAssessmentError,
+    TargetedClassifier,
 )
 from psysafe.core.contracts import (
     MAX_ASSESSMENT_SIGNALS,
@@ -31,6 +33,7 @@ __all__ = [
     "Assessment",
     "AssessmentMetadata",
     "AsyncClassifier",
+    "AsyncTargetedClassifier",
     "ClassificationError",
     "Classifier",
     "Conversation",
@@ -42,4 +45,5 @@ __all__ = [
     "MessageRole",
     "Outcome",
     "Sensitivity",
+    "TargetedClassifier",
 ]
