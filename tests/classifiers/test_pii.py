@@ -49,8 +49,8 @@ def test_pii_detection_is_local_and_returns_only_types_and_locations() -> None:
     assert "robin@example.org" not in serialized
     assert "4111" not in serialized
     assert "123-45-6789" not in serialized
-    assert "content" not in result.model_fields
-    assert "value" not in result.model_fields
+    assert "content" not in type(result).model_fields
+    assert "value" not in type(result).model_fields
 
 
 def test_payment_cards_must_pass_luhn_at_every_sensitivity() -> None:

@@ -45,9 +45,21 @@ openai = [
 anthropic = [
     "anthropic>=0.117,<1",
 ]
+openai-agents = [
+    "openai-agents>=0.19.4,<0.20",
+]
+claude-agent = [
+    "claude-agent-sdk>=0.2.127,<0.3",
+]
+agents = [
+    "claude-agent-sdk>=0.2.127,<0.3",
+    "openai-agents>=0.19.4,<0.20",
+]
 all = [
     "anthropic>=0.117,<1",
+    "claude-agent-sdk>=0.2.127,<0.3",
     "openai>=2,<3",
+    "openai-agents>=0.19.4,<0.20",
 ]
 
 [project.urls]
@@ -98,6 +110,8 @@ dev = [
     "hatch>=1.14,<2",
     "mypy>=1.14,<2",
     "openai>=2,<3",
+    "openai-agents>=0.19.4,<0.20",
+    "claude-agent-sdk>=0.2.127,<0.3",
     "pytest>=8.3,<9",
     "pytest-asyncio>=0.25,<2",
     "pytest-cov>=7.0.0",
