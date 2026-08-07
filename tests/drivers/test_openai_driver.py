@@ -70,4 +70,26 @@ async def test_openai_driver_stream(mock_openai_client):
     assert chunks[0] == mock_chunk_data
 
 
-# Add tests for initialization, error handling, get_metadata etc.
+def test_openai_driver_metadata_never_exposes_credentials():
+    driver = OpenAIChatDriver(
+        model="test-gpt",
+        api_key="sk-secret",
+        organization="org-secret",
+    )
+
+    assert driver.get_metadata() == {
+        "driver_type": "openai",
+        "model_name": "test-gpt",
+        "supports_streaming": True,
+    }
+
+
+@pytest.mark.asyncio
+async def test_openai_driver_stream_propagates_provider_errors(mock_openai_client):
+    _, async_client = mock_openai_client
+    async_client.chat.completions.create.side_effect = RuntimeError("provider unavailable")
+    driver = OpenAIChatDriver(model="test-gpt-stream", api_key="sk-secret")
+
+    with pytest.raises(RuntimeError, match="provider unavailable"):
+        async for _ in driver.stream({"messages": [{"role": "user", "content": "hello"}]}):
+            pass
