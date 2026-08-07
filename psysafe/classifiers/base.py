@@ -283,7 +283,9 @@ def _safe_typed_indeterminate(
             if type(value) in {tuple, list, dict, set, frozenset} and len(value) == 0:
                 continue
             return assessment
-    except (asyncio.CancelledError, Exception):
+    except asyncio.CancelledError:
+        return assessment
+    except Exception:  # noqa: BLE001 - result-model validation is an untrusted extension boundary.
         return assessment
     return candidate or assessment
 

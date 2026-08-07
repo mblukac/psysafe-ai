@@ -1,34 +1,67 @@
-name: Lint
+name: Quality
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
+  quality:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        enable-cache: true
-        cache-dependency-glob: "uv.lock"
-        
-    - name: Set up Python 3.12
-      run: uv python install 3.12
-      
-    - name: Install dependencies
-      run: uv sync --locked --group dev
-      
-    - name: Format with black
-      run: uv run black --check .
-      
-    - name: Lint with ruff
-      run: uv run ruff check .
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-    - name: Type-check with mypy
-      run: uv run mypy psysafe
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.2"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      - name: Install locked dependencies
+        run: uv sync --locked --all-extras --group dev --python 3.12
+
+      - name: Validate lock file
+        run: uv lock --check
+
+      - name: Check formatting
+        run: uv run black --check .
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Type-check
+        run: uv run mypy psysafe examples
+
+      - name: Run offline examples
+        run: |
+          uv run python examples/sequential_gate.py
+          uv run python examples/categorical_evaluation.py
+
+      - name: Validate GitHub Actions workflows
+        shell: bash
+        run: |
+          curl --proto '=https' --tlsv1.2 --fail --location --silent --show-error \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            --output "${RUNNER_TEMP}/actionlint.tar.gz"
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  ${RUNNER_TEMP}/actionlint.tar.gz" \
+            | sha256sum --check --strict
+          tar -xzf "${RUNNER_TEMP}/actionlint.tar.gz" -C "${RUNNER_TEMP}" actionlint
+          "${RUNNER_TEMP}/actionlint" -color
+
+      - name: Build distributions
+        run: uv build --no-sources --build-constraint build-constraints.txt --require-hashes

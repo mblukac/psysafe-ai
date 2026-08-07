@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, NoReturn, Protocol, cast, runtime_checkable
 
-from psysafe.backends.base import BackendConfigurationError, BackendError
+from psysafe.backends.base import BackendConfigurationError, BackendError, _fresh_configuration_error
 from psysafe.classifiers.base import PolicyClassifier
 from psysafe.core.classifier import ClassificationError, Classifier
 from psysafe.core.contracts import (
@@ -261,6 +261,7 @@ class EvaluationRunner:
 
     def run(self, cases: Sequence[GoldenCase]) -> EvaluationReport:
         failure: EvaluationRunReason | None = None
+        configuration_extra: str | None = None
         cancelled = False
         bounded_cases: tuple[GoldenCase, ...] = ()
         selected: tuple[GoldenCase, ...] = ()
@@ -285,16 +286,26 @@ class EvaluationRunner:
             )
         except asyncio.CancelledError:
             cancelled = True
+        except BackendConfigurationError as error:
+            fresh_error = _fresh_configuration_error(error)
+            if fresh_error is None:
+                failure = EvaluationRunReason.INVALID_ASSESSMENT
+            else:
+                configuration_extra = fresh_error.extra
         except EvaluationRunError as error:
             failure = _safe_run_reason(error)
         except Exception:  # noqa: BLE001 - sanitize every runner boundary.
             failure = EvaluationRunReason.INVALID_ASSESSMENT
         if cancelled:
-            del self, cases, bounded_cases, selected, results, report, failure
+            del self, cases, bounded_cases, selected, results, report, failure, configuration_extra
             _raise_cancelled()
+        if configuration_extra is not None:
+            safe_extra = configuration_extra
+            del self, cases, bounded_cases, selected, results, report, failure, configuration_extra
+            raise BackendConfigurationError(safe_extra) from None
         if failure is not None:
             safe_failure = failure
-            del self, cases, bounded_cases, selected, results, report
+            del self, cases, bounded_cases, selected, results, report, configuration_extra
             _raise_run_error(safe_failure)
         if report is None:
             del self, cases, bounded_cases, selected, results
@@ -403,11 +414,14 @@ class EvaluationRunner:
         metadata = AssessmentMetadata()
         try:
             record = classifier.observe(golden_case.conversation)
-        except BackendConfigurationError:
+        except BackendConfigurationError as error:
+            fresh_error = _fresh_configuration_error(error)
+            if fresh_error is not None:
+                raise fresh_error from None
             return _failure_assessments(
                 self._classifier_id,
                 self._policy_version,
-                IndeterminateReason.PROVIDER_ERROR,
+                IndeterminateReason.INTERNAL_ERROR,
                 metadata,
             )
         except BackendError as error:
@@ -446,13 +460,16 @@ class EvaluationRunner:
                     ),
                 )
                 break
-            except BackendConfigurationError:
+            except BackendConfigurationError as error:
+                fresh_error = _fresh_configuration_error(error)
+                if fresh_error is not None:
+                    raise fresh_error from None
                 assessments.update(
                     _remaining_failure_assessments(
                         self._classifier_id,
                         self._policy_version,
                         _SENSITIVITIES[index:],
-                        IndeterminateReason.PROVIDER_ERROR,
+                        IndeterminateReason.INTERNAL_ERROR,
                         metadata,
                     ),
                 )
@@ -519,13 +536,16 @@ class EvaluationRunner:
                     ),
                 )
                 break
-            except BackendConfigurationError:
+            except BackendConfigurationError as error:
+                fresh_error = _fresh_configuration_error(error)
+                if fresh_error is not None:
+                    raise fresh_error from None
                 assessments.update(
                     _remaining_failure_assessments(
                         self._classifier_id,
                         self._policy_version,
                         _SENSITIVITIES[index:],
-                        IndeterminateReason.PROVIDER_ERROR,
+                        IndeterminateReason.INTERNAL_ERROR,
                         metadata,
                     ),
                 )
@@ -961,6 +981,7 @@ def run_evaluation(
     """
 
     failure: EvaluationRunReason | None = None
+    configuration_extra: str | None = None
     cancelled = False
     report: EvaluationReport | None = None
     runner: EvaluationRunner | None = None
@@ -975,6 +996,12 @@ def run_evaluation(
         report = runner.run(cases)
     except asyncio.CancelledError:
         cancelled = True
+    except BackendConfigurationError as error:
+        fresh_error = _fresh_configuration_error(error)
+        if fresh_error is None:
+            failure = EvaluationRunReason.INVALID_ASSESSMENT
+        else:
+            configuration_extra = fresh_error.extra
     except EvaluationRunError as error:
         failure = _safe_run_reason(error)
     except Exception:  # noqa: BLE001 - sanitize every public runner boundary.
@@ -990,8 +1017,24 @@ def run_evaluation(
             runner,
             report,
             failure,
+            configuration_extra,
         )
         _raise_cancelled()
+    if configuration_extra is not None:
+        safe_extra = configuration_extra
+        del (
+            classifier,
+            cases,
+            split,
+            allowed_signals,
+            allowed_review_signals,
+            reveal_holdout_diagnostics,
+            runner,
+            report,
+            failure,
+            configuration_extra,
+        )
+        raise BackendConfigurationError(safe_extra) from None
     if failure is not None:
         safe_failure = failure
         del (
@@ -1003,6 +1046,7 @@ def run_evaluation(
             reveal_holdout_diagnostics,
             runner,
             report,
+            configuration_extra,
         )
         _raise_run_error(safe_failure)
     if report is None:

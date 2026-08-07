@@ -4,30 +4,93 @@ on:
   release:
     types: [published]
 
+permissions: {}
+
 jobs:
-  pypi-publish:
-    name: Build and publish to PyPI
+  build:
     runs-on: ubuntu-latest
-    
-    # Required for PyPI Trusted Publishing
     permissions:
-      id-token: write
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
-      
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        enable-cache: true
-        cache-dependency-glob: "uv.lock"
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-    - name: Set up Python
-      run: uv python install 3.12
-      
-    - name: Build package
-      run: uv build
-      
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.2"
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      - name: Validate lock file
+        run: uv lock --check
+
+      - name: Verify release tag and package version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          project_version="$(uv version --short)"
+          if [[ "${project_version}" == *".dev"* ]]; then
+            echo "Development versions cannot be published from a GitHub release." >&2
+            exit 1
+          fi
+          if [[ "${RELEASE_TAG}" != "v${project_version}" ]]; then
+            echo "Release tag does not match the package version." >&2
+            exit 1
+          fi
+
+      - name: Build distributions
+        run: uv build --no-sources --build-constraint build-constraints.txt --require-hashes
+
+      - name: Smoke-test wheel and source distribution
+        shell: bash
+        run: |
+          shopt -s nullglob
+          wheels=(dist/*.whl)
+          sdists=(dist/*.tar.gz)
+          if (( ${#wheels[@]} != 1 || ${#sdists[@]} != 1 )); then
+            echo "Expected exactly one wheel and one source distribution." >&2
+            exit 1
+          fi
+
+          uv venv --python 3.12 "${RUNNER_TEMP}/wheel-smoke"
+          uv pip install --python "${RUNNER_TEMP}/wheel-smoke/bin/python" "${wheels[0]}"
+          "${RUNNER_TEMP}/wheel-smoke/bin/python" -c \
+            'from psysafe import Conversation, Outcome, PIIClassifier; assert PIIClassifier().classify(Conversation.from_text("synthetic fixture")).outcome is Outcome.NOT_MATCHED'
+
+          uv venv --python 3.12 "${RUNNER_TEMP}/sdist-smoke"
+          uv pip install --python "${RUNNER_TEMP}/sdist-smoke/bin/python" \
+            --build-constraint build-constraints.txt "${sdists[0]}"
+          "${RUNNER_TEMP}/sdist-smoke/bin/python" -c \
+            'from psysafe import Conversation, Outcome, PIIClassifier; assert PIIClassifier().classify(Conversation.from_text("synthetic fixture")).outcome is Outcome.NOT_MATCHED'
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: python-package-distributions
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/psysafe-ai
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish distributions
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2

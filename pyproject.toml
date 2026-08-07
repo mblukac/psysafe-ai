@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "psysafe-ai"
 version = "0.2.0.dev0"
-description = "Calibrated psychological-safety classifiers for AI workflows."
+description = "Calibrated, categorical safety checks for the boundaries where AI systems act."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -16,6 +16,7 @@ authors = [
 keywords = [
     "ai-safety",
     "classification",
+    "agent-safety",
     "guardrails",
     "llm",
     "psychological-safety",
@@ -30,6 +31,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
@@ -64,15 +66,33 @@ all = [
 
 [project.urls]
 Homepage = "https://github.com/mblukac/psysafe-ai"
+Documentation = "https://github.com/mblukac/psysafe-ai/tree/main/docs"
 Repository = "https://github.com/mblukac/psysafe-ai.git"
 Issues = "https://github.com/mblukac/psysafe-ai/issues"
+Security = "https://github.com/mblukac/psysafe-ai/security/policy"
 
 [tool.hatch.build.targets.wheel]
 packages = ["psysafe"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "/CONTRIBUTING.md",
+    "/LICENSE",
+    "/README.md",
+    "/SAFETY.md",
+    "/SECURITY.md",
+    "/build-constraints.txt",
+    "/docs",
+    "/examples",
+    "/psysafe",
+    "/pyproject.toml",
+    "/tests",
+    "/uv.lock",
+]
+
 [tool.black]
 line-length = 120
-target-version = ["py310", "py311", "py312", "py313"]
+target-version = ["py310"]
 
 [tool.ruff]
 line-length = 120
@@ -111,6 +131,8 @@ dev = [
     "mypy>=1.14,<2",
     "openai>=2,<3",
     "openai-agents>=0.19.4,<0.20",
+    "pre-commit>=4.6,<5",
+    "pre-commit-hooks>=6,<7",
     "claude-agent-sdk>=0.2.127,<0.3",
     "pytest>=8.3,<9",
     "pytest-asyncio>=0.25,<2",
@@ -118,3 +140,6 @@ dev = [
     "pytest-mock>=3.14,<4",
     "ruff>=0.9,<1",
 ]
+
+[tool.uv]
+required-version = "==0.12.2"

@@ -1,4 +1,4 @@
-"""Calibrated psychological-safety classifiers for AI workflows."""
+"""Calibrated, categorical safety checks for AI workflow boundaries."""
 
 __version__ = "0.2.0.dev0"
 

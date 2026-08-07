@@ -1,5 +1,5 @@
-name: Bug Report
-description: Create a report to help us improve PsySafe-AI
+name: Bug report
+description: Report a reproducible problem with PsySafe-AI
 title: "[BUG] "
 labels: ["bug"]
 assignees: []
@@ -7,32 +7,53 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report this! Please provide as much context as possible so we can help resolve the issue.
+        Thanks for helping improve PsySafe-AI.
+
+        **Protect user privacy:** never paste real user content, raw prompts, model responses, logs, traces, credentials, identifiers, or health data. Use a synthetic, minimized reproduction. Report security vulnerabilities through the private process in SECURITY.md.
   - type: textarea
     id: expected
     attributes:
-      label: Expected Behavior
-      description: What did you expect to happen?
+      label: Expected behavior
+      description: What categorical outcome or workflow action did you expect, and at which boundary?
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
-      label: Actual Behavior
-      description: What actually happened? Provide any logs or error traces.
+      label: Actual behavior
+      description: What happened instead? Include only sanitized error text that cannot identify a person or reveal content.
+    validations:
+      required: true
+  - type: dropdown
+    id: sensitivity
+    attributes:
+      label: Sensitivity
+      description: Which named sensitivity boundary was configured?
+      options:
+        - precise
+        - balanced
+        - precautionary
+        - Not applicable
     validations:
       required: true
   - type: textarea
     id: reproduction
     attributes:
-      label: Steps to Reproduce
-      description: How can we reproduce this? Include code snippets if possible.
+      label: Synthetic reproduction
+      description: Provide minimal steps and synthetic code or data that reproduce the issue.
     validations:
       required: true
   - type: input
     id: environment
     attributes:
       label: Environment
-      description: Python version, OS, PsySafe-AI version, etc.
+      description: Include the PsySafe-AI version, Python version, operating system, and relevant optional integration.
     validations:
       required: true
+  - type: textarea
+    id: regression
+    attributes:
+      label: Regression information
+      description: If this worked before, identify the last known working version. Otherwise leave blank.
+    validations:
+      required: false

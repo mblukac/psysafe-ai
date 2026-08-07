@@ -1,20 +1,39 @@
-## Description
-Please include a summary of the change and which issue it fixes or feature it implements. 
+## Summary
 
-Fixes # (issue number)
+<!-- What changed, why, and at which AI-system boundary? -->
 
-## Type of change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Code Refactoring/Clean-up
+Closes #
 
-## Checklist:
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes (e.g. `uv run pytest`)
-- [ ] I have run the formatting and linting tools (`uv run black .` and `uv run ruff check .`)
+## Change type
+
+- [ ] Bug fix
+- [ ] Feature
+- [ ] Breaking change
+- [ ] Documentation
+- [ ] Refactor or maintenance
+
+## Safety and calibration contract
+
+<!-- Explain “not applicable” where needed. -->
+
+- [ ] Outcomes remain categorical: `matched`, `not_matched`, or `indeterminate`.
+- [ ] Calibration uses the named `precise`, `balanced`, and `precautionary` sensitivity boundaries.
+- [ ] Detection remains separate from application actions such as `allow`, `review`, or `block`.
+- [ ] `indeterminate` cannot silently become `allow`.
+- [ ] This change adds no confidence score, numerical rating, clinical decision, prevention claim, or compliance claim.
+- [ ] Fail-safe behavior and any agent/tool side-effect limitations are documented.
+
+## Validation
+
+<!-- Summarize tests and aggregate evaluation results. Never paste sensitive cases, prompts, logs, or traces. -->
+
+- [ ] Focused tests cover changed behavior and failure paths.
+- [ ] Classifier, policy, prompt, or calibration changes include representative tuning and held-out evaluation.
+- [ ] Relevant slices, `indeterminate` behavior, and sensitivity monotonicity were checked.
+- [ ] The full test suite, coverage threshold, formatting, linting, and type checks pass.
+- [ ] Documentation and migration guidance are updated where public behavior changed.
+- [ ] Fixtures and discussion use synthetic, minimized data only.
+
+## Compatibility and risks
+
+<!-- List breaking changes, migration steps, provider-data exposure, tracing implications, and rollback considerations. -->

@@ -1,5 +1,5 @@
-name: Feature Request
-description: Suggest an idea for PsySafe-AI
+name: Feature request
+description: Propose a calibrated safety check or workflow improvement
 title: "[FEAT] "
 labels: ["enhancement"]
 assignees: []
@@ -7,25 +7,41 @@ body:
   - type: markdown
     attributes:
       value: |
-        We love hearing new ideas! Please define the scope and reasoning behind the feature request below.
+        PsySafe-AI provides calibrated, categorical safety checks for the boundaries where AI systems act.
+
+        **Protect user privacy:** use synthetic examples only. Never paste real user content, raw prompts, model responses, logs, traces, credentials, identifiers, or health data.
   - type: textarea
     id: problem
     attributes:
-      label: Problem Statement
-      description: Is your feature request related to a problem? Please describe it.
+      label: Problem and boundary
+      description: Which input, task-selection, execution, tool, or communication boundary needs a check, and what failure does it address?
     validations:
       required: true
   - type: textarea
     id: solution
     attributes:
-      label: Proposed Solution
-      description: Describe the solution or feature you'd like to see added.
+      label: Proposed behavior
+      description: Describe the observable signal, categorical outcome, and application action you propose.
+    validations:
+      required: true
+  - type: textarea
+    id: calibration
+    attributes:
+      label: Calibration behavior
+      description: How should precise, balanced, and precautionary sensitivity differ? Do not propose numerical ratings or per-item confidence scores.
+    validations:
+      required: false
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Evaluation plan
+      description: How could this be tested on representative tuning and held-out cases, including relevant slices and indeterminate outcomes?
     validations:
       required: true
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives Considered
-      description: Have you considered any alternative solutions?
+      label: Alternatives and non-goals
+      description: What alternatives did you consider, and what should remain outside the package's scope?
     validations:
       required: false
