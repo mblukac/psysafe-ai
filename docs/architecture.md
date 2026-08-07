@@ -1,351 +1,90 @@
-# PsySafe AI Architecture and Design
+# Architecture
 
-This document explains the architecture and design principles of the PsySafe AI library, providing insights into how the components work together and how to extend the library.
+PsySafe separates observation, calibration, and action so model output is never itself an authorization decision.
 
-## Architectural Overview
-
-PsySafe AI follows a modular, extensible architecture designed to provide psychological safety guardrails for AI language model applications. The architecture consists of several key layers:
-
-1. **Core Layer**: Defines the fundamental abstractions and interfaces
-2. **Drivers Layer**: Provides integrations with different LLM providers
-3. **Catalog Layer**: Offers pre-built guardrails for common use cases
-4. **CLI Layer**: Exposes functionality through a command-line interface
-5. **Evaluation Layer**: Provides tools for evaluating guardrail effectiveness
-
-Here's a high-level diagram of how these components interact:
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Application Code                          │
-└───────────────────────────────┬─────────────────────────────────┘
-                                │
-                                ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                         PsySafe Library                          │
-│  ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐ │
-│  │  Catalog Layer  │──▶│   Core Layer    │◀──│  Drivers Layer  │ │
-│  └─────────────────┘   └────────┬────────┘   └─────────────────┘ │
-│           ▲                     │                     ▲           │
-│           │                     ▼                     │           │
-│  ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐ │
-│  │    CLI Layer    │   │ Evaluation Layer│   │  External LLMs   │ │
-│  └─────────────────┘   └─────────────────┘   └─────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    A["Immutable conversation or artifact"] --> B["Typed classifier policy"]
+    B --> C["Structured observation"]
+    C --> D["Local named boundary"]
+    D --> E["matched / not_matched / indeterminate"]
+    E --> F["Explicit gate policy"]
+    F --> G["allow / review / block"]
 ```
 
-## Core Layer
+## Package boundaries
 
-The Core Layer defines the fundamental abstractions and interfaces for the library.
+| Module | Responsibility |
+| --- | --- |
+| `psysafe.core` | Immutable messages/conversations, categorical assessment contracts, protocols, and failure policy |
+| `psysafe.backends` | Structured OpenAI, Anthropic, and callable-provider boundaries with sanitized failures |
+| `psysafe.classifiers` | Fixed policies, typed observations, deterministic calibration, and local PII detection |
+| `psysafe.gates` | Role-bound workflow checkpoints and explicit `allow` / `review` / `block` routing |
+| `psysafe.evaluation` | Strict JSONL golden cases, family-safe splits, aggregate metrics, and monotonicity checks |
+| `psysafe.integrations` | Optional lifecycle adapters for the OpenAI Agents SDK and Claude Agent SDK |
 
-### Key Components
+The package root imports no optional provider or agent SDK. Missing extras fail when their concrete adapter is used, not when `import psysafe` runs.
 
-#### GuardrailBase
+## Observation and calibration
 
-The `GuardrailBase` abstract class defines the interface for all guardrails:
+An LLM-backed `PolicyClassifier` sends two distinct values to a structured backend:
 
-```python
-class GuardrailBase(Generic[RequestT, ResponseT], ABC):
-    @abstractmethod
-    def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
-        """Apply the guardrail to a request."""
-        pass
+- fixed provider instructions loaded from a versioned package resource; and
+- an encoded conversation containing role, generated positional ID, and content.
 
-    @abstractmethod
-    def validate(self, response: ResponseT) -> ValidationReport:
-        """Validate a response against the guardrail."""
-        pass
+The selected `Sensitivity` is not included. The provider returns a typed `Observation` with a bounded collection of categorical findings and one directness label per finding. Local calibration then filters findings according to a fixed monotonic mapping:
 
-    def bind(self, driver: Any) -> Any:
-        """Bind the guardrail to a specific LLM driver instance."""
-        return driver
+```text
+precise        = explicit
+balanced       = explicit + contextual
+precautionary  = explicit + contextual + ambiguous
 ```
 
-This interface ensures that all guardrails can:
-- Modify requests before they're sent to the LLM (`apply`)
-- Validate responses from the LLM (`validate`)
-- Optionally interact with the driver (`bind`)
+This design supports cheap policy comparison and makes the sensitivity behavior directly testable. It does not make the underlying observation infallible: provider/model changes still require evaluation.
 
-#### GuardedRequest
+## Evidence binding
 
-The `GuardedRequest` model represents a request that has been processed by a guardrail:
+Provider-facing messages use generated IDs (`m0`, `m1`, …); caller-supplied record, account, or patient IDs are not copied into instructions or results. Message content is still provider-bound and may itself contain identifiers.
 
-```python
-class GuardedRequest(BaseModel, Generic[RequestT]):
-    original_request: RequestT
-    modified_request: RequestT
-    metadata: Dict[str, Any] = {}
-```
+Target-aware classifiers can use the whole conversation for context but require actionable findings to cite one selected message with the classifier's expected role. A gate adds an opaque `artifact_id` so the application can bind a decision to an immutable version of input, task, plan, tool payload, or response.
 
-#### ValidationReport
+Observation records are validated data models, not signed attestations. After serialization or a trust-boundary crossing, revalidate a record against the original ordered conversation before relying on its citations.
 
-The `ValidationReport` model represents the result of validating a response:
+## Failure model
 
-```python
-class ValidationReport(BaseModel):
-    is_valid: bool
-    violations: List[Violation] = []
-    metadata: Dict[str, Any] = {}
-```
+The public assessment has a real abstention state: `indeterminate`. Refusals, timeouts, provider failures, malformed outputs, insufficient context, output saturation, and internal boundary failures never become `not_matched`.
 
-#### PromptTemplate
+`classify()` and `aclassify()` apply the configured `FailurePolicy`. `observe()` and `aobserve()` raise sanitized backend errors because a reusable observation cannot be fabricated. Gates convert classifier failures or invalid results into bounded indeterminate assessments and then apply a non-allow action.
 
-The `PromptTemplate` class manages prompt templates using Jinja2:
+Missing optional dependencies and invalid construction are configuration errors, not model outcomes. Cancellation propagates rather than being rewritten as a safety decision.
 
-```python
-class PromptTemplate:
-    @classmethod
-    def from_string(cls, prompt_text: str) -> "PromptTemplate":
-        """Creates a PromptTemplate instance from a raw string."""
-        pass
+## Gate model
 
-    @classmethod
-    def from_file(cls, template_file_path: Union[str, Path]) -> "PromptTemplate":
-        """Creates a PromptTemplate instance by loading content from a file."""
-        pass
+Every `WorkflowGate` or `AsyncWorkflowGate` owns exactly one `Checkpoint`:
 
-    def render(self, context: PromptRenderCtx) -> str:
-        """Renders the prompt template with the given context."""
-        pass
-```
+- `input`
+- `task_selection`
+- `execution`
+- `tool_input`
+- `tool_output`
+- `communication`
 
-### Guardrail Implementations
+Checkpoint roles are enforced at construction. Multiple async classifiers run concurrently but decisions remain in deterministic configuration order. The strongest configured action wins (`block` over `review` over `allow`). A `GatePolicy` can override actions per classifier while preventing `indeterminate` or review-only signals from being configured to allow.
 
-The Core Layer provides several implementations of the `GuardrailBase` interface:
+Gates retain their immutable configuration, not conversation, assessment, or decision data.
 
-#### PromptGuardrail
+## Agent adapter boundary
 
-The `PromptGuardrail` class modifies requests by adding or transforming prompt instructions:
+The adapters translate native SDK lifecycle objects into bounded canonical text, call an `AsyncWorkflowGate`, and translate the categorical action back into the SDK's native tripwire, tool exception, hook permission, or stop response.
 
-```python
-class PromptGuardrail(GuardrailBase[RequestT, ResponseT]):
-    def __init__(self, template: PromptTemplate, template_variables: Dict[str, Any] = None):
-        """Initializes a PromptGuardrail."""
-        pass
+Serialization accepts only exact JSON-compatible built-ins with caps on depth, nodes, items, strings, integer size, and rendered bytes. Cycles, non-finite values, arbitrary objects, subclasses, and malformed SDK values fail closed with a fixed data-free exception. The OpenAI adapter additionally rejects recognized structured-media items; the Claude adapter treats JSON-compatible media references as ordinary structured data. Tool artifact IDs bind both the SDK call ID and exact canonical payload so a decision cannot be reused for a mutated call.
 
-    def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
-        """Applies the guardrail by rendering the prompt template and modifying the request."""
-        pass
+Framework limitations remain application responsibilities: hook coverage differs, post-tool checks cannot undo side effects, and final-output checks are not streaming filters.
 
-    def validate(self, response: ResponseT) -> ValidationReport:
-        """PromptGuardrails typically do not validate responses themselves."""
-        pass
-```
+## Extension points
 
-#### CheckGuardrail
+For another structured provider, implement `StructuredBackend.complete()` and `acomplete()` and return an exact instance of the requested Pydantic output type. Collapse provider-specific exceptions to PsySafe's sanitized backend categories.
 
-The `CheckGuardrail` class validates responses using validator functions:
+For another classifier, subclass `PolicyClassifier`, define a small typed `Finding`/`Observation` vocabulary, provide a concise fixed policy resource, identify the evidence role, and test all named boundaries. Avoid open-ended reasoning fields and person-level inferences.
 
-```python
-class CheckGuardrail(GuardrailBase[RequestT, ResponseT]):
-    def __init__(self, validators: List[Validator]):
-        """Initializes a CheckGuardrail."""
-        pass
-
-    def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
-        """CheckGuardrails do not modify the request."""
-        pass
-
-    def validate(self, response: ResponseT) -> ValidationReport:
-        """Validates the response by applying all registered validator functions."""
-        pass
-```
-
-#### CompositeGuardrail
-
-The `CompositeGuardrail` class composes multiple guardrails:
-
-```python
-class CompositeGuardrail(GuardrailBase[RequestT, ResponseT]):
-    def __init__(self, guardrails: List[GuardrailBase[RequestT, ResponseT]]):
-        """Initializes a CompositeGuardrail."""
-        pass
-
-    def apply(self, request: RequestT) -> GuardedRequest[RequestT]:
-        """Applies all composed guardrails sequentially to the request."""
-        pass
-
-    def validate(self, response: ResponseT) -> ValidationReport:
-        """Validates the response by applying all composed guardrails sequentially."""
-        pass
-```
-
-## Drivers Layer
-
-The Drivers Layer provides integrations with different LLM providers.
-
-### ChatDriverABC
-
-The `ChatDriverABC` abstract class defines the interface for all LLM drivers:
-
-```python
-class ChatDriverABC(Generic[RequestT, ResponseT], ABC):
-    @abstractmethod
-    def send(self, request: RequestT) -> ResponseT:
-        """Send a request to the LLM and get a single response."""
-        pass
-
-    @abstractmethod
-    async def stream(self, request: RequestT) -> AsyncIterator[ResponseT]:
-        """Send a request to the LLM and stream responses back."""
-        pass
-
-    @abstractmethod
-    def get_metadata(self) -> Dict[str, Any]:
-        """Get metadata about the driver."""
-        pass
-```
-
-### Driver Implementations
-
-The library provides implementations for various LLM providers:
-
-- `OpenAIChatDriver`: For OpenAI models (GPT-3.5, GPT-4, etc.)
-- `AnthropicChatDriver`: For Anthropic models (Claude, etc.)
-- `TransformersChatDriver`: For local Hugging Face models
-
-## Catalog Layer
-
-The Catalog Layer provides a registry of pre-built guardrails.
-
-### GuardrailCatalog
-
-The `GuardrailCatalog` class manages the registry of guardrails:
-
-```python
-class GuardrailCatalog:
-    @classmethod
-    def register(cls, name: str, guardrail_cls: Type[GuardrailBase]) -> None:
-        """Registers a guardrail class with a given name."""
-        pass
-
-    @classmethod
-    def load(cls, names: Union[str, List[str]], **kwargs: Any) -> List[GuardrailBase]:
-        """Loads one or more guardrails by name."""
-        pass
-
-    @classmethod
-    def compose(cls, names: Union[str, List[str]], **kwargs: Any) -> CompositeGuardrail:
-        """Loads multiple guardrails by name and returns them wrapped in a CompositeGuardrail."""
-        pass
-
-    @classmethod
-    def list_available(cls) -> List[str]:
-        """Returns a list of names of all registered guardrails."""
-        pass
-```
-
-## Design Patterns
-
-PsySafe AI employs several design patterns to ensure flexibility and extensibility:
-
-### Strategy Pattern
-
-The `GuardrailBase` interface and its implementations follow the Strategy pattern, allowing different guardrail strategies to be used interchangeably.
-
-### Composite Pattern
-
-The `CompositeGuardrail` class implements the Composite pattern, allowing guardrails to be composed into more complex guardrails.
-
-### Factory Method Pattern
-
-The `GuardrailCatalog.load` and `GuardrailCatalog.compose` methods implement the Factory Method pattern, creating guardrail instances based on their names.
-
-### Template Method Pattern
-
-The `PromptTemplate` class implements the Template Method pattern, providing a framework for rendering prompts with different contexts.
-
-## Extending the Library
-
-### Creating Custom Guardrails
-
-To create a custom guardrail, extend one of the base guardrail classes:
-
-```python
-from psysafe.core.prompt import PromptGuardrail
-from psysafe.core.template import PromptTemplate
-
-class MyCustomGuardrail(PromptGuardrail):
-    def __init__(self, custom_param):
-        template = PromptTemplate.from_string(
-            "This is a custom guardrail with parameter: {{ custom_param }}"
-        )
-        super().__init__(template=template, template_variables={"custom_param": custom_param})
-        self.custom_param = custom_param
-
-    # Override methods as needed
-    # ...
-```
-
-### Creating Custom Drivers
-
-To create a custom driver for a new LLM provider, implement the `ChatDriverABC` interface:
-
-```python
-from psysafe.drivers.base import ChatDriverABC
-
-class MyCustomDriver(ChatDriverABC):
-    def __init__(self, model, api_key=None, **kwargs):
-        # Initialize your driver
-        pass
-
-    def send(self, request):
-        # Implement sending a request to your LLM
-        pass
-
-    async def stream(self, request):
-        # Implement streaming responses from your LLM
-        pass
-
-    def get_metadata(self):
-        # Return metadata about your driver
-        pass
-```
-
-### Creating Custom Validators
-
-To create custom validators for use with `CheckGuardrail`:
-
-```python
-from psysafe.core.models import ValidationReport, Violation, ValidationSeverity
-
-def my_custom_validator(response):
-    # Implement your validation logic
-    if problem_detected(response):
-        return ValidationReport(
-            is_valid=False,
-            violations=[
-                Violation(
-                    severity=ValidationSeverity.ERROR,
-                    code="CUSTOM_VIOLATION",
-                    message="A problem was detected in the response",
-                    context={"details": "Additional details about the violation"}
-                )
-            ]
-        )
-    return ValidationReport(is_valid=True)
-
-# Use with CheckGuardrail
-from psysafe.core.check import CheckGuardrail
-check_guardrail = CheckGuardrail(validators=[my_custom_validator])
-```
-
-## Best Practices
-
-When working with the PsySafe AI architecture:
-
-1. **Separation of Concerns**: Keep guardrails focused on specific safety concerns
-2. **Composition over Inheritance**: Use `CompositeGuardrail` to combine functionality
-3. **Immutability**: Treat requests and responses as immutable, creating new instances when modifications are needed
-4. **Error Handling**: Implement robust error handling in custom guardrails and drivers
-5. **Testing**: Write tests for custom guardrails using the evaluation tools
-
-## Future Architecture Directions
-
-The PsySafe AI architecture is designed to evolve with emerging needs:
-
-- **Plugin System**: A more formalized plugin system for extending functionality
-- **Middleware Architecture**: Additional middleware layers for cross-cutting concerns
-- **Distributed Guardrails**: Support for distributed guardrail execution
-- **Feedback Loops**: Mechanisms for learning from guardrail performance in production
-
-For more information on contributing to the architecture, see the project's contribution guidelines.
+For another orchestrator, adapt its native lifecycle boundary to `AsyncWorkflowGate`. Preserve exact artifact binding, bounded canonical serialization, cancellation, non-allow abstention, and data-free exceptions.

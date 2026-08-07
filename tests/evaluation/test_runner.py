@@ -7,7 +7,7 @@ import pytest
 from pydantic import Field, ValidationError
 
 from psysafe.backends import CallableBackend
-from psysafe.backends.base import BackendError
+from psysafe.backends.base import BackendConfigurationError, BackendError
 from psysafe.classifiers.base import Finding, Observation, ObservationRecord, PolicyClassifier
 from psysafe.classifiers.complaints import (
     ComplaintCategory,
@@ -454,6 +454,28 @@ def test_unknown_ordinary_failure_is_categorical_and_stops_retrying() -> None:
         IndeterminateReason.INTERNAL_ERROR,
     }
     assert "PRIVATE" not in report.model_dump_json()
+
+
+class _UnconfiguredClassifier(_ExplodingClassifier):
+    def classify(
+        self,
+        conversation: Conversation,
+        *,
+        sensitivity: Sensitivity = Sensitivity.BALANCED,
+    ) -> Assessment:
+        del conversation, sensitivity
+        self.calls += 1
+        raise BackendConfigurationError("openai")
+
+
+def test_missing_provider_configuration_is_not_an_evaluation_outcome() -> None:
+    classifier = _UnconfiguredClassifier()
+
+    with pytest.raises(BackendConfigurationError, match=r"psysafe-ai\[openai\]") as caught:
+        run_evaluation(classifier, (_case(),), split=EvaluationSplit.TUNING)
+
+    assert classifier.calls == 1
+    assert "PRIVATE" not in str(caught.value)
 
 
 class _MutableIdentityClassifier:

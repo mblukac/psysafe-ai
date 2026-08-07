@@ -1,0 +1,2 @@
+{"case_id":"email-disclosure","family_id":"email-family","split":"tuning","slices":["identifier"],"conversation":{"messages":[{"role":"user","content":"Email: person@example.com"}]},"expected_boundary":"precise","expected_signals":[{"name":"email_address","boundary":"precise"}]}
+{"case_id":"ordinary-request","family_id":"ordinary-family","split":"tuning","slices":["ordinary"],"conversation":{"messages":[{"role":"user","content":"Summarize the supplied release notes."}]},"expected_boundary":"never"}

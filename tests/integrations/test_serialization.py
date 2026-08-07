@@ -37,7 +37,7 @@ def test_exact_builtin_values_are_accepted(value: object) -> None:
 
 @pytest.mark.parametrize("value", [math.nan, math.inf, -math.inf])
 def test_non_finite_floats_are_rejected(value: float) -> None:
-    with pytest.raises(IntegrationInputError, match="^integration input is invalid$"):
+    with pytest.raises(IntegrationInputError, match=r"^integration input is invalid$"):
         canonical_json(value)
 
 
@@ -289,7 +289,7 @@ def test_utf8_byte_length_is_bounded_even_when_character_length_is_smaller() -> 
 
 @pytest.mark.parametrize("value", ["\ud800", {"\udfff": None}, {"payload": "\ud800"}])
 def test_unpaired_surrogates_are_sanitized(value: object) -> None:
-    with pytest.raises(IntegrationInputError, match="^integration input is invalid$") as captured:
+    with pytest.raises(IntegrationInputError, match=r"^integration input is invalid$") as captured:
         canonical_json(value)
 
     assert captured.value.__context__ is not None
