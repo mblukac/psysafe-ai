@@ -119,12 +119,16 @@ class Counts(TypedDict):
     endorsed_vote_mass: float
 
 
-def _count(cases: list[_Case], slots: int, live: bool) -> tuple[Counts, set[int]]:
+def _selected(cases: list[_Case], slots: int, live: bool) -> list[tuple[int, tuple[int, float]]]:
+    """Chosen (dialogue index, nominated turn) pairs for both policy evaluators."""
     if live:
-        selected = [(i, c.crossing) for i, c in enumerate(cases) if c.crossing is not None]
-    else:
-        order = sorted(range(len(cases)), key=lambda i: (-cases[i].peak_score, cases[i].tie_key))
-        selected = [(i, cases[i].peak) for i in order[:slots]]
+        return [(i, c.crossing) for i, c in enumerate(cases) if c.crossing is not None]
+    order = sorted(range(len(cases)), key=lambda i: (-cases[i].peak_score, cases[i].tie_key))
+    return [(i, cases[i].peak) for i in order[:slots]]
+
+
+def _count(cases: list[_Case], slots: int, live: bool) -> tuple[Counts, set[int]]:
+    selected = _selected(cases, slots, live)
     caught = {i for i, (_, fraction) in selected if fraction > 0.5}
     premature = 0
     for i, (turn, _) in selected:

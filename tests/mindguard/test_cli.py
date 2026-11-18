@@ -25,6 +25,11 @@ def test_smoke_is_offline_and_reports_distinct_workloads(capsys, monkeypatch):
             assert counts["catches"] + counts["misses"] == report["eligible_cases"]
             assert counts["catches"] + counts["unsupported"] == counts["reviews"]
     assert report["stack_minus_best_single"]["fixed_review_delta"]["observed"] == 0
+    overlap = report["error_dependence"]["miss_overlap"]
+    for policy in ("fixed", "live"):
+        assert overlap[policy]["eligible_conversations"]["observed"] == report["eligible_cases"]
+        both = overlap[policy]["jev__gemini"]["both_missed"]["observed"]
+        assert both <= min(report["methods"][m][policy]["misses"] for m in ("jev", "gemini"))
     assert "Invented fixture" not in str(report)
 
 
