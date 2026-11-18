@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .data import DATASET_REVISION, Case, Turn, attach_responses, local_records, read_cases, requests_for
+from .dependence import error_dependence
 from .fit import brier_loss, fold_predictions, grouped_folds, log_loss
 from .providers import MODEL_IDS
 from .review import Fold, allocate_slots, evaluate_fold, paired_uncertainty
@@ -65,6 +66,9 @@ def evaluate(
         "fixed_slots_per_method": sum(r["queue_slots"] for r in split_reports),
         "methods": summary,
         "stack_minus_best_single": paired_uncertainty(
+            predictions, budget=live_rate, slots_per_fold=allocated, replicates=replicates, seed=seed
+        ),
+        "error_dependence": error_dependence(
             predictions, budget=live_rate, slots_per_fold=allocated, replicates=replicates, seed=seed
         ),
         "folds": split_reports,
