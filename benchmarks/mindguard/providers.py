@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import math
+from typing import TypeGuard
 
 DECISIONS_URL = "https://openrouter.ai/api/alpha/decisions"
 MODEL_IDS = (
@@ -35,17 +36,20 @@ def _check_model(model: str) -> None:
         raise ValueError("Unknown model: this pilot requires an exact catalogued model snapshot")
 
 
-def build_request(model: str, messages: list[dict[str, str]]) -> dict[str, object]:
+def valid_turn_content(value: object, role: str, *, allow_empty_user: bool = False) -> TypeGuard[str]:
+    """Only the release importer opts in to preserving a literal empty user message."""
+    return isinstance(value, str) and (bool(value.strip()) or (allow_empty_user and role == "user" and value == ""))
+
+
+def build_request(model: str, messages: list[dict[str, str]], *, allow_empty_user: bool = False) -> dict[str, object]:
     """Build (but never send) the common three-way choice request for a prefix."""
     _check_model(model)
     prefix = []
     for turn in messages:
         if not isinstance(turn, dict) or set(turn) != {"role", "content"}:
             raise ValueError("A prefix turn must contain only role and content")
-        if (
-            turn["role"] not in ("user", "assistant")
-            or not isinstance(turn["content"], str)
-            or not turn["content"].strip()
+        if turn["role"] not in ("user", "assistant") or not valid_turn_content(
+            turn["content"], turn["role"], allow_empty_user=allow_empty_user
         ):
             raise ValueError("Expected a nonempty user or assistant text turn")
         prefix.append(dict(turn))

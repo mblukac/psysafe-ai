@@ -15,8 +15,10 @@ import os
 import stat
 import sys
 from collections.abc import Callable, Iterator
+from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from contextlib import contextmanager
 from pathlib import Path
+from threading import Event
 from typing import Any, TextIO
 
 from .__main__ import official_cases
@@ -135,6 +137,73 @@ def _require_canary(path: Path) -> None:
             raise CollectionError("A complete, current three-model synthetic canary cache is required")
 
 
+def _save(handle: TextIO, generations: set[str], req: Envelope, result: Envelope, generation: str) -> None:
+    if generation in generations:
+        raise CollectionError("Duplicate generation receipt")
+    row = {"request_id": req["request_id"], "model": req["model"], "response": result}
+    handle.write(json.dumps(row, allow_nan=False) + "\n")
+    handle.flush()
+    os.fsync(handle.fileno())
+    generations.add(generation)
+
+
+def _parallel(
+    permitted: list[Envelope],
+    workers: int,
+    transport: Transport,
+    handle: TextIO,
+    generations: set[str],
+) -> None:
+    """Bound in-flight calls. On first failure stop dispatch; drain validated receipts."""
+    failed = Event()
+
+    def request(req: Envelope) -> tuple[Envelope, str]:
+        try:
+            result = transport(req["payload"])
+            return result, _validate(req["model"], result)
+        except Exception:
+            # Set before the future completes; never relay untrusted exception text.
+            failed.set()
+            raise
+
+    submitted = saved = errors = 0
+    interrupted = False
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        pending: dict[Future[tuple[Envelope, str]], Envelope] = {}
+        while pending or (not failed.is_set() and submitted < len(permitted)):
+            while not failed.is_set() and len(pending) < workers and submitted < len(permitted):
+                req = permitted[submitted]
+                pending[pool.submit(request, req)] = req
+                submitted += 1
+            if not pending:
+                break
+            try:
+                done, _ = wait(pending, return_when=FIRST_COMPLETED)
+            except KeyboardInterrupt:
+                failed.set()
+                interrupted = True
+                continue
+            for future in done:
+                req = pending.pop(future)
+                try:
+                    result, generation = future.result()
+                except Exception:  # noqa: BLE001 - no provider text may escape
+                    failed.set()
+                    errors += 1
+                    continue
+                try:
+                    _save(handle, generations, req, result, generation)
+                except CollectionError:  # Duplicate receipt: preserve other valid calls in flight.
+                    failed.set()
+                    errors += 1
+                    continue
+                saved += 1
+                if saved % 100 == 0:
+                    print(f"Batch progress: {saved}/{len(permitted)} new responses saved", flush=True)
+    if errors or interrupted:
+        raise CollectionError(f"Batch stopped: {submitted} submitted; {saved} saved; {errors} failed. No retry.")
+
+
 def main(argv: list[str] | None = None, *, transport: Transport = _post) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="mode", required=True)
@@ -146,6 +215,9 @@ def main(argv: list[str] | None = None, *, transport: Transport = _post) -> int:
         sub.add_argument("--allow-paid", action="store_true", help="authorize real, billable requests")
     batch.add_argument("--annotations", required=True, type=Path)
     batch.add_argument("--canary-cache", required=True, type=Path)
+    batch.add_argument(
+        "--workers", type=int, choices=range(1, 13), default=1, help="maximum concurrent requests (default 1)"
+    )
     batch.add_argument("--allow-gated-provider-processing", action="store_true", help="confirm permission to send text")
     args = parser.parse_args(argv)
     try:
@@ -179,16 +251,12 @@ def main(argv: list[str] | None = None, *, transport: Transport = _post) -> int:
             if handle is None:
                 raise CollectionError("Private response cache unavailable")
             generations = set(seen.values())
-            for req in permitted:
-                result = transport(req["payload"])
-                generation = _validate(req["model"], result)
-                if generation in generations:
-                    raise CollectionError("Duplicate generation receipt")
-                generations.add(generation)
-                row = {"request_id": req["request_id"], "model": req["model"], "response": result}
-                handle.write(json.dumps(row, allow_nan=False) + "\n")
-                handle.flush()
-                os.fsync(handle.fileno())
+            if args.mode == "batch" and args.workers > 1:
+                _parallel(permitted, args.workers, transport, handle, generations)
+            else:
+                for req in permitted:
+                    result = transport(req["payload"])
+                    _save(handle, generations, req, result, _validate(req["model"], result))
             print(f"Saved {len(permitted)} new responses; {len(todo) - len(permitted)} remain.")
     except CollectionError as exc:
         print(f"Collection stopped: {exc}", file=sys.stderr)
