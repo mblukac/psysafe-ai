@@ -63,27 +63,52 @@ def _keys(rows: Sequence[Turn]) -> dict[tuple[str, int], int]:
     return keys
 
 
+def _families(rows: Sequence[Turn]) -> dict[str, str]:
+    """One leakage group per dialogue, or the dialogue itself for independent inputs."""
+    result: dict[str, str] = {}
+    for row in rows:
+        family = getattr(row, "group_id", None) or row.dialogue_id
+        if not isinstance(family, str) or result.setdefault(row.dialogue_id, family) != family:
+            raise ValueError("inconsistent family for dialogue")
+    return result
+
+
 def grouped_folds(rows: list[Turn], n_splits: int, seed: int) -> list[tuple[list[Turn], list[Turn]]]:
-    """Partition whole dialogues, spreading majority-positive and minority-only cases."""
+    """Keep shared-opening families intact; balance cases by dialogue, not by row or family."""
     _keys(rows)
+    families = _families(rows)
     groups: dict[str, list[Turn]] = defaultdict(list)
     for row in rows:
         groups[row.dialogue_id].append(row)
-    if not 2 <= n_splits <= len(groups):
-        raise ValueError("fold count must be between 2 and the number of distinct dialogues")
-    strata: dict[int, list[str]] = defaultdict(list)
-    for group, turns in groups.items():
+    members: dict[str, list[str]] = defaultdict(list)
+    strata: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    for dialogue, turns in groups.items():
+        family = families[dialogue]
+        members[family].append(dialogue)
         peak = max(_target(turn) for turn in turns)
-        strata[2 if peak > 0.5 else int(peak > 0)].append(group)
+        strata[family][0] += int(peak > 0.5)
+        strata[family][1] += int(0 < peak <= 0.5)
+    if not 2 <= n_splits <= len(members):
+        raise ValueError("fold count must be between 2 and the number of distinct dialogue families")
     bins: list[set[str]] = [set() for _ in range(n_splits)]
     lengths = [0] * n_splits
-    for stratum in sorted(strata, reverse=True):
-        counts = [0] * n_splits
-        for group in sorted(strata[stratum], key=lambda g: sha256(f"{seed}:{g}".encode()).digest()):
-            j = min(range(n_splits), key=lambda i: (counts[i], len(bins[i]), lengths[i], i))
-            bins[j].add(group)
-            lengths[j] += len(groups[group])
-            counts[j] += 1
+    counts = [[0, 0] for _ in bins]
+    # Largest rare-case blocks first. After stratification, fill the shortest
+    # bins in dialogue units, using prefix counts only to break ties.
+    order = sorted(
+        members,
+        key=lambda f: (-strata[f][0], -strata[f][1], -len(members[f]), sha256(f"{seed}:{f}".encode()).digest()),
+    )
+    for family in order:
+        maj, minority = strata[family]
+        j = min(
+            range(n_splits),
+            key=lambda i: (counts[i][0] if maj else 0, counts[i][1] if minority else 0, len(bins[i]), lengths[i], i),
+        )
+        bins[j].update(members[family])
+        lengths[j] += sum(len(groups[d]) for d in members[family])
+        counts[j][0] += maj
+        counts[j][1] += minority
     return [([r for r in rows if r.dialogue_id not in b], [r for r in rows if r.dialogue_id in b]) for b in bins]
 
 
@@ -189,11 +214,13 @@ def fold_predictions(
     """
     position = _keys(train)
     _keys(test)
-    groups = {r.dialogue_id for r in train}
+    families = _families(train)
+    test_families = _families(test)
+    groups = set(families.values())
+    if families.keys() & test_families.keys() or groups.intersection(test_families.values()):
+        raise ValueError("dialogue or shared-opening family appears in both train and test")
     if not test or len(groups) < 2:
-        raise ValueError("require a nonempty test and at least two training dialogues")
-    if any(r.dialogue_id in groups for r in test):
-        raise ValueError("dialogue appears in both train and test")
+        raise ValueError("require a nonempty test and at least two independent training dialogue families")
     oof = {method: [0.0] * len(train) for method in (*_SUBSETS, "equal")}
     for fit, held_out in grouped_folds(train, min(3, len(groups)), seed):
         for method, values in _scores(fit, held_out).items():

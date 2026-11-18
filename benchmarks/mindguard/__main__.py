@@ -10,7 +10,16 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .data import DATASET_REVISION, Case, Turn, attach_responses, local_records, read_cases, requests_for
+from .data import (
+    DATASET_REVISION,
+    Case,
+    Turn,
+    attach_responses,
+    complete_dialogues,
+    local_records,
+    read_release_cases,
+    requests_for,
+)
 from .dependence import error_dependence
 from .fit import brier_loss, fold_predictions, grouped_folds, log_loss
 from .providers import MODEL_IDS
@@ -27,12 +36,14 @@ def evaluate(
     replicates: int,
     synthetic: bool,
     slots: int | None = None,
+    complete_ids: set[str] | None = None,
 ) -> dict[str, Any]:
     if not math.isfinite(budget) or not 0 <= budget <= 1 or replicates < 1:
         raise ValueError("budget must be in [0,1] and bootstrap count must be positive")
     split_reports = []
     predictions: list[Fold] = []
     summary: dict[str, dict[str, Any]] = {}
+    complete_live: dict[str, Any] = {"dialogues": 0, "eligible_cases": 0, "methods": {}}
     partitions = grouped_folds(turns, folds, seed)
     sizes = [len({row.dialogue_id for row in test}) for _, test in partitions]
     total_slots = math.floor(sum(sizes) * budget + 0.5) if slots is None else slots
@@ -43,6 +54,24 @@ def evaluate(
         predictions.append((train, development, test, heldout))
         review = evaluate_fold(train, development, test, heldout, budget=live_rate, slots=allocated[i])
         split_reports.append({"fold": i + 1, "best_single": winner, **review})
+        if complete_ids is not None:
+            # Keep the very same OOF fits, winner and thresholds, restricting only the test dialogues.
+            ix = [j for j, row in enumerate(test) if row.dialogue_id in complete_ids]
+            if ix:
+                subset = evaluate_fold(
+                    train,
+                    development,
+                    [test[j] for j in ix],
+                    {m: [values[j] for j in ix] for m, values in heldout.items()},
+                    budget=live_rate,
+                    slots=0,
+                )
+                complete_live["dialogues"] += subset["dialogues"]
+                complete_live["eligible_cases"] += subset["eligible_cases"]
+                for m, metrics in subset["methods"].items():
+                    totals_live = complete_live["methods"].setdefault(m, {})
+                    for measure, amount in metrics["live"].items():
+                        totals_live[measure] = totals_live.get(measure, 0) + amount
         for method, scores in heldout.items():
             totals = summary.setdefault(method, {"log_loss": 0.0, "brier": 0.0, "fixed": {}, "live": {}})
             totals["log_loss"] += log_loss(test, scores) * len(test) / len(turns)
@@ -63,6 +92,8 @@ def evaluate(
         "turns": len(turns),
         "dialogues": sum(r["dialogues"] for r in split_reports),
         "eligible_cases": sum(r["eligible_cases"] for r in split_reports),
+        "replay_scope": "annotated user turns only; absent ratings are not negatives",
+        "complete_dialogue_live_sensitivity": complete_live if complete_ids is not None else None,
         "fixed_slots_per_method": sum(r["queue_slots"] for r in split_reports),
         "methods": summary,
         "stack_minus_best_single": paired_uncertainty(
@@ -76,9 +107,14 @@ def evaluate(
 
 
 def official_cases(path: Path) -> list[Case]:
-    cases = read_cases(local_records(path))
-    if len(cases) != 1134 or len({c.dialogue_id for c in cases}) != 67:
-        raise ValueError("expected all 1,134 official prefixes and 67 unambiguous dialogue chains")
+    cases = read_release_cases(local_records(path))
+    maxima: dict[str, int] = {}
+    for case in cases:
+        maxima[case.dialogue_id] = max(maxima.get(case.dialogue_id, 0), case.turn_index)
+    if (len(cases), len(maxima), sum(maxima.values()), len(complete_dialogues(cases))) != (1134, 67, 1156, 50):
+        raise ValueError(
+            "unexpected pinned-release structure; expected 1,134 rated turns in 67 paths with 22 unrated positions"
+        )
     return cases
 
 
@@ -113,11 +149,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Prepared {len(envelopes)} private requests locally. None sent.", file=sys.stderr)
             return 0
         synthetic = args.command == "smoke"
-        rows = (
-            smoke_turns()
-            if synthetic
-            else attach_responses(official_cases(args.annotations), local_records(args.responses))
-        )
+        complete_ids = None
+        if synthetic:
+            rows = smoke_turns()
+        else:
+            cases = official_cases(args.annotations)
+            rows = attach_responses(cases, local_records(args.responses))
+            complete_ids = complete_dialogues(cases)
         report = evaluate(
             rows,
             folds=args.folds,
@@ -126,6 +164,7 @@ def main(argv: list[str] | None = None) -> int:
             slots=args.slots,
             replicates=args.bootstrap,
             synthetic=synthetic,
+            complete_ids=complete_ids,
         )
         print(json.dumps(report, indent=2, allow_nan=False))
     except (ValueError, OSError, ArithmeticError) as error:

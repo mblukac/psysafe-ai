@@ -3,8 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from benchmarks.mindguard.__main__ import main
+from benchmarks.mindguard.__main__ import evaluate, main
 from benchmarks.mindguard.data import read_cases
+from benchmarks.mindguard.smoke import smoke_turns
 
 
 def test_smoke_is_offline_and_reports_distinct_workloads(capsys, monkeypatch):
@@ -57,6 +58,18 @@ def test_prepare_never_overwrites_private_requests(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as exc:
         main(cmd)
     assert exc.value.code == 2
+
+
+def test_complete_only_replay_is_a_restriction_of_same_heldout_predictions():
+    turns = smoke_turns()
+    all_ids = {row.dialogue_id for row in turns}
+    args = {"folds": 3, "seed": 2026, "budget": 0.10, "replicates": 3, "synthetic": True}
+    all_report = evaluate(turns, complete_ids=all_ids, **args)
+    sub_report = evaluate(turns, complete_ids={min(all_ids)}, **args)
+    assert sub_report["methods"] == all_report["methods"]
+    assert sub_report["complete_dialogue_live_sensitivity"]["dialogues"] == 1
+    for m, results in all_report["methods"].items():
+        assert all_report["complete_dialogue_live_sensitivity"]["methods"][m] == results["live"]
 
 
 def test_prepare_fails_closed_for_incomplete_local_release(tmp_path):

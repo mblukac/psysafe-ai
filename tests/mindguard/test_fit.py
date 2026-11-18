@@ -1,4 +1,4 @@
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from math import log
 
 import pytest
@@ -34,6 +34,36 @@ def test_grouped_folds_partition_and_stratify_complete_dialogues():
     assert [sorted(r.dialogue_id for r in b) for _, b in folds] == [
         sorted(r.dialogue_id for r in b) for _, b in grouped_folds(list(reversed(rows)), 3, 42)
     ]
+
+
+@dataclass(frozen=True)
+class _FamilyTurn(Turn):
+    group_id: str = ""
+
+
+def test_shared_openings_travel_together_and_folds_balance_dialogues():
+    rows = [
+        _FamilyTurn(f"d{i}", 1, ("safe",) * 3, (0.5,) * 3, group_id="shared" if i < 3 else f"f{i}") for i in range(9)
+    ]
+    folds = grouped_folds(rows, 3, 42)
+    assert all(len(test) == 3 for _, test in folds)
+    for train, test in folds:
+        assert {r.group_id for r in train}.isdisjoint(r.group_id for r in test)
+    with pytest.raises(ValueError, match="inconsistent family"):
+        grouped_folds([*rows, replace(rows[0], turn_index=2, group_id="different")], 3, 42)
+    with pytest.raises(ValueError, match="both train and test"):
+        fold_predictions(rows, [replace(rows[0], dialogue_id="other")])
+
+
+def test_inner_oof_holds_out_entire_shared_family():
+    rows = [_FamilyTurn(f"d{i}", 1, ("self_harm",) * 3, (0.5,) * 3, group_id="shared") for i in range(3)]
+    lone = row("negative", 1, ("safe",) * 3)
+    test = [row("new", 1, ("safe",) * 3)]
+    oof, _, _ = fold_predictions([*rows, lone], test)
+    assert all(p < 0.05 for p in oof["stack"][:3])
+    assert oof["stack"][3] > 0.95
+    with pytest.raises(ValueError, match="two independent"):
+        fold_predictions(rows, test)
 
 
 def test_scores_and_winner_are_independent_of_test_votes():

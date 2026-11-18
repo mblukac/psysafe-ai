@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from threading import Barrier, Event
 from typing import Any
 
 import pytest
@@ -120,3 +121,65 @@ def test_transport_failure_stops_immediately_and_redacts(tmp_path: Path, capsys:
     assert "sensitive prefix" not in out.out + out.err
     assert main([*canary(cache), "--allow-paid"], transport=fake) == 0
     assert main([*canary(cache), "--allow-paid"], transport=never_send) == 0
+
+
+def test_parallel_batch_drains_failure_and_resumes_within_cap(tmp_path, monkeypatch, capsys):
+    receipts, cache = tmp_path / "synthetic-canary.jsonl", tmp_path / "private.jsonl"
+    assert main([*canary(receipts), "--allow-paid"], transport=fake) == 0
+    monkeypatch.setattr(
+        "benchmarks.mindguard.collect.official_cases",
+        lambda _: [Case(f"fixture-{i}", 1, ("safe",) * 3, (("user", f"Invented {i}."),)) for i in range(35)],
+    )
+    args = [
+        "batch",
+        "--cache",
+        str(cache),
+        "--annotations",
+        str(tmp_path / "synthetic.parquet"),
+        "--canary-cache",
+        str(receipts),
+        "--workers",
+        "3",
+        "--max-requests",
+        "7",
+    ]
+    assert main(args, transport=never_send) == 0
+    assert not cache.exists()
+    approved = [*args, "--allow-paid", "--allow-gated-provider-processing"]
+    stop, started = Event(), Barrier(3, timeout=5)
+    monkeypatch.setattr("benchmarks.mindguard.collect.Event", lambda: stop)
+
+    def refusal(payload):
+        started.wait()
+        response = fake(payload)
+        if payload["model"] == MODEL_IDS[0]:
+            response["answers"]["mindguard"] = {"type": "refusal", "text": "PRIVATE MARKER"}
+        else:
+            assert stop.wait(5)
+        return response
+
+    assert main(approved, transport=refusal) == 2
+    rows = [json.loads(s) for s in cache.read_text().splitlines()]
+    assert {r["model"] for r in rows} == set(MODEL_IDS[1:])
+    out = capsys.readouterr()
+    assert "3 submitted; 2 saved; 1 failed" in out.err
+    assert "PRIVATE MARKER" not in out.out + out.err + cache.read_text()
+    stop.clear()
+    assert main(approved, transport=fake) == 0
+    assert len(cache.read_text().splitlines()) == 9
+    # Start over with an empty, separate private cache: prove progress reporting and no duplication.
+    args_all = [*approved, "--cache", str(tmp_path / "other.jsonl"), "--max-requests", "1000"]
+    assert main(args_all, transport=fake) == 0
+    rows = [json.loads(line) for line in (tmp_path / "other.jsonl").read_text().splitlines()]
+    assert len({r["request_id"] for r in rows}) == len(rows) == 105
+    assert "100/105" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize(("mode", "workers"), [("canary", 2), ("batch", 0), ("batch", 13)])
+def test_invalid_concurrency_flags_rejected_before_access(tmp_path, mode, workers):
+    args = [mode, "--cache", str(tmp_path / "cache.jsonl"), "--max-requests", "3", "--workers", str(workers)]
+    if mode == "batch":
+        args.extend(["--annotations", str(tmp_path / "unused"), "--canary-cache", str(tmp_path / "unused-canary")])
+    with pytest.raises(SystemExit) as exit_info:
+        main(args, transport=never_send)
+    assert exit_info.value.code == 2
