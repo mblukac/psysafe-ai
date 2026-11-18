@@ -150,6 +150,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Never commit protected MindGuard records, request payloads or response caches.
+/benchmarks/mindguard/private/
+
 # mypy
 .mypy_cache/
 .dmypy.json
