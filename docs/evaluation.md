@@ -2,6 +2,8 @@
 
 PsySafe evaluates categorical behavior across all three named sensitivity boundaries. Aggregate rates describe a dataset; they are not confidence values for individual assessments.
 
+For the separate research benchmark comparing decision-model probabilities against existing clinician votes at a fixed review budget, see the [offline MindGuard pilot](../benchmarks/mindguard/README.md). It does not alter PsySafe's categorical product interface.
+
 ## Golden-case format
 
 Store one strict JSON object per line. Unknown fields, duplicate IDs, oversized inputs, malformed categories, and family leakage are rejected.

@@ -3,7 +3,8 @@
 **Verified from public metadata and provider documentation on 2026-11-18; not from a paid probe.**
 An unauthenticated GET of the [decision-output catalog](https://openrouter.ai/api/v1/models?output_modalities=decisions)
 listed these three snapshots with route `/api/alpha/decisions`. Use the dated canonical slugs, not floating
-`latest` aliases. This benchmark has no network client.
+`latest` aliases. Payload construction, probability parsing, smoke and evaluation never use the network.
+Any later inference is isolated in the separately opted-in collector.
 
 | Requested family | Canonical slug | Evidence for what a choice returns |
 | --- | --- | --- |
