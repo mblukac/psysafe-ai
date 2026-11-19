@@ -2,6 +2,8 @@
 
 This offline experiment couples real model responses and expert role-play annotations to a **separate** public traffic trace. It estimates performance in a specified simulated workflow, not clinical recall, actual harm, or Open Up's operational performance.
 
+See the [four-model results and limits of inference](staffing-findings.md).
+
 ## Reproduce
 
 Use the project Python environment, local `pyarrow` for Parquet, the [authorized MindGuard inputs and complete historical cache](README.md), and any private working directory. The simulator and figure generator do not use the network or read API credentials.
@@ -41,3 +43,18 @@ The first admitted turn is locked; no duplicate tickets, refreshed deadlines or 
 The aggregate report includes actual reviews and review-minutes, not only equal staff counts, and two score-only controls: `native_fixed` uses the uncalibrated provider score with FIFO; `matched_fixed` matches the RL policy's *uncongested number of nominated training dialogues* as closely as possible without exceeding it or splitting ties. It is **not** an equal-realized-workload comparison. The 0.10 cutoff is in probability units for fixed/paced but in advantage units for RL. Use `--threshold` for sensitivity analysis, not to select a winner on these same eight cases.
 
 Recall is pooled numerator/denominator over placements. Placement minima/maxima describe only variation in assigning these same cases to these same arrival times. They are not sampling confidence limits; repeated arrivals are not new clinical evidence. Vary service duration, timing, threshold and prevalence assumptions before considering any deployment. Independent real service-time, staffing and adjudicated case data would be required for a staffing recommendation.
+
+## Do the four classifiers miss the same cases?
+
+Run this offline, using the same fold seed and base threshold as the staffing experiment:
+
+```sh
+python -m benchmarks.mindguard.staffing_dependence \
+  --annotations benchmarks/mindguard/private/mindguard.parquet \
+  --responses benchmarks/mindguard/private/responses.jsonl \
+  --luna-responses benchmarks/mindguard/private/luna-responses.jsonl \
+  --seed 2026 --folds 5 --threshold 0.10 \
+  > benchmarks/mindguard/private/staffing-dependence-four.json
+```
+
+The unit matters. On all unique source turns we correlate signed forecast errors (score minus the panel majority); the common reference can induce correlation even if the underlying classifiers differ. Among endorsed turns only, we count which pairs miss the same turn at the cutoff. Among ever-endorsed dialogues, we separately count which pairs fail to nominate an endorsed turn on their **first** threshold crossing with unlimited review capacity. This last measure isolates nomination timing from congestion; it is not the six-reviewer replay. None of these analyses pools the repeated traffic placements as new clinical cases.
