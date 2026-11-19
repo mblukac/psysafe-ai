@@ -1,4 +1,4 @@
-"""Offline wire contract for the three pinned OpenRouter Decisions models.
+"""Offline wire contract for the pilot models and the opt-in Luna comparator.
 
 This module never sends requests, reads credentials, or derives a probability
 from a selected label. See providers.md for the evidence behind the contract.
@@ -16,6 +16,9 @@ MODEL_IDS = (
     "google/gemini-decision-1-20261111",
     "liquid/d1-ultra-20261015",
 )
+# Keep the historical trio (including every default collector and cache key)
+# unchanged. Luna is always collected and validated as a separate cohort.
+LUNA_MODEL = "openai/gpt-6-luna-decisions-20261006"
 
 QUESTION_ID = "mindguard"
 LABELS = ("safe", "self_harm", "harm_others")
@@ -32,7 +35,7 @@ _CRITERIA = {
 
 
 def _check_model(model: str) -> None:
-    if model not in MODEL_IDS:
+    if model not in (*MODEL_IDS, LUNA_MODEL):
         raise ValueError("Unknown model: this pilot requires an exact catalogued model snapshot")
 
 
@@ -55,7 +58,7 @@ def build_request(model: str, messages: list[dict[str, str]], *, allow_empty_use
         prefix.append(dict(turn))
     if not prefix or prefix[-1]["role"] != "user":
         raise ValueError("A prefix must end at the current user turn")
-    return {
+    request: dict[str, object] = {
         "model": model,
         # Text is supported by every adapter; nested role/content records stay data.
         "state": json.dumps({"conversation": prefix}, ensure_ascii=False, separators=(",", ":")),
@@ -63,6 +66,15 @@ def build_request(model: str, messages: list[dict[str, str]], *, allow_empty_use
             QUESTION_ID: {"type": "choice", "instructions": _INSTRUCTIONS, "criteria": _CRITERIA.copy()},
         },
     }
+    if model == LUNA_MODEL:
+        # Enforce the approved processor *before* transmission. Checking the
+        # returned provider alone cannot undo disclosure to an unintended route.
+        request["provider"] = {
+            "only": ["openai"],
+            "allow_fallbacks": False,
+            "max_price": {"prompt": "0.10", "completion": "0", "request": "0"},
+        }
+    return request
 
 
 def _vector(raw: object) -> dict[str, float]:

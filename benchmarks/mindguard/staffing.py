@@ -18,6 +18,7 @@ from typing import Any
 from .__main__ import official_cases
 from .data import Turn, attach_responses, complete_dialogues, local_records
 from .fit import SINGLES, grouped_folds
+from .luna import load_luna_scores
 from .staffing_fit import matched_cutoff, train_policies
 from .staffing_queue import Session, Trajectory, simulate
 
@@ -201,6 +202,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for opt in ("annotations", "responses", "trace"):
         parser.add_argument("--" + opt, required=True, type=Path)
+    parser.add_argument("--luna-responses", type=Path, help="complete, separate, verified OpenAI-only Luna cache")
     parser.add_argument("--staffing", type=int, nargs="+", default=[1, 2, 3, 4, 6])
     parser.add_argument("--placements", type=int, default=8)
     parser.add_argument("--seed", type=int, default=2026)
@@ -218,6 +220,8 @@ def main(argv: list[str] | None = None) -> int:
         providers: dict[str, ScoreMap] = {
             m: {(r.dialogue_id, r.turn_index): r.scores[j] for r in rows} for j, m in enumerate(SINGLES)
         }
+        if args.luna_responses is not None:
+            providers["luna"] = load_luna_scores(cases, args.luna_responses)
         scores = crossfit(rows, providers, folds=5, seed=args.seed, threshold=args.threshold)
         results = replay(
             scores,

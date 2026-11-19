@@ -45,3 +45,73 @@ with independent rounding; otherwise the sum tolerance is `1e-6`. It does not no
 or impute missing mass. Unknown model, winner-only result, refusal or malformed vector = failed row,
 **not** a negative label or a guessed probability. If a later authorized synthetic canary contradicts
 this documented schema, keep the response for investigation and stop before sending any dataset text.
+
+## Optional fourth replay comparator: OpenAI Luna
+
+The three original snapshots and their receipt IDs above stay unchanged. Opt in to
+`--cohort luna` to collect **only** [GPT-6 Luna Decisions](https://openrouter.ai/openai/gpt-6-luna-decisions),
+dated snapshot `openai/gpt-6-luna-decisions-20261006`, using the same three-way rubric.
+Luna is a new processor: previous permission for the three-model pilot is not permission
+to send this dataset to OpenAI. Before any authorized batch, confirm research-use terms,
+disable optional OpenRouter content logging/broadcasts in the account and verify privacy
+settings. The request includes `provider.only=["openai"]` and `allow_fallbacks=false`;
+the collector separately checks the returned provider is OpenAI. No Azure or silent
+fallback. See the [routing controls](https://openrouter.ai/docs/guides/routing/provider-selection).
+OpenAI [documents](https://developers.openai.com/api/docs/guides/your-data) no training
+by default and up to 30 days of standard abuse-monitoring retention (exceptions apply).
+Do not assume this OpenRouter route has contractual zero retention: recheck the
+[ZDR catalog](https://openrouter.ai/api/v1/endpoints/zdr) and account settings if required.
+
+On 2026-11-18 the [endpoint catalog](https://openrouter.ai/api/v1/models/openai/gpt-6-luna-decisions/endpoints)
+listed US $0.10/M input tokens, $0 output, and a 1,050,000-token context window.
+For 1,134 original rated prefixes, serialized state + questions total 6,070,406 UTF-8
+bytes. At four bytes per token the no-cache estimate is **$0.152**, excluding
+the invented canary. This is not a cap or exact tokenization; the other three
+routes billed 1.28–1.60M input tokens on the same text. Verify prices before spending.
+
+Run the following from the checkout, with separate owner-only files in the gitignored
+private directory. Without `--allow-paid` this only preflights locally:
+
+```sh
+python -m benchmarks.mindguard.collect canary --cohort luna \
+  --cache benchmarks/mindguard/private/luna-canary.jsonl --max-requests 1
+python -m benchmarks.mindguard.collect batch --cohort luna \
+  --annotations benchmarks/mindguard/private/mindguard.parquet \
+  --cache benchmarks/mindguard/private/luna-responses.jsonl \
+  --canary-cache benchmarks/mindguard/private/luna-canary.jsonl \
+  --max-requests 1134 --workers 8
+```
+
+For an explicitly authorized run, the canary requires `--allow-paid`; the gated batch
+requires both `--allow-paid` and `--allow-gated-provider-processing`. A three-model
+canary cache cannot unlock Luna. Luna collection reserves $0.105 per in-flight request
+(the full pinned context at the enforced price ceiling) and caps this canary + batch
+cache pair at **$0.30** in router credits. The request limits prompt price to $0.10/M,
+completion to zero and per-request fees to zero. Actual spending uses `usage.cost`,
+not an estimate. OpenRouter must honor the current documented model limits and prices.
+A separate private `.attempts.jsonl` journal reserves each request before submission.
+Use the same cache pair and journal across invocations; do not delete, copy or reset
+them to bypass a stop. This does not impose an account-wide cap on other clients.
+Missing/malformed charges or unreconciled attempts block further submissions.
+A future failed call writes a private `.failures.jsonl` sidecar with its locally
+hashed request ID, a bounded failure category, HTTP status when known, and the
+recognized generation ID / numeric reported charge when validated. It never
+copies exception text, provider error/refusal text, prompts or answers. Such
+metadata is for operator reconciliation; it cannot clear the reservation or
+authorize a retry. Missing historical diagnostics cannot be reconstructed locally.
+A single operator-authorized recovery is available only for a **single** unscored
+attempt after independently reconciling its original charge. Use the same paid Luna
+batch command and paths, replacing worker count and cap with
+`--workers 1 --max-requests 1 --retry-reconciled-request <local-request-hash>
+--reconciled-charge-usd <verified-decimal>`. Do not infer a zero charge from a
+missing receipt. The collector preserves the original attempt, durably records the
+attestation in a separate owner-only `.reconciliations.jsonl`, counts the original
+charge in the $0.30 budget, and only then reserves one retry. It cannot retry a
+known refusal, an already-scored request, multiple unresolved attempts, or a
+previous retry. A new interruption during recovery stays locked. After success,
+resume fresh, untouched requests without the recovery flags.
+A failed or refused turn stops collection (in-flight
+receipts are drained); it is never marked negative. Reconcile ambiguous billing before
+resuming. A failed/partial cohort is **not assessable**, not an estimate of deployment
+recall conditional on successful calls. The offline loader `luna.load_luna_scores`
+checks one matching receipt per original case before any replay subset is selected.
