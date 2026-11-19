@@ -171,10 +171,10 @@ def complete_dialogues(cases: Iterable[Case]) -> set[str]:
     return {dialogue for dialogue, turns in indices.items() if turns == set(range(1, max(turns) + 1))}
 
 
-def requests_for(case: Case) -> Iterator[dict[str, Any]]:
+def requests_for(case: Case, *, models: tuple[str, ...] = MODEL_IDS) -> Iterator[dict[str, Any]]:
     """Create private request envelopes locally. Never include votes in the provider payload."""
     messages = [{"role": role, "content": content} for role, content in case.prefix]
-    for model in MODEL_IDS:
+    for model in models:
         payload = build_request(model, messages, allow_empty_user=True)
         rid = digest(["mindguard-case-request-v2", case.dialogue_id, case.turn_index, payload])
         yield {"request_id": rid, "model": model, "payload": payload}

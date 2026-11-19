@@ -24,6 +24,8 @@ python -m benchmarks.mindguard.staffing_plot \
 
 Plotting requires optional `matplotlib`; it takes only aggregate JSON. Keep all raw data and model caches outside git. Do not refill missing scores, infer votes for missing turns, or use the last dialogue length as a predictor.
 
+To add OpenAI GPT-6 Luna Decisions, follow the [separate collection, billing and data-permission protocol](providers.md). Add `--luna-responses benchmarks/mindguard/private/luna-responses.jsonl` to the replay only after the entire cohort has validated. An incomplete file fails; omitting the argument runs the original three models with exactly the same placements. The replay never completes a missing cache by making paid calls.
+
 ## Observed versus simulated
 
 - **Arrivals are observed.** [Chiang, Law & Yip (2024)](https://formative.jmir.org/2024/1/e46823/) released [9,175 November 2020 visitor interarrival intervals from Hong Kong's Open Up service](https://github.com/cathug/crisis-des/blob/4fc679321b19bdff91d59f765537c86296cfa1fa/real_interarrivals_nov.csv). The input is a single headerless column in minutes, SHA-256 `1414173cc5fbf6d2f50ca1345b38ce6aedd0ec92793af5960a4fb646cb243e29`. Use the cumulative sum of **all** intervals, including a zero gap, without truncating the final arrival or looping the trace.
