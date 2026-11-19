@@ -2,6 +2,8 @@
 
 This is an offline, repository-only research pilot, not a PsySafe classifier or clinical tool. The outcome is a clinician's **self_harm** vote under MindGuard's three-way rubric; `harm_others` is a different concern, not necessarily a safe turn. The comparison does not measure patient outcomes, private clinician beliefs, action preferences, or PsySafe's three evidence boundaries.
 
+For a separate experiment with finite reviewer service times and real arrival intervals, see the [trace-driven staffing replay](staffing.md). Its reference is **majority endorsement of the nominated turn**, not an individual vote.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
