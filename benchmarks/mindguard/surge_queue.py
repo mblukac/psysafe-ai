@@ -106,6 +106,7 @@ def simulate(
     horizon_minutes: float = 43200.0,
     contest_starts: list[int] | None = None,
     start_hits: list[bool] | None = None,
+    start_times: dict[int, float] | None = None,
 ) -> dict[str, Any]:
     """One-shot dispatch (no RL reward updates or labels during rollout).
 
@@ -118,6 +119,8 @@ def simulate(
     Two optional local-only training audits extend caller-owned lists *after*
     rollout: contest_starts (zero-based start positions within this run) and
     start_hits (onset-deadline binary outcomes of every start, in dispatch order).
+    Optional start_times maps session ordinal to its review start after rollout,
+    for scoring multiple endpoints on the exact same operational trajectory.
     """
     if reviewers is not None and (type(reviewers) is not int or reviewers < 0):
         raise ValueError("reviewers must be a nonnegative integer or None")
@@ -235,6 +238,8 @@ def simulate(
             timely.add(sid)
     if start_hits is not None:
         start_hits.extend(sid in timely for sid in started)
+    if start_times is not None:
+        start_times.update(started)
     if contest_starts is not None:
         contest_starts.extend(contests)
     totals = {k: periods["peak"][k] + periods["offpeak"][k] for k in periods["peak"]}

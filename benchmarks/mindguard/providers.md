@@ -1,5 +1,52 @@
 # What the OpenRouter models return
 
+## Additional full-cohort comparators: Clef Flash and Decider Flash
+
+The full-panel runner adds [Clef **Flash**](https://openrouter.ai/cloudflare/clef-flash)
+on DeepInfra (only `deepinfra/fp8`; canonical model slug is undated), and
+[Perplexity Decider Flash V1.2](https://openrouter.ai/perplexity/pplx-decider-flash-v1.2)
+on Perplexity (only `perplexity`; dated model ID in code). No Clef Pro, Workers AI, or fallback.
+On 2026-11-20 the routes were listed in the [ZDR catalog](https://openrouter.ai/api/v1/endpoints/zdr)
+at $0.019 and $0.01 per million input tokens respectively, with zero output or per-request fee.
+Recheck current listings and permissions before spending. Prices and ZDR listing are not permission
+to disclose gated research material. Keep optional OpenRouter content logging off.
+
+Dry-run each cohort in the same owner-only private directory. Replace `clef-flash` with
+`decider-flash` for the other route:
+
+```sh
+D=benchmarks/mindguard/private
+python -m benchmarks.mindguard.collect_flash canary --cohort clef-flash --private-dir "$D" --max-requests 2
+python -m benchmarks.mindguard.collect_flash batch --cohort clef-flash --private-dir "$D" \
+  --annotations "$D/mindguard.parquet" --max-requests 1134
+```
+
+After explicit route approval, add `--allow-paid` for the two synthetic long-prefix canaries;
+they must return opposite expected choices and bill at least 5,000 input tokens apiece.
+The study additionally requires `--allow-gated-provider-processing`, the pinned Parquet hash,
+and no state longer in bytes than the synthetic checks. This catches obvious prefix
+truncation; it does not prove attention to every token. Each request requires no fallback,
+zero data retention, no data collection, and the pinned maximum prices. Keep all private
+receipts and reservation ledgers across restarts. Combined route-specific limits are
+$0.06 + $0.04 including the synthetic checks. Stop on unverified charges or partial failures:
+do not reset ledgers, silently substitute a route, or treat missing scores as negatives.
+
+**Clef serialization and the bounded second synthetic check.** Cloudflare's [published
+answer serializer](https://huggingface.co/Cloudflare/clef-flash/blob/main/joint_schema_model.py)
+rounds each option independently to four decimal places, after choosing the winner.
+Three four-decimal options may sum to 0.9999 or 1.0001. Preserve the values and accept
+only the model-specific rounding tolerance, not arbitrary unnormalized scores.
+The first Clef synthetic pair produced one valid receipt and one rejected choice; the
+original rejected vector was not retained and its exact failure cause is unknown.
+For this specific reconciled synthetic-only condition, pass `--clef-canary-v2` to
+both Clef commands. The runner checks the failed generation's [billing metadata](https://openrouter.ai/docs/api/api-reference/generations/get-generation)
+against its journal, retains both original charges, and requires two new, distinct,
+opposite long-tail choices before the study can start. There is no corresponding
+retry rule for study failures. A clean replication with two valid original canaries
+does not need v2.
+
+## The original three providers
+
 **Verified from public metadata and provider documentation on 2026-11-18; not from a paid probe.**
 An unauthenticated GET of the [decision-output catalog](https://openrouter.ai/api/v1/models?output_modalities=decisions)
 listed these three snapshots with route `/api/alpha/decisions`. Use the dated canonical slugs, not floating
