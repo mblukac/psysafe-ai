@@ -1,4 +1,4 @@
-"""Offline wire contract for the pilot models and the opt-in Luna comparator.
+"""Offline wire contract for the pilot models and explicitly routed comparators.
 
 This module never sends requests, reads credentials, or derives a probability
 from a selected label. See providers.md for the evidence behind the contract.
@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import json
 import math
+from dataclasses import dataclass
+from decimal import Decimal
 from typing import TypeGuard
 
 DECISIONS_URL = "https://openrouter.ai/api/alpha/decisions"
@@ -19,6 +21,29 @@ MODEL_IDS = (
 # Keep the historical trio (including every default collector and cache key)
 # unchanged. Luna is always collected and validated as a separate cohort.
 LUNA_MODEL = "openai/gpt-6-luna-decisions-20261006"
+CLEF_FLASH_MODEL = "cloudflare/clef-flash"  # undated canonical catalog identifier
+DECIDER_FLASH_MODEL = "perplexity/pplx-decider-flash-v1.2-20261016"
+
+
+@dataclass(frozen=True)
+class FlashRoute:
+    slug: str
+    provider: str
+    name: str
+    usd_per_million: str
+    context: int
+    budget: Decimal
+
+    @property
+    def reservation(self) -> Decimal:
+        # Reserve the full context, not an approximate byte or token count.
+        return self.context * Decimal(self.usd_per_million) / Decimal(1_000_000)
+
+
+FLASH_ROUTES = {
+    CLEF_FLASH_MODEL: FlashRoute("clef-flash", "deepinfra/fp8", "DeepInfra", "0.019", 24_576, Decimal("0.06")),
+    DECIDER_FLASH_MODEL: FlashRoute("decider-flash", "perplexity", "Perplexity", "0.01", 262_144, Decimal("0.04")),
+}
 
 QUESTION_ID = "mindguard"
 LABELS = ("safe", "self_harm", "harm_others")
@@ -35,7 +60,7 @@ _CRITERIA = {
 
 
 def _check_model(model: str) -> None:
-    if model not in (*MODEL_IDS, LUNA_MODEL):
+    if model not in (*MODEL_IDS, LUNA_MODEL, *FLASH_ROUTES):
         raise ValueError("Unknown model: this pilot requires an exact catalogued model snapshot")
 
 
@@ -74,10 +99,19 @@ def build_request(model: str, messages: list[dict[str, str]], *, allow_empty_use
             "allow_fallbacks": False,
             "max_price": {"prompt": "0.10", "completion": "0", "request": "0"},
         }
+    if model in FLASH_ROUTES:
+        route = FLASH_ROUTES[model]
+        request["provider"] = {
+            "only": [route.provider],
+            "allow_fallbacks": False,
+            "data_collection": "deny",
+            "zdr": True,
+            "max_price": {"prompt": route.usd_per_million, "completion": "0", "request": "0"},
+        }
     return request
 
 
-def _vector(raw: object) -> dict[str, float]:
+def _vector(raw: object, *, clef: bool = False) -> dict[str, float]:
     if not isinstance(raw, dict) or raw.keys() != set(LABELS):
         raise ValueError("Expected probabilities for exactly safe, self_harm and harm_others")
     values = {}
@@ -90,6 +124,14 @@ def _vector(raw: object) -> dict[str, float]:
     # Three individually rounded components can legitimately sum to .99 or 1.01.
     rounded = all(abs(p - round(p, 2)) < 1e-12 for p in values.values())
     tolerance = 0.0100000001 if rounded else 1e-6
+    if clef:
+        # Cloudflare's released systemone_answer rounds each option to four
+        # decimal places independently, AFTER selecting the unrounded argmax.
+        # Three options can sum to 0.9999 or 1.0001 and still be a faithful
+        # serialization. Do not relax other models or convert/repair the vector.
+        exact = [Decimal(str(p)) for p in values.values()]
+        on_grid = all(v == v.quantize(Decimal("0.0001")) for v in exact)
+        tolerance = 0.000100000001 if on_grid else 1e-6
     if abs(math.fsum(values.values()) - 1) > tolerance:
         raise ValueError("Choice probabilities do not sum to one within serialization tolerance")
     return values  # Never normalize, clip, or fabricate provider outputs here.
@@ -108,7 +150,7 @@ def extract_probabilities(model: str, response: dict[str, object]) -> dict[str, 
     answer = answers[QUESTION_ID]
     if not isinstance(answer, dict) or answer.get("type") != "choice" or answer.get("refusal") or answer.get("error"):
         raise ValueError("Expected a non-refused choice answer")
-    probs = _vector(answer.get("probabilities"))
+    probs = _vector(answer.get("probabilities"), clef=model == CLEF_FLASH_MODEL)
     choice = answer.get("choice")
     if not isinstance(choice, str) or choice not in LABELS or probs[choice] < max(probs.values()):
         raise ValueError("Missing or inconsistent winning choice")
@@ -118,7 +160,7 @@ def extract_probabilities(model: str, response: dict[str, object]) -> dict[str, 
 def synthetic_response(model: str, probabilities: dict[str, float]) -> dict[str, object]:
     """Offline fixture only: wrap supplied synthetic scores in the documented wire shape."""
     _check_model(model)
-    probs = _vector(probabilities)
+    probs = _vector(probabilities, clef=model == CLEF_FLASH_MODEL)
     winner = max(probs, key=probs.__getitem__)
     return {
         "model": model,

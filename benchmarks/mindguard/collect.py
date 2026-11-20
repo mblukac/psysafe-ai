@@ -27,12 +27,13 @@ from typing import Any, TextIO
 
 from .__main__ import official_cases
 from .data import _unique, digest, requests_for
-from .providers import LUNA_MODEL, MODEL_IDS, build_request, extract_probabilities
+from .providers import FLASH_ROUTES, LUNA_MODEL, MODEL_IDS, build_request, extract_probabilities
 
 Envelope = dict[str, Any]
 Transport = Callable[[Envelope], Envelope]
 _PROVIDERS = dict(zip(MODEL_IDS, ("TypeSafe", "Google AI Studio", "Liquid"), strict=True))
 _PROVIDERS[LUNA_MODEL] = "OpenAI"
+_PROVIDERS.update({model: route.name for model, route in FLASH_ROUTES.items()})
 _CANARY_TEXT = "I spent the morning looking for my library card and found it in my coat."
 _LUNA_BUDGET = Decimal("0.30")
 # Entire dated snapshot input context at the price ceiling in the outgoing
@@ -57,7 +58,7 @@ class _MalformedWireError(CollectionError):
 class _FailedRequestError(Exception):
     def __init__(self, diagnostic: Envelope) -> None:
         self.diagnostic = diagnostic
-        super().__init__("Luna request failed")
+        super().__init__("Budgeted Decisions request failed")
 
 
 def _luna_charge(response: Envelope) -> Decimal:
@@ -68,6 +69,19 @@ def _luna_charge(response: Envelope) -> Decimal:
     usd = Decimal(str(amount))
     if not usd.is_finite() or not 0 <= usd <= _LUNA_MAX_CHARGE:
         raise CollectionError("Invalid Luna charge; stop and reconcile")
+    return usd
+
+
+def _flash_charge(model: str, response: Envelope) -> Decimal:
+    route = FLASH_ROUTES[model]
+    usage = response.get("usage")
+    amount = usage.get("cost") if isinstance(usage, dict) else None
+    count = usage.get("input_tokens") if isinstance(usage, dict) else None
+    if type(amount) not in (int, float) or type(count) is not int or not 1 <= count <= route.context:
+        raise CollectionError("Missing or invalid Flash charge or input token count; stop and reconcile")
+    usd = Decimal(str(amount))
+    if not usd.is_finite() or not 0 <= usd <= route.reservation:
+        raise CollectionError("Flash charge outside full-context reservation; stop and reconcile")
     return usd
 
 
@@ -147,6 +161,8 @@ def _validate(model: str, response: object) -> str:
     extract_probabilities(model, response)
     if model == LUNA_MODEL:
         _luna_charge(response)
+    if model in FLASH_ROUTES:
+        _flash_charge(model, response)
     return str(response["id"])
 
 
@@ -199,7 +215,7 @@ def _save(handle: TextIO, generations: set[str], req: Envelope, result: Envelope
     generations.add(generation)
 
 
-def _luna_failure(result: object, exc: Exception, *, duplicate: bool = False) -> Envelope:
+def _failure_metadata(model: str, result: object, exc: Exception, *, duplicate: bool = False) -> Envelope:
     """Whitelist only diagnostic metadata. Never copy exception text or answer data.
 
     A generation-shaped ID, route and charge are evidence for an operator to
@@ -214,7 +230,7 @@ def _luna_failure(result: object, exc: Exception, *, duplicate: bool = False) ->
     if not isinstance(result, dict):
         return {"category": "transport_or_local_failure"}
     diagnostic: Envelope = {"category": "invalid_receipt", "http_status": 200}
-    if result.get("model") != LUNA_MODEL or result.get("provider") != _PROVIDERS[LUNA_MODEL]:
+    if result.get("model") != model or result.get("provider") != _PROVIDERS[model]:
         diagnostic["category"] = "route_or_model_mismatch"
         return diagnostic
     generation = result.get("id")
@@ -223,7 +239,8 @@ def _luna_failure(result: object, exc: Exception, *, duplicate: bool = False) ->
     if isinstance(generation, str) and re.fullmatch(r"gen-(?:dec-)?[0-9]{10}-[a-zA-Z0-9]{20}", generation):
         diagnostic["generation_id"] = generation
         try:
-            diagnostic["reported_cost_usd"] = str(_luna_charge(result))
+            charge = _flash_charge(model, result) if model in FLASH_ROUTES else _luna_charge(result)
+            diagnostic["reported_cost_usd"] = str(charge)
         except CollectionError:
             pass
     answers = result.get("answers")
@@ -238,7 +255,7 @@ def _luna_failure(result: object, exc: Exception, *, duplicate: bool = False) ->
         diagnostic["category"] = "provider_refusal"
     elif isinstance(answer, dict) and answer.get("type") == "choice":
         try:
-            extract_probabilities(LUNA_MODEL, result)
+            extract_probabilities(model, result)
         except ValueError:
             diagnostic["category"] = "invalid_choice"
         else:
@@ -266,7 +283,7 @@ def _parallel(
             # Set before the future completes; never relay untrusted exception text.
             failed.set()
             if on_failure is not None:
-                raise _FailedRequestError(_luna_failure(result, exc)) from None
+                raise _FailedRequestError(_failure_metadata(req["model"], result, exc)) from None
             raise
 
     submitted = saved = errors = 0
@@ -302,7 +319,7 @@ def _parallel(
                     failed.set()
                     errors += 1
                     if on_failure is not None:
-                        on_failure(req["request_id"], _luna_failure(result, exc, duplicate=True))
+                        on_failure(req["request_id"], _failure_metadata(req["model"], result, exc, duplicate=True))
                     continue
                 saved += 1
                 if saved % 100 == 0:
