@@ -46,6 +46,9 @@ def simulate(
     policy: str,
     metric: Callable[[float, int], float],
     threshold: float,
+    starts_audit: list[bool] | None = None,
+    session_thresholds: Sequence[float] | None = None,
+    starts_session_ids: list[int] | None = None,
 ) -> dict[str, int | float | None]:
     """Run one stream/policy. metric is a pure current-score/current-index transform.
 
@@ -54,6 +57,14 @@ def simulate(
     one timestamp at a time; priority uses only locked tickets already seen.
     Misses_no_alert, misses_wrong_turn, and misses_late partition all misses.
     Late means a *supported* nominated turn expired before its review began.
+    If supplied, append one onset-deadline hit indicator per actual start,
+    in dispatch order. The audit is computed only after replay and is never
+    visible to the policy. Prefixes reproduce a non-anticipating hard stop
+    after B starts (not a policy that paces itself using that remaining budget).
+    Optional session_thresholds (e.g. from held-out calibration folds) replace
+    the base cutoff per session. They never change raw priority among nominees.
+    starts_session_ids, if supplied, receives the local zero-based stream
+    positions in the same dispatch order; these are not source dialogue IDs.
     """
     if type(reviewers) is not int or reviewers < 0:
         raise ValueError("reviewers must be a nonnegative integer")
@@ -63,14 +74,20 @@ def simulate(
         raise ValueError("service, turn and deadline minutes must be positive and finite")
     if not math.isfinite(threshold):
         raise ValueError("threshold must be finite")
+    if session_thresholds is not None and (
+        len(session_thresholds) != len(sessions) or not all(math.isfinite(x) for x in session_thresholds)
+    ):
+        raise ValueError("session_thresholds must contain one finite cutoff per session")
 
     positive: list[bool] = []
     measurements: list[tuple[float, int, int, float]] = []
-    prepared: dict[Trajectory, tuple[bool, list[tuple[int, float]]]] = {}
+    prepared: dict[tuple[Trajectory, float], tuple[bool, list[tuple[int, float]]]] = {}
     for sid, session in enumerate(sessions):
         if not math.isfinite(session.arrival) or session.arrival < 0:
             raise ValueError("arrival minutes must be finite and nonnegative")
-        if session.turns not in prepared:
+        base = threshold if session_thresholds is None else session_thresholds[sid]
+        cache_key = (session.turns, base)
+        if cache_key not in prepared:
             if not session.turns:
                 raise ValueError("empty session")
             candidates: list[tuple[int, float]] = []
@@ -82,10 +99,10 @@ def simulate(
                 value = metric(score, turn)
                 if not math.isfinite(value):
                     raise ValueError("metric must be finite")
-                if value >= threshold:
+                if value >= base:
                     candidates.append((offset, value))
-            prepared[session.turns] = (any(t[2] for t in session.turns), candidates)
-        has_support, candidates = prepared[session.turns]
+            prepared[cache_key] = (any(t[2] for t in session.turns), candidates)
+        has_support, candidates = prepared[cache_key]
         positive.append(has_support)
         measurements.extend(
             (session.arrival + turn_minutes * offset, sid, offset, value) for offset, value in candidates
@@ -110,18 +127,19 @@ def simulate(
         )
         while busy_until and busy_until[0] <= now:
             heappop(busy_until)
-        cutoff = threshold
+        surcharge = 0.0
         if policy != "fixed" and len(busy_until) == reviewers:
             if reviewers:
                 wait_estimate = busy_until[0] - now + (len(pending) // reviewers) * service_minutes
-                cutoff += _PRESSURE * min(1.0, wait_estimate / deadline_minutes)
+                surcharge = _PRESSURE * min(1.0, wait_estimate / deadline_minutes)
             else:
-                cutoff += _PRESSURE
+                surcharge = _PRESSURE
         # Observe every simultaneous measurement before using any free capacity.
         while cursor < len(measurements) and measurements[cursor][0] == now:
             at, sid, offset, value = measurements[cursor]
             cursor += 1
-            if sid in nominations or value < cutoff:
+            base = threshold if session_thresholds is None else session_thresholds[sid]
+            if sid in nominations or value < base + surcharge:
                 continue
             nominations[sid] = offset
             pending.add(sid)
@@ -151,11 +169,19 @@ def simulate(
     # Secondary, stricter clock: a newly endorsed later turn must not
     # silently restart the deadline for the first observed positive signal.
     catches_by_onset = 0
-    for sid in timely:
-        session = sessions[sid]
-        first = next(offset for offset, (_, _, y) in enumerate(session.turns) if y)
-        onset = session.arrival + first * turn_minutes
-        catches_by_onset += int(started[sid] <= onset + deadline_minutes)
+    # started preserves dispatch insertion order, including ties at the same time.
+    for sid, at in started.items():
+        hit = False
+        if sid in timely:
+            session = sessions[sid]
+            first = next(offset for offset, (_, _, y) in enumerate(session.turns) if y)
+            onset = session.arrival + first * turn_minutes
+            hit = at <= onset + deadline_minutes
+        catches_by_onset += int(hit)
+        if starts_audit is not None:
+            starts_audit.append(hit)
+        if starts_session_ids is not None:
+            starts_session_ids.append(sid)
     no_alert = sum(y and sid not in nominations for sid, y in enumerate(positive))
     wrong_turn = sum(positive[sid] and sid not in supported for sid in nominations)
     late = len(supported - started.keys())
