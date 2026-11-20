@@ -4,6 +4,7 @@ This offline experiment couples real model responses and expert role-play annota
 
 See the [four-model results and limits of inference](staffing-findings.md).
 For the follow-up with cutoffs tuned on training families and policies compared at identical realized work, see [Jev and Gemini: timely recall per reviewer-minute](onset-budget.md).
+For the experiment that freezes those cutoffs and changes only reviewer dispatch, see [real and simulated surges in time-sensitive human review](reviewer-surges.md).
 
 ## Reproduce
 

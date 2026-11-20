@@ -4,6 +4,8 @@ This is an offline, repository-only research pilot, not a PsySafe classifier or 
 
 For a separate experiment with finite reviewer service times and real arrival intervals, see the [trace-driven staffing replay](staffing.md). Its reference is **majority endorsement of the nominated turn**, not an individual vote.
 
+For time-sensitive human review, start with [When does a safety flag become a timely human review?](reviewer-surges.md). It uses real AI and crisis-service arrival clocks to distinguish missed nominations from tickets lost to queues, and tests whether staffing, sensitivity or dispatch changes that loss.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
