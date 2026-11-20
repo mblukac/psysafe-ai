@@ -6,6 +6,8 @@ For a separate experiment with finite reviewer service times and real arrival in
 
 For time-sensitive human review, start with [When does a safety flag become a timely human review?](reviewer-surges.md). It uses real AI and crisis-service arrival clocks to distinguish missed nominations from tickets lost to queues, and tests whether staffing, sensitivity or dispatch changes that loss.
 
+For the **proposed** full-cohort study and customer-support comparison, see the [technical draft on time-sensitive human review under scarce staffing](timely-human-review-draft.md). Its pilot plan is pending review.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
