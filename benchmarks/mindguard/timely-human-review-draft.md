@@ -2,6 +2,8 @@
 
 **Technical draft for review · Proposed study, not findings**
 
+Implementation update: the [full-cohort MindGuard pilot](full-panel-findings.md) reports what was actually run, including the limits of the comparison. The customer-support study remains a proposal.
+
 When an AI system flags a conversation, someone still has to be available to read it. A team may have enough reviewer-hours over a week and still miss the cases that arrive together on Tuesday afternoon. We ask: **When a small team faces a surge, which conversations reach a human in time, which slip through, and would changing the order of review actually help?**
 
 We study this question first in mental-health conversations and then in customer support. In one setting a clinician endorses a risk signal; in the other an annotator identifies a point where a bot should hand the conversation to a person. The two settings need not have the same urgency, deadlines, or consequences. What they share is a decision: a reviewer becomes free while several conversations may need attention. Reinforcement learning (RL) is one way of making that decision. Whether it adds anything over a simple rule is an empirical question.
@@ -31,9 +33,9 @@ For policy development, the [separate MindGuard training release](https://huggin
 | Jev 1.14 | `typesafe/jev-1.14-20261014` | Complete cache |
 | Gemini Decision 1 | `google/gemini-decision-1-20261111` | Complete cache |
 | Liquid D1 Ultra | `liquid/d1-ultra-20261015` | Complete cache; keep this version, not the “latest” alias |
-| Cloudflare Clef Flash | `cloudflare/clef-flash` | Not collected; undated catalog ID, so record host and collection date |
+| Cloudflare Clef Flash | `cloudflare/clef-flash` | Complete 2026-11-20 cache, DeepInfra FP8; undated catalog ID |
 | OpenAI GPT-6 Luna Decisions | `openai/gpt-6-luna-decisions-20261006` | Complete cache on the OpenAI-only route |
-| Perplexity Decider Flash V1.2 | `perplexity/pplx-decider-flash-v1.2-20261016` | Not collected; compact 4B comparator |
+| Perplexity Decider Flash V1.2 | `perplexity/pplx-decider-flash-v1.2-20261016` | Complete 2026-11-20 cache, Perplexity only |
 
 The [Decisions catalog](https://openrouter.ai/api/v1/models?output_modalities=decisions) lists all six as of November 20, 2026. Luna adds a different provider without a new data transfer. [Decider Flash](https://openrouter.ai/api/v1/models/perplexity/pplx-decider-flash-v1.2/endpoints) tests whether a smaller model, listed at $0.01 per million input tokens, can deliver comparable timely recall at the same human workload. For either uncached model, first approve the named provider, data terms and spending cap; then verify its native three-option probability vector on synthetic inputs. No silent model or host substitutions. [Clef Flash](https://openrouter.ai/cloudflare/clef-flash) lists $0.019–$0.038 per million input tokens depending on host. Its Workers AI route may read only the first roughly 2,000 text-state tokens. Check that the chosen route sees the **last** user message at study lengths before sending study text. If full-prefix visibility cannot be established, report that coverage limit rather than treating a truncated score as comparable.
 

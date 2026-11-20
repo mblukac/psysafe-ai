@@ -1,0 +1,740 @@
+{
+  "kind": "full_either_risk_unique_source_oof_v1",
+  "seed": 2026,
+  "gate": "tuned",
+  "target": "At least two clinicians voted either risk class on this observed turn; not actual patient harm.",
+  "probability_estimand": "Turn-weighted pooled OOF AP (ties grouped) and mean squared error. Training prevalence is a fold-specific constant, not a calibrated clinician posterior.",
+  "overlap_estimand": "Immediate service only: first model-specific calibrated crossing locked, supported at crossing, within 10 minutes of first observed endorsement, two-minute turn cadence. No alerts selected or rescored under test outcomes.",
+  "uncertainty": "Descriptive paired counts, not independent replicas. Both-expected and phi measure association, not conditional independence given latent risk. Families count once in family-level tables.",
+  "folds": [
+    {
+      "fold": 0,
+      "held_families": 4,
+      "held_dialogues": 14,
+      "held_positive_dialogues": 3,
+      "held_turns": 214
+    },
+    {
+      "fold": 1,
+      "held_families": 10,
+      "held_dialogues": 13,
+      "held_positive_dialogues": 3,
+      "held_turns": 209
+    },
+    {
+      "fold": 2,
+      "held_families": 11,
+      "held_dialogues": 14,
+      "held_positive_dialogues": 3,
+      "held_turns": 218
+    },
+    {
+      "fold": 3,
+      "held_families": 13,
+      "held_dialogues": 13,
+      "held_positive_dialogues": 4,
+      "held_turns": 230
+    },
+    {
+      "fold": 4,
+      "held_families": 12,
+      "held_dialogues": 13,
+      "held_positive_dialogues": 4,
+      "held_turns": 263
+    }
+  ],
+  "models": [
+    "clef_flash",
+    "decider_flash",
+    "gemini",
+    "jev",
+    "liquid",
+    "luna"
+  ],
+  "rated_turns": 1134,
+  "positive_turns": 42,
+  "probability": {
+    "clef_flash": {
+      "native": {
+        "brier": 0.05138012800705467,
+        "average_precision": 0.6319027207490977
+      },
+      "calibrated": {
+        "brier": 0.022621265064070837,
+        "average_precision": 0.6178151985084103
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    },
+    "decider_flash": {
+      "native": {
+        "brier": 0.023828987026875324,
+        "average_precision": 0.6294976844460526
+      },
+      "calibrated": {
+        "brier": 0.02254051646014947,
+        "average_precision": 0.613654832543265
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    },
+    "gemini": {
+      "native": {
+        "brier": 0.07598580020632831,
+        "average_precision": 0.7963450841894942
+      },
+      "calibrated": {
+        "brier": 0.016018818766913353,
+        "average_precision": 0.7877632772848672
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    },
+    "jev": {
+      "native": {
+        "brier": 0.036819400352733685,
+        "average_precision": 0.7827229183647355
+      },
+      "calibrated": {
+        "brier": 0.014844880214858875,
+        "average_precision": 0.760631942228524
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    },
+    "liquid": {
+      "native": {
+        "brier": 0.0545684205356416,
+        "average_precision": 0.7675510765784235
+      },
+      "calibrated": {
+        "brier": 0.017471544116458584,
+        "average_precision": 0.7487579209684322
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    },
+    "luna": {
+      "native": {
+        "brier": 0.06737398589065256,
+        "average_precision": 0.524090970150643
+      },
+      "calibrated": {
+        "brier": 0.021710078482906636,
+        "average_precision": 0.4443649457817406
+      },
+      "training_prevalence": {
+        "brier": 0.03578956648508154,
+        "average_precision": 0.031202575388601262
+      }
+    }
+  },
+  "dependence": {
+    "positive_path_misses": {
+      "units": 17,
+      "errors_per_model": {
+        "clef_flash": 9,
+        "decider_flash": 10,
+        "gemini": 9,
+        "jev": 8,
+        "liquid": 7,
+        "luna": 12
+      },
+      "all_models_error": 3,
+      "pairs": {
+        "clef_flash__decider_flash": {
+          "n": 17,
+          "neither": 5,
+          "first_only": 2,
+          "second_only": 3,
+          "both": 7,
+          "expected_both_under_independent_errors": 5.294117647058823,
+          "phi": 0.408491223118783
+        },
+        "clef_flash__gemini": {
+          "n": 17,
+          "neither": 6,
+          "first_only": 2,
+          "second_only": 2,
+          "both": 7,
+          "expected_both_under_independent_errors": 4.764705882352941,
+          "phi": 0.5277777777777778
+        },
+        "clef_flash__jev": {
+          "n": 17,
+          "neither": 6,
+          "first_only": 3,
+          "second_only": 2,
+          "both": 6,
+          "expected_both_under_independent_errors": 4.235294117647059,
+          "phi": 0.4166666666666667
+        },
+        "clef_flash__liquid": {
+          "n": 17,
+          "neither": 6,
+          "first_only": 4,
+          "second_only": 2,
+          "both": 5,
+          "expected_both_under_independent_errors": 3.7058823529411766,
+          "phi": 0.3098898934004561
+        },
+        "clef_flash__luna": {
+          "n": 17,
+          "neither": 2,
+          "first_only": 3,
+          "second_only": 6,
+          "both": 6,
+          "expected_both_under_independent_errors": 6.352941176470588,
+          "phi": -0.09128709291752769
+        },
+        "decider_flash__gemini": {
+          "n": 17,
+          "neither": 5,
+          "first_only": 3,
+          "second_only": 2,
+          "both": 7,
+          "expected_both_under_independent_errors": 5.294117647058823,
+          "phi": 0.408491223118783
+        },
+        "decider_flash__jev": {
+          "n": 17,
+          "neither": 6,
+          "first_only": 3,
+          "second_only": 1,
+          "both": 7,
+          "expected_both_under_independent_errors": 4.705882352941177,
+          "phi": 0.5493502655735357
+        },
+        "decider_flash__liquid": {
+          "n": 17,
+          "neither": 7,
+          "first_only": 3,
+          "second_only": 0,
+          "both": 7,
+          "expected_both_under_independent_errors": 4.117647058823529,
+          "phi": 0.7
+        },
+        "decider_flash__luna": {
+          "n": 17,
+          "neither": 1,
+          "first_only": 4,
+          "second_only": 6,
+          "both": 6,
+          "expected_both_under_independent_errors": 7.0588235294117645,
+          "phi": -0.27774602993176545
+        },
+        "gemini__jev": {
+          "n": 17,
+          "neither": 7,
+          "first_only": 2,
+          "second_only": 1,
+          "both": 7,
+          "expected_both_under_independent_errors": 4.235294117647059,
+          "phi": 0.6527777777777778
+        },
+        "gemini__liquid": {
+          "n": 17,
+          "neither": 7,
+          "first_only": 3,
+          "second_only": 1,
+          "both": 6,
+          "expected_both_under_independent_errors": 3.7058823529411766,
+          "phi": 0.5493502655735357
+        },
+        "gemini__luna": {
+          "n": 17,
+          "neither": 2,
+          "first_only": 3,
+          "second_only": 6,
+          "both": 6,
+          "expected_both_under_independent_errors": 6.352941176470588,
+          "phi": -0.09128709291752769
+        },
+        "jev__liquid": {
+          "n": 17,
+          "neither": 9,
+          "first_only": 1,
+          "second_only": 0,
+          "both": 7,
+          "expected_both_under_independent_errors": 3.2941176470588234,
+          "phi": 0.8874119674649423
+        },
+        "jev__luna": {
+          "n": 17,
+          "neither": 3,
+          "first_only": 2,
+          "second_only": 6,
+          "both": 6,
+          "expected_both_under_independent_errors": 5.647058823529412,
+          "phi": 0.09128709291752769
+        },
+        "liquid__luna": {
+          "n": 17,
+          "neither": 3,
+          "first_only": 2,
+          "second_only": 7,
+          "both": 5,
+          "expected_both_under_independent_errors": 4.9411764705882355,
+          "phi": 0.015430334996209192
+        }
+      }
+    },
+    "negative_path_false_alerts": {
+      "units": 50,
+      "errors_per_model": {
+        "clef_flash": 0,
+        "decider_flash": 0,
+        "gemini": 1,
+        "jev": 1,
+        "liquid": 1,
+        "luna": 1
+      },
+      "all_models_error": 0,
+      "pairs": {
+        "clef_flash__decider_flash": {
+          "n": 50,
+          "neither": 50,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__gemini": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__jev": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__liquid": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__luna": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__gemini": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__jev": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__liquid": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__luna": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "gemini__jev": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        },
+        "gemini__liquid": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        },
+        "gemini__luna": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        },
+        "jev__liquid": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        },
+        "jev__luna": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        },
+        "liquid__luna": {
+          "n": 50,
+          "neither": 49,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.02,
+          "phi": 1.0
+        }
+      }
+    },
+    "positive_family_no_positive_path_caught": {
+      "units": 16,
+      "errors_per_model": {
+        "clef_flash": 9,
+        "decider_flash": 9,
+        "gemini": 9,
+        "jev": 7,
+        "liquid": 6,
+        "luna": 11
+      },
+      "all_models_error": 3,
+      "pairs": {
+        "clef_flash__decider_flash": {
+          "n": 16,
+          "neither": 5,
+          "first_only": 2,
+          "second_only": 2,
+          "both": 7,
+          "expected_both_under_independent_errors": 5.0625,
+          "phi": 0.49206349206349204
+        },
+        "clef_flash__gemini": {
+          "n": 16,
+          "neither": 5,
+          "first_only": 2,
+          "second_only": 2,
+          "both": 7,
+          "expected_both_under_independent_errors": 5.0625,
+          "phi": 0.49206349206349204
+        },
+        "clef_flash__jev": {
+          "n": 16,
+          "neither": 6,
+          "first_only": 3,
+          "second_only": 1,
+          "both": 6,
+          "expected_both_under_independent_errors": 3.9375,
+          "phi": 0.5238095238095238
+        },
+        "clef_flash__liquid": {
+          "n": 16,
+          "neither": 6,
+          "first_only": 4,
+          "second_only": 1,
+          "both": 5,
+          "expected_both_under_independent_errors": 3.375,
+          "phi": 0.42289003161103106
+        },
+        "clef_flash__luna": {
+          "n": 16,
+          "neither": 2,
+          "first_only": 3,
+          "second_only": 5,
+          "both": 6,
+          "expected_both_under_independent_errors": 6.1875,
+          "phi": -0.050964719143762556
+        },
+        "decider_flash__gemini": {
+          "n": 16,
+          "neither": 5,
+          "first_only": 2,
+          "second_only": 2,
+          "both": 7,
+          "expected_both_under_independent_errors": 5.0625,
+          "phi": 0.49206349206349204
+        },
+        "decider_flash__jev": {
+          "n": 16,
+          "neither": 6,
+          "first_only": 3,
+          "second_only": 1,
+          "both": 6,
+          "expected_both_under_independent_errors": 3.9375,
+          "phi": 0.5238095238095238
+        },
+        "decider_flash__liquid": {
+          "n": 16,
+          "neither": 7,
+          "first_only": 3,
+          "second_only": 0,
+          "both": 6,
+          "expected_both_under_independent_errors": 3.375,
+          "phi": 0.6831300510639732
+        },
+        "decider_flash__luna": {
+          "n": 16,
+          "neither": 1,
+          "first_only": 4,
+          "second_only": 6,
+          "both": 5,
+          "expected_both_under_independent_errors": 6.1875,
+          "phi": -0.32277655457716287
+        },
+        "gemini__jev": {
+          "n": 16,
+          "neither": 7,
+          "first_only": 2,
+          "second_only": 0,
+          "both": 7,
+          "expected_both_under_independent_errors": 3.9375,
+          "phi": 0.7777777777777778
+        },
+        "gemini__liquid": {
+          "n": 16,
+          "neither": 7,
+          "first_only": 3,
+          "second_only": 0,
+          "both": 6,
+          "expected_both_under_independent_errors": 3.375,
+          "phi": 0.6831300510639732
+        },
+        "gemini__luna": {
+          "n": 16,
+          "neither": 2,
+          "first_only": 3,
+          "second_only": 5,
+          "both": 6,
+          "expected_both_under_independent_errors": 6.1875,
+          "phi": -0.050964719143762556
+        },
+        "jev__liquid": {
+          "n": 16,
+          "neither": 9,
+          "first_only": 1,
+          "second_only": 0,
+          "both": 6,
+          "expected_both_under_independent_errors": 2.625,
+          "phi": 0.8783100656536799
+        },
+        "jev__luna": {
+          "n": 16,
+          "neither": 3,
+          "first_only": 2,
+          "second_only": 6,
+          "both": 5,
+          "expected_both_under_independent_errors": 4.8125,
+          "phi": 0.050964719143762556
+        },
+        "liquid__luna": {
+          "n": 16,
+          "neither": 3,
+          "first_only": 2,
+          "second_only": 7,
+          "both": 4,
+          "expected_both_under_independent_errors": 4.125,
+          "phi": -0.034815531191139566
+        }
+      }
+    },
+    "all_negative_family_any_false_alert": {
+      "units": 34,
+      "errors_per_model": {
+        "clef_flash": 0,
+        "decider_flash": 0,
+        "gemini": 1,
+        "jev": 1,
+        "liquid": 1,
+        "luna": 1
+      },
+      "all_models_error": 0,
+      "pairs": {
+        "clef_flash__decider_flash": {
+          "n": 34,
+          "neither": 34,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__gemini": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__jev": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__liquid": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "clef_flash__luna": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__gemini": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__jev": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__liquid": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "decider_flash__luna": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 1,
+          "both": 0,
+          "expected_both_under_independent_errors": 0.0,
+          "phi": null
+        },
+        "gemini__jev": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        },
+        "gemini__liquid": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        },
+        "gemini__luna": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        },
+        "jev__liquid": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        },
+        "jev__luna": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        },
+        "liquid__luna": {
+          "n": 34,
+          "neither": 33,
+          "first_only": 0,
+          "second_only": 0,
+          "both": 1,
+          "expected_both_under_independent_errors": 0.029411764705882353,
+          "phi": 1.0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,3643 @@
+{
+  "kind": "full_mindguard_exact_across_detector_fifo_work_match_v1",
+  "models": [
+    "gemini",
+    "jev",
+    "liquid",
+    "luna"
+  ],
+  "gate": "tuned",
+  "placements": 8,
+  "seed": 2026,
+  "service_minutes": 20,
+  "deadline_minutes": 10,
+  "turn_minutes": 2,
+  "source_paths": 67,
+  "trace_sha256": "1414173cc5fbf6d2f50ca1345b38ce6aedd0ec92793af5960a4fb646cb243e29",
+  "azure_sha256": "2f1e5b666d4e3055fdbba98598ce2ec307767b9064e03e2fa46676dbcc7d0bf8",
+  "burst_sha256": "4bb3783693d0a435686fbfc885615d2349bd067239079fa4b749f2e679e12122",
+  "training": [
+    {
+      "fold": 0,
+      "model": "gemini",
+      "cutoff": 0.8,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 214,
+      "brier_native_sum": 15.054807674318216,
+      "brier_calibrated_sum": 1.818834713748686
+    },
+    {
+      "fold": 0,
+      "model": "jev",
+      "cutoff": 0.8,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 214,
+      "brier_native_sum": 7.7743,
+      "brier_calibrated_sum": 1.5312096620321491
+    },
+    {
+      "fold": 0,
+      "model": "liquid",
+      "cutoff": 0.8,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 214,
+      "brier_native_sum": 11.981535637671128,
+      "brier_calibrated_sum": 2.0115291219114533
+    },
+    {
+      "fold": 0,
+      "model": "luna",
+      "cutoff": 0.65,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 214,
+      "brier_native_sum": 8.9885,
+      "brier_calibrated_sum": 2.1207627677033436
+    },
+    {
+      "fold": 1,
+      "model": "gemini",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 209,
+      "brier_native_sum": 13.551311069929449,
+      "brier_calibrated_sum": 1.1048857699326209
+    },
+    {
+      "fold": 1,
+      "model": "jev",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 209,
+      "brier_native_sum": 6.2463,
+      "brier_calibrated_sum": 0.7322461451372049
+    },
+    {
+      "fold": 1,
+      "model": "liquid",
+      "cutoff": 0.65,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 209,
+      "brier_native_sum": 12.465409771710378,
+      "brier_calibrated_sum": 1.899945586436606
+    },
+    {
+      "fold": 1,
+      "model": "luna",
+      "cutoff": 0.5,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 209,
+      "brier_native_sum": 8.943999999999999,
+      "brier_calibrated_sum": 1.4296880038989188
+    },
+    {
+      "fold": 2,
+      "model": "gemini",
+      "cutoff": 0.8,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 218,
+      "brier_native_sum": 13.889735295110311,
+      "brier_calibrated_sum": 6.046024796326391
+    },
+    {
+      "fold": 2,
+      "model": "jev",
+      "cutoff": 0.95,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 218,
+      "brier_native_sum": 6.035,
+      "brier_calibrated_sum": 6.097352392800086
+    },
+    {
+      "fold": 2,
+      "model": "liquid",
+      "cutoff": 0.8,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 218,
+      "brier_native_sum": 5.85305845874758,
+      "brier_calibrated_sum": 4.968178895776643
+    },
+    {
+      "fold": 2,
+      "model": "luna",
+      "cutoff": 0.5,
+      "heldout_paths": 14,
+      "positive_heldout_paths": 3,
+      "heldout_turns": 218,
+      "brier_native_sum": 14.074399999999999,
+      "brier_calibrated_sum": 5.391726628716737
+    },
+    {
+      "fold": 3,
+      "model": "gemini",
+      "cutoff": 0.5,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 230,
+      "brier_native_sum": 16.908843703893112,
+      "brier_calibrated_sum": 5.369880826498742
+    },
+    {
+      "fold": 3,
+      "model": "jev",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 230,
+      "brier_native_sum": 11.946,
+      "brier_calibrated_sum": 5.0890618711686955
+    },
+    {
+      "fold": 3,
+      "model": "liquid",
+      "cutoff": 0.65,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 230,
+      "brier_native_sum": 16.560939055132728,
+      "brier_calibrated_sum": 6.41501088756116
+    },
+    {
+      "fold": 3,
+      "model": "luna",
+      "cutoff": 0.5,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 230,
+      "brier_native_sum": 17.274,
+      "brier_calibrated_sum": 6.407361116877208
+    },
+    {
+      "fold": 4,
+      "model": "gemini",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 263,
+      "brier_native_sum": 26.763199690725223,
+      "brier_calibrated_sum": 3.8257143751733036
+    },
+    {
+      "fold": 4,
+      "model": "jev",
+      "cutoff": 0.65,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 263,
+      "brier_native_sum": 9.7516,
+      "brier_calibrated_sum": 3.3842240925118308
+    },
+    {
+      "fold": 4,
+      "model": "liquid",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 263,
+      "brier_native_sum": 15.019645964155764,
+      "brier_calibrated_sum": 4.518066536378172
+    },
+    {
+      "fold": 4,
+      "model": "luna",
+      "cutoff": 0.8,
+      "heldout_paths": 13,
+      "positive_heldout_paths": 4,
+      "heldout_turns": 263,
+      "brier_native_sum": 27.121199999999998,
+      "brier_calibrated_sum": 9.269690482419922
+    }
+  ],
+  "results": [
+    {
+      "scenario": "steady",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 11003.91791044776,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 406.80783582089555,
+          "matched_recall": 0.17475207611708002,
+          "uncapped_minutes": 17676.194029850747,
+          "uncapped_recall": 0.3094604580040104
+        },
+        "jev": {
+          "matched_catches": 458.95335820895525,
+          "matched_recall": 0.19715218126533746,
+          "uncapped_minutes": 17123.880597014926,
+          "uncapped_recall": 0.3208344219490576
+        },
+        "liquid": {
+          "matched_catches": 447.9664179104478,
+          "matched_recall": 0.1924325312038674,
+          "uncapped_minutes": 18815.597014925374,
+          "uncapped_recall": 0.34914671227365474
+        },
+        "luna": {
+          "matched_catches": 208.48507462686567,
+          "matched_recall": 0.08955874597880044,
+          "uncapped_minutes": 16497.798507462685,
+          "uncapped_recall": 0.20591266603727312
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.02240010514825744,
+          "omit_one_fold_range": [
+            -0.02929247408742677,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.017680455086787384,
+          "omit_one_fold_range": [
+            -0.02312061791923871,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.08519333013827958,
+          "omit_one_fold_range": [
+            0.0,
+            0.11140677237808776
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.004719650061470056,
+          "omit_one_fold_range": [
+            0.0,
+            0.006171856168188059
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.10759343528653702,
+          "omit_one_fold_range": [
+            0.0,
+            0.14069924646551454
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.10287378522506696,
+          "omit_one_fold_range": [
+            0.0,
+            0.13452739029732647
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 16894.17910447761,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 609.0354477611941,
+          "matched_recall": 0.2616228094780896,
+          "uncapped_minutes": 25131.15671641791,
+          "uncapped_recall": 0.4357794194726238
+        },
+        "jev": {
+          "matched_catches": 709.4944029850747,
+          "matched_recall": 0.3047768725125465,
+          "uncapped_minutes": 24898.992537313432,
+          "uncapped_recall": 0.4747908655657088
+        },
+        "liquid": {
+          "matched_catches": 692.2257462686567,
+          "matched_recall": 0.2973587911797282,
+          "uncapped_minutes": 27465.932835820895,
+          "uncapped_recall": 0.5216996510552493
+        },
+        "luna": {
+          "matched_catches": 267.5186567164179,
+          "matched_recall": 0.11491774873733933,
+          "uncapped_minutes": 24858.880597014926,
+          "uncapped_recall": 0.2834554987249171
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.04315406303445689,
+          "omit_one_fold_range": [
+            -0.05643229193959148,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.035735981701638615,
+          "omit_one_fold_range": [
+            -0.04673171447435991,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.14670506074075024,
+          "omit_one_fold_range": [
+            0.0,
+            0.1918452686628169
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.007418081332818278,
+          "omit_one_fold_range": [
+            0.0,
+            0.009700577465231562
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.18985912377520714,
+          "omit_one_fold_range": [
+            0.0,
+            0.24827756060240838
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.18244104244238885,
+          "omit_one_fold_range": [
+            0.0,
+            0.23857698313717682
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 18805.373134328358,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 672.4347014925373,
+          "matched_recall": 0.2888571698769477,
+          "uncapped_minutes": 27077.649253731342,
+          "uncapped_recall": 0.4659077612557523
+        },
+        "jev": {
+          "matched_catches": 800.7854477611941,
+          "matched_recall": 0.343992684502333,
+          "uncapped_minutes": 27031.455223880595,
+          "uncapped_recall": 0.520488682937932
+        },
+        "liquid": {
+          "matched_catches": 788.8283582089553,
+          "matched_recall": 0.3388562882985698,
+          "uncapped_minutes": 29754.850746268658,
+          "uncapped_recall": 0.573808146104786
+        },
+        "luna": {
+          "matched_catches": 273.70335820895525,
+          "matched_recall": 0.11757450539445824,
+          "uncapped_minutes": 27062.798507462685,
+          "uncapped_recall": 0.29371226243466303
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.05513551462538529,
+          "omit_one_fold_range": [
+            -0.07210035947472672,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.04999911842162207,
+          "omit_one_fold_range": [
+            -0.06538352704444701,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17128266448248944,
+          "omit_one_fold_range": [
+            0.0,
+            0.2239852437196726
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.005136396203763218,
+          "omit_one_fold_range": [
+            0.0,
+            0.00671683243027972
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.22641817910787473,
+          "omit_one_fold_range": [
+            0.0,
+            0.2960856031943993
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.22128178290411152,
+          "omit_one_fold_range": [
+            0.0,
+            0.2893687707641196
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady_pulse",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 10862.276119402984,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 399.1194029850746,
+          "matched_recall": 0.1714493629394067,
+          "uncapped_minutes": 17422.201492537315,
+          "uncapped_recall": 0.30331986388429844
+        },
+        "jev": {
+          "matched_catches": 450.44029850746267,
+          "matched_recall": 0.19349523386671497,
+          "uncapped_minutes": 16878.47014925373,
+          "uncapped_recall": 0.3145086963699808
+        },
+        "liquid": {
+          "matched_catches": 438.2164179104478,
+          "matched_recall": 0.18824423247382113,
+          "uncapped_minutes": 18547.388059701494,
+          "uncapped_recall": 0.34150022199746427
+        },
+        "luna": {
+          "matched_catches": 203.87686567164178,
+          "matched_recall": 0.08757920180290793,
+          "uncapped_minutes": 16237.985074626866,
+          "uncapped_recall": 0.2019159102457039
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.022045870927308253,
+          "omit_one_fold_range": [
+            -0.02882924426464886,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.016794869534414416,
+          "omit_one_fold_range": [
+            -0.021962543362293932,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.08387016113649878,
+          "omit_one_fold_range": [
+            0.0,
+            0.10967647274594675
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.005251001392893837,
+          "omit_one_fold_range": [
+            0.0,
+            0.006866700902354926
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.10591603206380704,
+          "omit_one_fold_range": [
+            0.0,
+            0.1385057170105956
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.1006650306709132,
+          "omit_one_fold_range": [
+            0.0,
+            0.13163901610824066
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady_pulse",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 16686.567164179105,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 600.3283582089553,
+          "matched_recall": 0.25788251285100844,
+          "uncapped_minutes": 24845.037313432837,
+          "uncapped_recall": 0.43001790405542084
+        },
+        "jev": {
+          "matched_catches": 696.2518656716418,
+          "matched_recall": 0.2990882876702448,
+          "uncapped_minutes": 24572.83582089552,
+          "uncapped_recall": 0.4659830961353207
+        },
+        "liquid": {
+          "matched_catches": 679.6865671641791,
+          "matched_recall": 0.2919723472905891,
+          "uncapped_minutes": 27103.84328358209,
+          "uncapped_recall": 0.5121313199151761
+        },
+        "luna": {
+          "matched_catches": 265.1660447761194,
+          "matched_recall": 0.11390713934227842,
+          "uncapped_minutes": 24474.514925373136,
+          "uncapped_recall": 0.2793465420488843
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.04120577481923636,
+          "omit_one_fold_range": [
+            -0.05388452791431296,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.03408983443958063,
+          "omit_one_fold_range": [
+            -0.04457905823909786,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.14397537350873002,
+          "omit_one_fold_range": [
+            0.0,
+            0.1882756741461165
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.007115940379655736,
+          "omit_one_fold_range": [
+            0.0,
+            0.009305469675215108
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.1851811483279664,
+          "omit_one_fold_range": [
+            0.0,
+            0.24216020206042949
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.17806520794831066,
+          "omit_one_fold_range": [
+            0.0,
+            0.23285473238521437
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady_pulse",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 18691.86567164179,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 667.6809701492538,
+          "matched_recall": 0.2868151137797112,
+          "uncapped_minutes": 26962.201492537315,
+          "uncapped_recall": 0.46377193727649985
+        },
+        "jev": {
+          "matched_catches": 793.0485074626865,
+          "matched_recall": 0.340669134017545,
+          "uncapped_minutes": 26907.761194029852,
+          "uncapped_recall": 0.516779642271523
+        },
+        "liquid": {
+          "matched_catches": 780.0242537313433,
+          "matched_recall": 0.3350743170572593,
+          "uncapped_minutes": 29623.731343283584,
+          "uncapped_recall": 0.5693249193355784
+        },
+        "luna": {
+          "matched_catches": 273.4608208955224,
+          "matched_recall": 0.11747031885888495,
+          "uncapped_minutes": 26933.432835820895,
+          "uncapped_recall": 0.293142442228566
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.05385402023783382,
+          "omit_one_fold_range": [
+            -0.07042455746879486,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.048259203277548124,
+          "omit_one_fold_range": [
+            -0.06310825115021432,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.16934479492082624,
+          "omit_one_fold_range": [
+            0.0,
+            0.22145110410094637
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.005594816960285695,
+          "omit_one_fold_range": [
+            0.0,
+            0.007316306318580546
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.22319881515866005,
+          "omit_one_fold_range": [
+            0.0,
+            0.29187566156974126
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.21760399819837437,
+          "omit_one_fold_range": [
+            0.0,
+            0.2845593552511607
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "steady_pulse",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "observed",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 9748.059701492537,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 368.0261194029851,
+          "matched_recall": 0.15809264907891088,
+          "uncapped_minutes": 15797.574626865671,
+          "uncapped_recall": 0.27656476154907744
+        },
+        "jev": {
+          "matched_catches": 398.3190298507463,
+          "matched_recall": 0.17110554737201486,
+          "uncapped_minutes": 15277.089552238805,
+          "uncapped_recall": 0.27962063278093097
+        },
+        "liquid": {
+          "matched_catches": 391.45522388059703,
+          "matched_recall": 0.16815706841529074,
+          "uncapped_minutes": 16843.246268656716,
+          "uncapped_recall": 0.3063645150277056
+        },
+        "luna": {
+          "matched_catches": 186.26865671641792,
+          "matched_recall": 0.08001525932028704,
+          "uncapped_minutes": 14601.231343283582,
+          "uncapped_recall": 0.1838579793261856
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.013012898293103974,
+          "omit_one_fold_range": [
+            -0.01701688378381211,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.010064419336379854,
+          "omit_one_fold_range": [
+            -0.01316117672951361,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.07807738975862384,
+          "omit_one_fold_range": [
+            0.0,
+            0.10210130270287265
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.002948478956724119,
+          "omit_one_fold_range": [
+            0.0,
+            0.0038557070542985005
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.09109028805172781,
+          "omit_one_fold_range": [
+            0.0,
+            0.11911818648668476
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.0881418090950037,
+          "omit_one_fold_range": [
+            0.0,
+            0.11526247943238627
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "observed",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 15167.313432835821,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 557.2537313432836,
+          "matched_recall": 0.23937898413319206,
+          "uncapped_minutes": 22962.014925373136,
+          "uncapped_recall": 0.4021808646200157
+        },
+        "jev": {
+          "matched_catches": 624.679104477612,
+          "matched_recall": 0.2683428410225668,
+          "uncapped_minutes": 22514.141791044774,
+          "uncapped_recall": 0.422550935194372
+        },
+        "liquid": {
+          "matched_catches": 612.2126865671642,
+          "matched_recall": 0.26298765309409966,
+          "uncapped_minutes": 24996.044776119405,
+          "uncapped_recall": 0.46788089395253263
+        },
+        "luna": {
+          "matched_catches": 254.22761194029852,
+          "matched_recall": 0.10920832658792302,
+          "uncapped_minutes": 22304.253731343284,
+          "uncapped_recall": 0.26223831147286103
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.028963856889374737,
+          "omit_one_fold_range": [
+            -0.037875850215370425,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.02360866896090761,
+          "omit_one_fold_range": [
+            -0.030872905247492585,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.13017065754526905,
+          "omit_one_fold_range": [
+            0.0,
+            0.17022333546433024
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.005355187928467128,
+          "omit_one_fold_range": [
+            0.0,
+            0.007002944967877842
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.1591345144346438,
+          "omit_one_fold_range": [
+            0.0,
+            0.20809918567970068
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.15377932650617665,
+          "omit_one_fold_range": [
+            0.0,
+            0.20109624071182283
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "observed",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 17642.16417910448,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 637.1455223880597,
+          "matched_recall": 0.27369802895103396,
+          "uncapped_minutes": 25797.388059701494,
+          "uncapped_recall": 0.44757894534374343
+        },
+        "jev": {
+          "matched_catches": 737.2406716417911,
+          "matched_recall": 0.3166958121821309,
+          "uncapped_minutes": 25623.0223880597,
+          "uncapped_recall": 0.4872115034758231
+        },
+        "liquid": {
+          "matched_catches": 724.5559701492538,
+          "matched_recall": 0.3112468563716478,
+          "uncapped_minutes": 28323.619402985074,
+          "uncapped_recall": 0.5390234676164204
+        },
+        "luna": {
+          "matched_catches": 270.5018656716418,
+          "matched_recall": 0.1161992431248908,
+          "uncapped_minutes": 25580.485074626864,
+          "uncapped_recall": 0.2862228533967215
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.04299778323109696,
+          "omit_one_fold_range": [
+            -0.056227925841307105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.03754882742061387,
+          "omit_one_fold_range": [
+            -0.04910236121445864,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.15749878582614313,
+          "omit_one_fold_range": [
+            0.0,
+            0.20596015385099092
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.005448955810483089,
+          "omit_one_fold_range": [
+            0.0,
+            0.0071255646268484655
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.2004965690572401,
+          "omit_one_fold_range": [
+            0.0,
+            0.262188079692298
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.19504761324675698,
+          "omit_one_fold_range": [
+            0.0,
+            0.2550625150654496
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "observed",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "risk_pulse",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 8748.805970149253,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 316.4869402985075,
+          "matched_recall": 0.13595301026958667,
+          "uncapped_minutes": 14034.589552238805,
+          "uncapped_recall": 0.23626701245910678
+        },
+        "jev": {
+          "matched_catches": 342.17164179104475,
+          "matched_recall": 0.14698636438679813,
+          "uncapped_minutes": 13654.365671641792,
+          "uncapped_recall": 0.24013794297309904
+        },
+        "liquid": {
+          "matched_catches": 338.67910447761193,
+          "matched_recall": 0.14548607827454274,
+          "uncapped_minutes": 14995.89552238806,
+          "uncapped_recall": 0.2634316480226197
+        },
+        "luna": {
+          "matched_catches": 160.705223880597,
+          "matched_recall": 0.06903399847086224,
+          "uncapped_minutes": 12974.776119402984,
+          "uncapped_recall": 0.15961377249828093
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.011033354117211456,
+          "omit_one_fold_range": [
+            -0.01442824653887672,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.009533068004956074,
+          "omit_one_fold_range": [
+            -0.012466331995346741,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.06691901179872443,
+          "omit_one_fold_range": [
+            0.0,
+            0.08750956328536844
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.001500286112255382,
+          "omit_one_fold_range": [
+            0.0,
+            0.0019619145435299788
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.07795236591593589,
+          "omit_one_fold_range": [
+            0.0,
+            0.10193780982424515
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.0764520798036805,
+          "omit_one_fold_range": [
+            0.0,
+            0.09997589528071518
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "risk_pulse",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 13495.26119402985,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 482.0186567164179,
+          "matched_recall": 0.20706032079835737,
+          "uncapped_minutes": 20582.276119402984,
+          "uncapped_recall": 0.3489928367749619
+        },
+        "jev": {
+          "matched_catches": 532.8059701492538,
+          "matched_recall": 0.2288769813474044,
+          "uncapped_minutes": 20107.985074626864,
+          "uncapped_recall": 0.3620546225962964
+        },
+        "liquid": {
+          "matched_catches": 528.9496268656717,
+          "matched_recall": 0.22722041543178909,
+          "uncapped_minutes": 22167.83582089552,
+          "uncapped_recall": 0.4006773727682042
+        },
+        "luna": {
+          "matched_catches": 224.8320895522388,
+          "matched_recall": 0.09658091847644022,
+          "uncapped_minutes": 19627.5,
+          "uncapped_recall": 0.22819816599639994
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.021816660549047014,
+          "omit_one_fold_range": [
+            -0.028529507320498443,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.020160094633431696,
+          "omit_one_fold_range": [
+            -0.02636322667868409,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.11047940232191716,
+          "omit_one_fold_range": [
+            0.0,
+            0.1444732070804993
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0016565659156153178,
+          "omit_one_fold_range": [
+            0.0,
+            0.0021662806418143517
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.13229606287096418,
+          "omit_one_fold_range": [
+            0.0,
+            0.17300271440099774
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.13063949695534885,
+          "omit_one_fold_range": [
+            0.0,
+            0.17083643375918336
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "risk_pulse",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 15888.619402985074,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 567.294776119403,
+          "matched_recall": 0.2436923067059263,
+          "uncapped_minutes": 23683.582089552237,
+          "uncapped_recall": 0.4051149177487373
+        },
+        "jev": {
+          "matched_catches": 637.4850746268656,
+          "matched_recall": 0.27384389010083654,
+          "uncapped_minutes": 23242.201492537315,
+          "uncapped_recall": 0.4269235639488941
+        },
+        "liquid": {
+          "matched_catches": 632.7798507462686,
+          "matched_recall": 0.2718226713107147,
+          "uncapped_minutes": 25692.761194029852,
+          "uncapped_recall": 0.4743693108140815
+        },
+        "luna": {
+          "matched_catches": 253.40298507462686,
+          "matched_recall": 0.10885409236697383,
+          "uncapped_minutes": 22942.649253731342,
+          "uncapped_recall": 0.26023873142474285
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.030151583394910246,
+          "omit_one_fold_range": [
+            -0.03942903256233166,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.028130364604788412,
+          "omit_one_fold_range": [
+            -0.036785897691187106,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.13483821433895246,
+          "omit_one_fold_range": [
+            0.0,
+            0.17632706959975686
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0020212187901218343,
+          "omit_one_fold_range": [
+            0.0,
+            0.002643134871144555
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.16498979773386271,
+          "omit_one_fold_range": [
+            0.0,
+            0.21575610216208851
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.16296857894374087,
+          "omit_one_fold_range": [
+            0.0,
+            0.21311296729094395
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "risk_pulse",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "double",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 6447.611940298508,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 249.27985074626866,
+          "matched_recall": 0.10708292126222789,
+          "uncapped_minutes": 11174.888059701492,
+          "uncapped_recall": 0.19259522248633953
+        },
+        "jev": {
+          "matched_catches": 257.42910447761193,
+          "matched_recall": 0.11058358885749045,
+          "uncapped_minutes": 10707.350746268658,
+          "uncapped_recall": 0.18718473555052967
+        },
+        "liquid": {
+          "matched_catches": 256.2164179104478,
+          "matched_recall": 0.110062656179624,
+          "uncapped_minutes": 11663.358208955224,
+          "uncapped_recall": 0.2021531349728554
+        },
+        "luna": {
+          "matched_catches": 137.63992537313433,
+          "matched_recall": 0.059125858937842314,
+          "uncapped_minutes": 9811.41791044776,
+          "uncapped_recall": 0.13118767841944218
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.0035006675952625583,
+          "omit_one_fold_range": [
+            -0.004577800601569951,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.002979734917396106,
+          "omit_one_fold_range": [
+            -0.0038965802739553746,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.04795706232438558,
+          "omit_one_fold_range": [
+            0.0,
+            0.06271314336019787
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0005209326778664521,
+          "omit_one_fold_range": [
+            0.0,
+            0.000681220327614576
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.051457729919648136,
+          "omit_one_fold_range": [
+            0.0,
+            0.06729094396176782
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.050936797241781684,
+          "omit_one_fold_range": [
+            0.0,
+            0.06660972363415324
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "double",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 11283.320895522387,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 428.05410447761193,
+          "matched_recall": 0.18387881663330027,
+          "uncapped_minutes": 18316.52985074627,
+          "uncapped_recall": 0.3237083674611024
+        },
+        "jev": {
+          "matched_catches": 452.5261194029851,
+          "matched_recall": 0.19439123807264527,
+          "uncapped_minutes": 17579.81343283582,
+          "uncapped_recall": 0.3205507139983426
+        },
+        "liquid": {
+          "matched_catches": 446.9720149253731,
+          "matched_recall": 0.1920053664080169,
+          "uncapped_minutes": 19533.0223880597,
+          "uncapped_recall": 0.35484331146484666
+        },
+        "luna": {
+          "matched_catches": 220.32089552238807,
+          "matched_recall": 0.09464304891477701,
+          "uncapped_minutes": 16987.761194029852,
+          "uncapped_recall": 0.21685305370735766
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.010512421439345004,
+          "omit_one_fold_range": [
+            -0.013747026211262144,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.008126549774716652,
+          "omit_one_fold_range": [
+            -0.010627037110787385,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.08923576771852325,
+          "omit_one_fold_range": [
+            0.0,
+            0.11669304212037687
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0023858716646283505,
+          "omit_one_fold_range": [
+            0.0,
+            0.0031199891004747584
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.09974818915786825,
+          "omit_one_fold_range": [
+            0.0,
+            0.13044006833163901
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.0973623174932399,
+          "omit_one_fold_range": [
+            0.0,
+            0.12732007923116426
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "double",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 14525.074626865671,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 539.669776119403,
+          "matched_recall": 0.2318254603041285,
+          "uncapped_minutes": 22407.014925373136,
+          "uncapped_recall": 0.3962550550505625
+        },
+        "jev": {
+          "matched_catches": 586.3582089552239,
+          "matched_recall": 0.25188136840198694,
+          "uncapped_minutes": 21817.761194029852,
+          "uncapped_recall": 0.4048472384958029
+        },
+        "liquid": {
+          "matched_catches": 575.7593283582089,
+          "matched_recall": 0.24732841679743411,
+          "uncapped_minutes": 24306.305970149253,
+          "uncapped_recall": 0.4508335724280752
+        },
+        "luna": {
+          "matched_catches": 256.7014925373134,
+          "matched_recall": 0.11027102925077058,
+          "uncapped_minutes": 21583.059701492537,
+          "uncapped_recall": 0.26177187636744825
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.020055908097858406,
+          "omit_one_fold_range": [
+            -0.026226982613161177,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.015502956493305615,
+          "omit_one_fold_range": [
+            -0.020273116949809784,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.12155443105335793,
+          "omit_one_fold_range": [
+            0.0,
+            0.15895595124558518
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.004552951604552791,
+          "omit_one_fold_range": [
+            0.0,
+            0.005953865663351395
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.14161033915121635,
+          "omit_one_fold_range": [
+            0.0,
+            0.18518293385874635
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.13705738754666355,
+          "omit_one_fold_range": [
+            0.0,
+            0.17922906819539494
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "double",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "compound",
+      "staff": 1,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 5911.604477611941,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 219.59328358208955,
+          "matched_recall": 0.09433048930805714,
+          "uncapped_minutes": 10020.671641791045,
+          "uncapped_recall": 0.16741013109871913
+        },
+        "jev": {
+          "matched_catches": 227.69402985074626,
+          "matched_recall": 0.09781031959620505,
+          "uncapped_minutes": 9684.55223880597,
+          "uncapped_recall": 0.16415149683994223
+        },
+        "liquid": {
+          "matched_catches": 227.5242537313433,
+          "matched_recall": 0.09773738902130374,
+          "uncapped_minutes": 10562.611940298508,
+          "uncapped_recall": 0.17877848499954319
+        },
+        "luna": {
+          "matched_catches": 119.93470149253731,
+          "matched_recall": 0.05152024184099211,
+          "uncapped_minutes": 8940.373134328358,
+          "uncapped_recall": 0.1163859774540337
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.0034798302881479,
+          "omit_one_fold_range": [
+            -0.0045505517884653676,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.003406899713246597,
+          "omit_one_fold_range": [
+            -0.004455180942599327,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.042810247467065035,
+          "omit_one_fold_range": [
+            0.0,
+            0.055982686523365854
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 7.293057490130329e-05,
+          "omit_one_fold_range": [
+            0.0,
+            9.537084586604064e-05
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.04629007775521293,
+          "omit_one_fold_range": [
+            0.0,
+            0.060533238311831224
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.04621714718031163,
+          "omit_one_fold_range": [
+            0.0,
+            0.06043786746596518
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "compound",
+      "staff": 2,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 10095.373134328358,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 367.12873134328356,
+          "matched_recall": 0.1577071588972897,
+          "uncapped_minutes": 16139.776119402984,
+          "uncapped_recall": 0.27214003952676874
+        },
+        "jev": {
+          "matched_catches": 388.10820895522386,
+          "matched_recall": 0.16671929422437934,
+          "uncapped_minutes": 15700.410447761195,
+          "uncapped_recall": 0.2729454815902392
+        },
+        "liquid": {
+          "matched_catches": 387.0410447761194,
+          "matched_recall": 0.16626087346785684,
+          "uncapped_minutes": 17300.44776119403,
+          "uncapped_recall": 0.3010077242294604
+        },
+        "luna": {
+          "matched_catches": 185.5410447761194,
+          "matched_recall": 0.07970269971356717,
+          "uncapped_minutes": 15045.26119402985,
+          "uncapped_recall": 0.18581027471585126
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.009012135327089622,
+          "omit_one_fold_range": [
+            -0.011785111667732166,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.008553714570567143,
+          "omit_one_fold_range": [
+            -0.011185637779431339,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.07800445918372254,
+          "omit_one_fold_range": [
+            0.0,
+            0.10200593185700661
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0004584207565224778,
+          "omit_one_fold_range": [
+            0.0,
+            0.0005994738883008269
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.08701659451081216,
+          "omit_one_fold_range": [
+            0.0,
+            0.11379104352473877
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.08655817375428967,
+          "omit_one_fold_range": [
+            0.0,
+            0.11319156963643795
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "compound",
+      "staff": 3,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 12894.253731343284,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 461.5485074626866,
+          "matched_recall": 0.19826697719597167,
+          "uncapped_minutes": 19908.731343283584,
+          "uncapped_recall": 0.33599035713541525
+        },
+        "jev": {
+          "matched_catches": 498.80223880597015,
+          "matched_recall": 0.21427002906002907,
+          "uncapped_minutes": 19412.723880597016,
+          "uncapped_recall": 0.3434044312937884
+        },
+        "liquid": {
+          "matched_catches": 496.7649253731343,
+          "matched_recall": 0.21339486216121345,
+          "uncapped_minutes": 21463.39552238806,
+          "uncapped_recall": 0.38067676367768855
+        },
+        "luna": {
+          "matched_catches": 220.12686567164178,
+          "matched_recall": 0.09455969968631839,
+          "uncapped_minutes": 18900.261194029852,
+          "uncapped_recall": 0.22331983182690288
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.01600305186405741,
+          "omit_one_fold_range": [
+            -0.020927088464319777,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.01512788496524177,
+          "omit_one_fold_range": [
+            -0.01978263831392729,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.10370727750965328,
+          "omit_one_fold_range": [
+            0.0,
+            0.1356173428215098
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0008751668988156396,
+          "omit_one_fold_range": [
+            0.0,
+            0.0011444501503924877
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.11971032937371069,
+          "omit_one_fold_range": [
+            0.0,
+            0.15654443128582957
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.11883516247489505,
+          "omit_one_fold_range": [
+            0.0,
+            0.15539998113543707
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "compound",
+      "staff": 0,
+      "positives": 2327.9141791044776,
+      "matched_minutes": 19170.149253731342,
+      "sessions": 9175.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 684.7313432835821,
+          "matched_recall": 0.2941394272305135,
+          "uncapped_minutes": 27386.641791044774,
+          "uncapped_recall": 0.470616992663665
+        },
+        "jev": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 27387.5,
+          "uncapped_recall": 0.5294278876901204
+        },
+        "liquid": {
+          "matched_catches": 821.5951492537314,
+          "matched_recall": 0.3529318892545213,
+          "uncapped_minutes": 30127.425373134327,
+          "uncapped_recall": 0.588277251591249
+        },
+        "luna": {
+          "matched_catches": 273.8973880597015,
+          "matched_recall": 0.11765785462291688,
+          "uncapped_minutes": 27385.037313432837,
+          "uncapped_recall": 0.29410095835584027
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058792462024007786,
+          "omit_one_fold_range": [
+            -0.07688252617458105,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17648157260759664,
+          "omit_one_fold_range": [
+            0.0,
+            0.23078382258926605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23527403463160443,
+          "omit_one_fold_range": [
+            0.0,
+            0.30766634876384713
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "azure",
+      "staff": 1,
+      "positives": 15.225746268656716,
+      "matched_minutes": 27.649253731343283,
+      "sessions": 60.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 1.1399253731343284,
+          "matched_recall": 0.07486827594657518,
+          "uncapped_minutes": 50.41044776119403,
+          "uncapped_recall": 0.13662541355226077
+        },
+        "jev": {
+          "matched_catches": 1.0671641791044777,
+          "matched_recall": 0.07008944982232569,
+          "uncapped_minutes": 47.276119402985074,
+          "uncapped_recall": 0.12155373116039701
+        },
+        "liquid": {
+          "matched_catches": 1.1884328358208955,
+          "matched_recall": 0.07805416002940815,
+          "uncapped_minutes": 51.90298507462686,
+          "uncapped_recall": 0.13123391741208185
+        },
+        "luna": {
+          "matched_catches": 0.6063432835820896,
+          "matched_recall": 0.039823551035412325,
+          "uncapped_minutes": 41.23134328358209,
+          "uncapped_recall": 0.08442592819507413
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": 0.0047788261242494795,
+          "omit_one_fold_range": [
+            0.0,
+            0.006266066838046273
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.003185884082832986,
+          "omit_one_fold_range": [
+            -0.004177377892030848,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.035044724911162846,
+          "omit_one_fold_range": [
+            0.0,
+            0.045951156812339335
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": -0.007964710207082466,
+          "omit_one_fold_range": [
+            -0.010443444730077122,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.030265898786913367,
+          "omit_one_fold_range": [
+            0.0,
+            0.039685089974293056
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.038230608993995836,
+          "omit_one_fold_range": [
+            0.0,
+            0.05012853470437018
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "azure",
+      "staff": 2,
+      "positives": 15.225746268656716,
+      "matched_minutes": 50.93283582089552,
+      "sessions": 60.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 2.158582089552239,
+          "matched_recall": 0.14177184168606788,
+          "uncapped_minutes": 89.96268656716418,
+          "uncapped_recall": 0.25842421271902954
+        },
+        "jev": {
+          "matched_catches": 2.0615671641791047,
+          "matched_recall": 0.1354000735204019,
+          "uncapped_minutes": 83.58208955223881,
+          "uncapped_recall": 0.23465261610096802
+        },
+        "liquid": {
+          "matched_catches": 2.1828358208955225,
+          "matched_recall": 0.14336478372748437,
+          "uncapped_minutes": 94.96268656716418,
+          "uncapped_recall": 0.26148756279867663
+        },
+        "luna": {
+          "matched_catches": 1.1156716417910448,
+          "matched_recall": 0.07327533390515868,
+          "uncapped_minutes": 75.33582089552239,
+          "uncapped_recall": 0.15181962994731038
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": 0.006371768165665972,
+          "omit_one_fold_range": [
+            0.0,
+            0.008354755784061696
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.001592942041416493,
+          "omit_one_fold_range": [
+            -0.002088688946015424,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.0684965077809092,
+          "omit_one_fold_range": [
+            0.0,
+            0.08981362467866325
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": -0.007964710207082466,
+          "omit_one_fold_range": [
+            -0.010443444730077122,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.06212473961524323,
+          "omit_one_fold_range": [
+            0.0,
+            0.08145886889460155
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.07008944982232569,
+          "omit_one_fold_range": [
+            0.0,
+            0.09190231362467867
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "azure",
+      "staff": 3,
+      "positives": 15.225746268656716,
+      "matched_minutes": 70.82089552238806,
+      "sessions": 60.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 2.837686567164179,
+          "matched_recall": 0.1863742188457297,
+          "uncapped_minutes": 121.64179104477611,
+          "uncapped_recall": 0.34664869501286605
+        },
+        "jev": {
+          "matched_catches": 2.837686567164179,
+          "matched_recall": 0.1863742188457297,
+          "uncapped_minutes": 112.38805970149254,
+          "uncapped_recall": 0.3180982722705551
+        },
+        "liquid": {
+          "matched_catches": 2.9347014925373136,
+          "matched_recall": 0.19274598701139567,
+          "uncapped_minutes": 128.47014925373134,
+          "uncapped_recall": 0.3639259894620757
+        },
+        "luna": {
+          "matched_catches": 1.5037313432835822,
+          "matched_recall": 0.09876240656782258,
+          "uncapped_minutes": 105.93283582089552,
+          "uncapped_recall": 0.2108810194829065
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.006371768165665972,
+          "omit_one_fold_range": [
+            -0.008354755784061696,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.08761181227790713,
+          "omit_one_fold_range": [
+            0.0,
+            0.11487789203084833
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": -0.006371768165665972,
+          "omit_one_fold_range": [
+            -0.008354755784061696,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.08761181227790713,
+          "omit_one_fold_range": [
+            0.0,
+            0.11487789203084833
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.09398358044357309,
+          "omit_one_fold_range": [
+            0.0,
+            0.12323264781491003
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "azure",
+      "staff": 0,
+      "positives": 15.225746268656716,
+      "matched_minutes": 124.66417910447761,
+      "sessions": 60.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 4.559701492537314,
+          "matched_recall": 0.2994731037863007,
+          "uncapped_minutes": 178.65671641791045,
+          "uncapped_recall": 0.476779806396275
+        },
+        "jev": {
+          "matched_catches": 5.360074626865671,
+          "matched_recall": 0.35204019115304497,
+          "uncapped_minutes": 179.36567164179104,
+          "uncapped_recall": 0.531675039823551
+        },
+        "liquid": {
+          "matched_catches": 5.360074626865671,
+          "matched_recall": 0.35204019115304497,
+          "uncapped_minutes": 198.17164179104478,
+          "uncapped_recall": 0.5934321774292366
+        },
+        "luna": {
+          "matched_catches": 1.8190298507462686,
+          "matched_recall": 0.11947065310623699,
+          "uncapped_minutes": 177.08955223880596,
+          "uncapped_recall": 0.2916309275824041
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.05256708736674427,
+          "omit_one_fold_range": [
+            -0.06892673521850899,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.05256708736674427,
+          "omit_one_fold_range": [
+            -0.06892673521850899,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.1800024506800637,
+          "omit_one_fold_range": [
+            0.0,
+            0.23602185089974292
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.232569538046808,
+          "omit_one_fold_range": [
+            0.0,
+            0.30494858611825193
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.232569538046808,
+          "omit_one_fold_range": [
+            0.0,
+            0.30494858611825193
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week",
+      "staff": 1,
+      "positives": 554.1492537313433,
+      "matched_minutes": 1966.9776119402984,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 74.38619402985074,
+          "matched_recall": 0.13423494397759103,
+          "uncapped_minutes": 3295.2611940298507,
+          "uncapped_recall": 0.2408694246929541
+        },
+        "jev": {
+          "matched_catches": 80.03731343283582,
+          "matched_recall": 0.14443277310924368,
+          "uncapped_minutes": 3162.5373134328356,
+          "uncapped_recall": 0.24009170976082742
+        },
+        "liquid": {
+          "matched_catches": 79.16417910447761,
+          "matched_recall": 0.14285714285714285,
+          "uncapped_minutes": 3471.1194029850744,
+          "uncapped_recall": 0.26292488149105797
+        },
+        "luna": {
+          "matched_catches": 39.65485074626866,
+          "matched_recall": 0.07155987394957983,
+          "uncapped_minutes": 2963.4701492537315,
+          "uncapped_recall": 0.16042138009049775
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.010197829131652661,
+          "omit_one_fold_range": [
+            -0.01333562271062271,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.008622198879551821,
+          "omit_one_fold_range": [
+            -0.01127518315018315,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.0626750700280112,
+          "omit_one_fold_range": [
+            0.0,
+            0.08195970695970696
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0015756302521008404,
+          "omit_one_fold_range": [
+            0.0,
+            0.0020604395604395605
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.07287289915966387,
+          "omit_one_fold_range": [
+            0.0,
+            0.09529532967032966
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.07129726890756302,
+          "omit_one_fold_range": [
+            0.0,
+            0.09323489010989011
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week",
+      "staff": 2,
+      "positives": 554.1492537313433,
+      "matched_minutes": 3185.0,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 117.8973880597015,
+          "matched_recall": 0.21275385154061624,
+          "uncapped_minutes": 4990.410447761194,
+          "uncapped_recall": 0.36813186813186816
+        },
+        "jev": {
+          "matched_catches": 129.63619402985074,
+          "matched_recall": 0.233937324929972,
+          "uncapped_minutes": 4858.134328358209,
+          "uncapped_recall": 0.37913771277741865
+        },
+        "liquid": {
+          "matched_catches": 127.13805970149254,
+          "matched_recall": 0.22942927170868346,
+          "uncapped_minutes": 5401.679104477612,
+          "uncapped_recall": 0.4199155623787977
+        },
+        "luna": {
+          "matched_catches": 57.360074626865675,
+          "matched_recall": 0.10351015406162464,
+          "uncapped_minutes": 4762.089552238806,
+          "uncapped_recall": 0.24418902176255117
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.021183473389355743,
+          "omit_one_fold_range": [
+            -0.0277014652014652,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.016675420168067227,
+          "omit_one_fold_range": [
+            -0.02180631868131868,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.1092436974789916,
+          "omit_one_fold_range": [
+            0.0,
+            0.14285714285714285
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.004508053221288515,
+          "omit_one_fold_range": [
+            0.0,
+            0.00589514652014652
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.13042717086834735,
+          "omit_one_fold_range": [
+            0.0,
+            0.17055860805860806
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.12591911764705882,
+          "omit_one_fold_range": [
+            0.0,
+            0.16466346153846154
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week",
+      "staff": 3,
+      "positives": 554.1492537313433,
+      "matched_minutes": 3878.1716417910447,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 141.71455223880596,
+          "matched_recall": 0.2557335434173669,
+          "uncapped_minutes": 5820.671641791045,
+          "uncapped_recall": 0.4281505871579401
+        },
+        "jev": {
+          "matched_catches": 160.09888059701493,
+          "matched_recall": 0.28890931372549017,
+          "uncapped_minutes": 5740.223880597015,
+          "uncapped_recall": 0.4551652391725921
+        },
+        "liquid": {
+          "matched_catches": 156.5820895522388,
+          "matched_recall": 0.28256302521008403,
+          "uncapped_minutes": 6372.94776119403,
+          "uncapped_recall": 0.5049423615600086
+        },
+        "luna": {
+          "matched_catches": 63.375,
+          "matched_recall": 0.11436449579831932,
+          "uncapped_minutes": 5715.298507462687,
+          "uncapped_recall": 0.2786811840120664
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.03317577030812325,
+          "omit_one_fold_range": [
+            -0.04338369963369963,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.026829481792717085,
+          "omit_one_fold_range": [
+            -0.03508470695970696,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.14136904761904762,
+          "omit_one_fold_range": [
+            0.0,
+            0.18486721611721613
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0063462885154061625,
+          "omit_one_fold_range": [
+            0.0,
+            0.008298992673992674
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.17454481792717086,
+          "omit_one_fold_range": [
+            0.0,
+            0.22825091575091574
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.16819852941176472,
+          "omit_one_fold_range": [
+            0.0,
+            0.21995192307692307
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week",
+      "staff": 0,
+      "positives": 554.1492537313433,
+      "matched_minutes": 4563.582089552238,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 162.98507462686567,
+          "matched_recall": 0.29411764705882354,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.47054446778711484
+        },
+        "jev": {
+          "matched_catches": 195.5820895522388,
+          "matched_recall": 0.35294117647058826,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.5293679971988795
+        },
+        "liquid": {
+          "matched_catches": 195.55783582089552,
+          "matched_recall": 0.35289740896358546,
+          "uncapped_minutes": 7171.3432835820895,
+          "uncapped_recall": 0.5881477591036415
+        },
+        "luna": {
+          "matched_catches": 65.19402985074628,
+          "matched_recall": 0.11764705882352941,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.29411764705882354
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058823529411764705,
+          "omit_one_fold_range": [
+            -0.07692307692307693,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058779761904761904,
+          "omit_one_fold_range": [
+            -0.0768658424908425,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17647058823529413,
+          "omit_one_fold_range": [
+            0.0,
+            0.23076923076923078
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 4.376750700280112e-05,
+          "omit_one_fold_range": [
+            0.0,
+            5.7234432234432234e-05
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23529411764705882,
+          "omit_one_fold_range": [
+            0.0,
+            0.3076923076923077
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23525035014005602,
+          "omit_one_fold_range": [
+            0.0,
+            0.3076350732600733
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week_steady",
+      "staff": 1,
+      "positives": 554.1492537313433,
+      "matched_minutes": 2588.3582089552237,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 95.46268656716418,
+          "matched_recall": 0.1722689075630252,
+          "uncapped_minutes": 4179.477611940299,
+          "uncapped_recall": 0.30719739819004527
+        },
+        "jev": {
+          "matched_catches": 108.36567164179104,
+          "matched_recall": 0.1955532212885154,
+          "uncapped_minutes": 4034.0298507462685,
+          "uncapped_recall": 0.31859041693600515
+        },
+        "liquid": {
+          "matched_catches": 104.0,
+          "matched_recall": 0.1876750700280112,
+          "uncapped_minutes": 4430.932835820896,
+          "uncapped_recall": 0.343349358974359
+        },
+        "luna": {
+          "matched_catches": 49.45335820895522,
+          "matched_recall": 0.08924194677871149,
+          "uncapped_minutes": 3887.2014925373132,
+          "uncapped_recall": 0.20393974897651368
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.023284313725490197,
+          "omit_one_fold_range": [
+            -0.030448717948717948,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.015406162464985995,
+          "omit_one_fold_range": [
+            -0.020146520146520148,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.08302696078431372,
+          "omit_one_fold_range": [
+            0.0,
+            0.10857371794871795
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.007878151260504201,
+          "omit_one_fold_range": [
+            0.0,
+            0.010302197802197802
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.10631127450980392,
+          "omit_one_fold_range": [
+            0.0,
+            0.1390224358974359
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.09843312324929972,
+          "omit_one_fold_range": [
+            0.0,
+            0.12872023809523808
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week_steady",
+      "staff": 2,
+      "positives": 554.1492537313433,
+      "matched_minutes": 3999.9253731343283,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 144.6492537313433,
+          "matched_recall": 0.2610294117647059,
+          "uncapped_minutes": 5960.261194029851,
+          "uncapped_recall": 0.4354563940961
+        },
+        "jev": {
+          "matched_catches": 167.71455223880596,
+          "matched_recall": 0.3026523109243697,
+          "uncapped_minutes": 5864.328358208955,
+          "uncapped_recall": 0.4696051497522086
+        },
+        "liquid": {
+          "matched_catches": 163.0820895522388,
+          "matched_recall": 0.29429271708683474,
+          "uncapped_minutes": 6483.8432835820895,
+          "uncapped_recall": 0.5162343783667314
+        },
+        "luna": {
+          "matched_catches": 63.617537313432834,
+          "matched_recall": 0.11480217086834733,
+          "uncapped_minutes": 5868.8432835820895,
+          "uncapped_recall": 0.27997400883430296
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.04162289915966386,
+          "omit_one_fold_range": [
+            -0.054429945054945056,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.03326330532212885,
+          "omit_one_fold_range": [
+            -0.043498168498168496,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.14622724089635855,
+          "omit_one_fold_range": [
+            0.0,
+            0.19122023809523808
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.008359593837535014,
+          "omit_one_fold_range": [
+            0.0,
+            0.010931776556776556
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.1878501400560224,
+          "omit_one_fold_range": [
+            0.0,
+            0.24565018315018314
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.1794905462184874,
+          "omit_one_fold_range": [
+            0.0,
+            0.2347184065934066
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week_steady",
+      "staff": 3,
+      "positives": 554.1492537313433,
+      "matched_minutes": 4467.537313432836,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 159.58955223880596,
+          "matched_recall": 0.28799019607843135,
+          "uncapped_minutes": 6439.776119402985,
+          "uncapped_recall": 0.4651543309631545
+        },
+        "jev": {
+          "matched_catches": 189.37313432835822,
+          "matched_recall": 0.34173669467787116,
+          "uncapped_minutes": 6428.694029850746,
+          "uncapped_recall": 0.5184261204481793
+        },
+        "liquid": {
+          "matched_catches": 187.21455223880596,
+          "matched_recall": 0.33784138655462187,
+          "uncapped_minutes": 7077.649253731343,
+          "uncapped_recall": 0.572940233785822
+        },
+        "luna": {
+          "matched_catches": 65.19402985074628,
+          "matched_recall": 0.11764705882352941,
+          "uncapped_minutes": 6436.79104477612,
+          "uncapped_recall": 0.2935352025425555
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.05374649859943978,
+          "omit_one_fold_range": [
+            -0.07028388278388278,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.04985119047619048,
+          "omit_one_fold_range": [
+            -0.06519001831501832,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17034313725490197,
+          "omit_one_fold_range": [
+            0.0,
+            0.22275641025641027
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0038953081232492998,
+          "omit_one_fold_range": [
+            0.0,
+            0.005093864468864469
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.22408963585434175,
+          "omit_one_fold_range": [
+            0.0,
+            0.29304029304029305
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.22019432773109243,
+          "omit_one_fold_range": [
+            0.0,
+            0.28794642857142855
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "burst_week_steady",
+      "staff": 0,
+      "positives": 554.1492537313433,
+      "matched_minutes": 4563.582089552238,
+      "sessions": 2184.0,
+      "zero_common_start_folds": [
+        0,
+        2,
+        4
+      ],
+      "fraction_of_placements_with_zero_common_starts": 0.6,
+      "models": {
+        "gemini": {
+          "matched_catches": 162.98507462686567,
+          "matched_recall": 0.29411764705882354,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.47054446778711484
+        },
+        "jev": {
+          "matched_catches": 195.5820895522388,
+          "matched_recall": 0.35294117647058826,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.5293679971988795
+        },
+        "liquid": {
+          "matched_catches": 195.5820895522388,
+          "matched_recall": 0.35294117647058826,
+          "uncapped_minutes": 7171.3432835820895,
+          "uncapped_recall": 0.5881915266106442
+        },
+        "luna": {
+          "matched_catches": 65.19402985074628,
+          "matched_recall": 0.11764705882352941,
+          "uncapped_minutes": 6519.4029850746265,
+          "uncapped_recall": 0.29411764705882354
+        }
+      },
+      "pairwise": [
+        {
+          "left": "gemini",
+          "right": "jev",
+          "delta": -0.058823529411764705,
+          "omit_one_fold_range": [
+            -0.07692307692307693,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "liquid",
+          "delta": -0.058823529411764705,
+          "omit_one_fold_range": [
+            -0.07692307692307693,
+            0.0
+          ]
+        },
+        {
+          "left": "gemini",
+          "right": "luna",
+          "delta": 0.17647058823529413,
+          "omit_one_fold_range": [
+            0.0,
+            0.23076923076923078
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "liquid",
+          "delta": 0.0,
+          "omit_one_fold_range": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "left": "jev",
+          "right": "luna",
+          "delta": 0.23529411764705882,
+          "omit_one_fold_range": [
+            0.0,
+            0.3076923076923077
+          ]
+        },
+        {
+          "left": "liquid",
+          "right": "luna",
+          "delta": 0.23529411764705882,
+          "omit_one_fold_range": [
+            0.0,
+            0.3076923076923077
+          ]
+        }
+      ]
+    }
+  ]
+}

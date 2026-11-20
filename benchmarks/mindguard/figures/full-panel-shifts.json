@@ -1,0 +1,743 @@
+{
+  "kind": "paired_equal_hours_shift_sensitivity_v1",
+  "trace_sha256": "1414173cc5fbf6d2f50ca1345b38ce6aedd0ec92793af5960a4fb646cb243e29",
+  "seed": 2026,
+  "placements": 8,
+  "training_days": [
+    1,
+    14
+  ],
+  "warmup_day": 15,
+  "scored_days": [
+    16,
+    29
+  ],
+  "follow_through_day": 30,
+  "trace_relative_hours_not_local": true,
+  "fixed_start_hours": 9.0,
+  "predicted_start_hours": 18.0,
+  "hours_per_shift": 8.0,
+  "base_reviewers": 1,
+  "service_minutes": 20,
+  "start_deadline_minutes": 10,
+  "train_arrivals": 4262,
+  "scored_arrivals": 4378,
+  "operational_arrivals": 4911,
+  "post_month_arrivals_excluded": 2,
+  "source_dialogues": 67,
+  "source_rated_turns": 1134,
+  "accounting": "Outcomes by monitored session arrival; labor by starts in scoring period, including full service and overtime. Paid = scheduled plus overtime; review minutes are not additive to paid minutes.",
+  "interpretation": "frozen_primary reuses gate tuned on training families with entire public clock. early_clock_only retunes using training families and only first 14 elapsed days tiled to 30.",
+  "training": [
+    {
+      "model": "clef_flash",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "clef_flash",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "clef_flash",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "clef_flash",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "clef_flash",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "decider_flash",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "decider_flash",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "decider_flash",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "decider_flash",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "decider_flash",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "gemini",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "gemini",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "gemini",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "gemini",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.5,
+        "early_clock_only": 0.5
+      }
+    },
+    {
+      "model": "gemini",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "jev",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "jev",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "jev",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.95,
+        "early_clock_only": 0.95
+      }
+    },
+    {
+      "model": "jev",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "jev",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "liquid",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "liquid",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "liquid",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "liquid",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "liquid",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    },
+    {
+      "model": "luna",
+      "fold": 0,
+      "cutoffs": {
+        "frozen_primary": 0.65,
+        "early_clock_only": 0.65
+      }
+    },
+    {
+      "model": "luna",
+      "fold": 1,
+      "cutoffs": {
+        "frozen_primary": 0.5,
+        "early_clock_only": 0.5
+      }
+    },
+    {
+      "model": "luna",
+      "fold": 2,
+      "cutoffs": {
+        "frozen_primary": 0.5,
+        "early_clock_only": 0.5
+      }
+    },
+    {
+      "model": "luna",
+      "fold": 3,
+      "cutoffs": {
+        "frozen_primary": 0.5,
+        "early_clock_only": 0.15
+      }
+    },
+    {
+      "model": "luna",
+      "fold": 4,
+      "cutoffs": {
+        "frozen_primary": 0.8,
+        "early_clock_only": 0.8
+      }
+    }
+  ],
+  "results": [
+    {
+      "model": "clef_flash",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 529.6735074626865,
+          "catches": 372.83022388059703,
+          "starts": 393.6511194029851,
+          "review_minutes": 7873.022388059701,
+          "overtime_minutes": 27.147864987713426,
+          "recall": 0.33374640303689734,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26907.147864987714
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 529.6735074626865,
+          "catches": 414.3059701492537,
+          "starts": 434.4589552238806,
+          "review_minutes": 8689.179104477613,
+          "overtime_minutes": 33.025804944202754,
+          "recall": 0.3708742436565687,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26913.0258049442
+        }
+      },
+      "delta_recall": 0.03712784061967136,
+      "placement_delta_range": [
+        0.03286290861465266,
+        0.04215867281203926
+      ],
+      "omit_fold_delta_range": [
+        0.033608350686664734,
+        0.04509083681015441
+      ]
+    },
+    {
+      "model": "clef_flash",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 529.6735074626865,
+          "catches": 372.83022388059703,
+          "starts": 393.6511194029851,
+          "review_minutes": 7873.022388059701,
+          "overtime_minutes": 27.147864987713426,
+          "recall": 0.33374640303689734,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26907.147864987714
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 529.6735074626865,
+          "catches": 414.3059701492537,
+          "starts": 434.4589552238806,
+          "review_minutes": 8689.179104477613,
+          "overtime_minutes": 33.025804944202754,
+          "recall": 0.3708742436565687,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26913.0258049442
+        }
+      },
+      "delta_recall": 0.03712784061967136,
+      "placement_delta_range": [
+        0.03286290861465266,
+        0.04215867281203926
+      ],
+      "omit_fold_delta_range": [
+        0.033608350686664734,
+        0.04509083681015441
+      ]
+    },
+    {
+      "model": "decider_flash",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 526.3824626865671,
+          "catches": 306.1100746268657,
+          "starts": 371.4738805970149,
+          "review_minutes": 7429.477611940299,
+          "overtime_minutes": 24.042197947891008,
+          "recall": 0.2740205321250766,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26904.042197947892
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 526.3824626865671,
+          "catches": 342.9981343283582,
+          "starts": 412.7686567164179,
+          "review_minutes": 8255.373134328358,
+          "overtime_minutes": 35.95272702132305,
+          "recall": 0.30704161371079663,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26915.952727021322
+        }
+      },
+      "delta_recall": 0.033021081585720036,
+      "placement_delta_range": [
+        0.02744133232399697,
+        0.03988657089984424
+      ],
+      "omit_fold_delta_range": [
+        0.02527564583474592,
+        0.040103280347729434
+      ]
+    },
+    {
+      "model": "decider_flash",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 526.3824626865671,
+          "catches": 306.1100746268657,
+          "starts": 371.4738805970149,
+          "review_minutes": 7429.477611940299,
+          "overtime_minutes": 24.042197947891008,
+          "recall": 0.2740205321250766,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26904.042197947892
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 526.3824626865671,
+          "catches": 342.9981343283582,
+          "starts": 412.7686567164179,
+          "review_minutes": 8255.373134328358,
+          "overtime_minutes": 35.95272702132305,
+          "recall": 0.30704161371079663,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26915.952727021322
+        }
+      },
+      "delta_recall": 0.033021081585720036,
+      "placement_delta_range": [
+        0.02744133232399697,
+        0.03988657089984424
+      ],
+      "omit_fold_delta_range": [
+        0.02527564583474592,
+        0.040103280347729434
+      ]
+    },
+    {
+      "model": "gemini",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0858208955224,
+          "catches": 346.3339552238806,
+          "starts": 425.55223880597015,
+          "review_minutes": 8511.044776119403,
+          "overtime_minutes": 35.14886066560443,
+          "recall": 0.3100277402470735,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26915.148860665606
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0858208955224,
+          "catches": 384.83022388059703,
+          "starts": 469.19962686567163,
+          "review_minutes": 9383.992537313432,
+          "overtime_minutes": 41.12407139324697,
+          "recall": 0.344488442120417,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26921.124071393246
+        }
+      },
+      "delta_recall": 0.03446070187334348,
+      "placement_delta_range": [
+        0.030469341408024223,
+        0.041946152722249525
+      ],
+      "omit_fold_delta_range": [
+        0.029944381474549912,
+        0.041851663296330624
+      ]
+    },
+    {
+      "model": "gemini",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.9645522388059,
+          "catches": 377.47574626865674,
+          "starts": 456.7425373134328,
+          "review_minutes": 9134.850746268658,
+          "overtime_minutes": 40.367266013892035,
+          "recall": 0.3379049349582226,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26920.36726601389
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.9645522388059,
+          "catches": 419.7070895522388,
+          "starts": 504.125,
+          "review_minutes": 10082.5,
+          "overtime_minutes": 47.97932913582103,
+          "recall": 0.37570916330003723,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26927.979329135822
+        }
+      },
+      "delta_recall": 0.03780422834181462,
+      "placement_delta_range": [
+        0.033456796798961824,
+        0.045572276754286926
+      ],
+      "omit_fold_delta_range": [
+        0.030489748436227943,
+        0.04591229283588931
+      ]
+    },
+    {
+      "model": "jev",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0317164179105,
+          "catches": 358.06529850746267,
+          "starts": 415.4384328358209,
+          "review_minutes": 8308.768656716418,
+          "overtime_minutes": 31.82121915439762,
+          "recall": 0.3205292859182756,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26911.821219154397
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0317164179105,
+          "catches": 394.4925373134328,
+          "starts": 456.65485074626866,
+          "review_minutes": 9133.097014925374,
+          "overtime_minutes": 41.69131529872665,
+          "recall": 0.35313785449814533,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26921.691315298725
+        }
+      },
+      "delta_recall": 0.0326085685798697,
+      "placement_delta_range": [
+        0.027564059677527262,
+        0.03917010904937107
+      ],
+      "omit_fold_delta_range": [
+        0.024173753804112807,
+        0.03960229358635531
+      ]
+    },
+    {
+      "model": "jev",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0317164179105,
+          "catches": 358.06529850746267,
+          "starts": 415.4384328358209,
+          "review_minutes": 8308.768656716418,
+          "overtime_minutes": 31.82121915439762,
+          "recall": 0.3205292859182756,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26911.821219154397
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 660.0317164179105,
+          "catches": 394.4925373134328,
+          "starts": 456.65485074626866,
+          "review_minutes": 9133.097014925374,
+          "overtime_minutes": 41.69131529872665,
+          "recall": 0.35313785449814533,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26921.691315298725
+        }
+      },
+      "delta_recall": 0.0326085685798697,
+      "placement_delta_range": [
+        0.027564059677527262,
+        0.03917010904937107
+      ],
+      "omit_fold_delta_range": [
+        0.024173753804112807,
+        0.03960229358635531
+      ]
+    },
+    {
+      "model": "liquid",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.3115671641791,
+          "catches": 391.6735074626866,
+          "starts": 457.01119402985074,
+          "review_minutes": 9140.223880597016,
+          "overtime_minutes": 36.87684368800316,
+          "recall": 0.3506143437619516,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26916.876843688002
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.3115671641791,
+          "catches": 434.75932835820896,
+          "starts": 505.75932835820896,
+          "review_minutes": 10115.186567164179,
+          "overtime_minutes": 46.94732074029412,
+          "recall": 0.38918347476238746,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26926.947320740295
+        }
+      },
+      "delta_recall": 0.038569131000435894,
+      "placement_delta_range": [
+        0.034892836737134426,
+        0.044279951539680215
+      ],
+      "omit_fold_delta_range": [
+        0.031419586283064564,
+        0.046841248045238905
+      ]
+    },
+    {
+      "model": "liquid",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.3115671641791,
+          "catches": 391.6735074626866,
+          "starts": 457.01119402985074,
+          "review_minutes": 9140.223880597016,
+          "overtime_minutes": 36.87684368800316,
+          "recall": 0.3506143437619516,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26916.876843688002
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 724.3115671641791,
+          "catches": 434.75932835820896,
+          "starts": 505.75932835820896,
+          "review_minutes": 10115.186567164179,
+          "overtime_minutes": 46.94732074029412,
+          "recall": 0.38918347476238746,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26926.947320740295
+        }
+      },
+      "delta_recall": 0.038569131000435894,
+      "placement_delta_range": [
+        0.034892836737134426,
+        0.044279951539680215
+      ],
+      "omit_fold_delta_range": [
+        0.031419586283064564,
+        0.046841248045238905
+      ]
+    },
+    {
+      "model": "luna",
+      "gate": "frozen_primary",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 658.9309701492538,
+          "catches": 228.4384328358209,
+          "starts": 401.2891791044776,
+          "review_minutes": 8025.7835820895525,
+          "overtime_minutes": 33.83477574646831,
+          "recall": 0.20449121447503124,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26913.83477574647
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 658.9309701492538,
+          "catches": 253.25559701492537,
+          "starts": 443.93283582089555,
+          "review_minutes": 8878.65671641791,
+          "overtime_minutes": 43.696690827352775,
+          "recall": 0.22670679343787,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26923.696690827353
+        }
+      },
+      "delta_recall": 0.022215578962838756,
+      "placement_delta_range": [
+        0.018349236896266004,
+        0.02548123715799719
+      ],
+      "omit_fold_delta_range": [
+        0.01153973432624315,
+        0.029094551825353948
+      ]
+    },
+    {
+      "model": "luna",
+      "gate": "early_clock_only",
+      "arms": {
+        "fixed": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 658.9309701492538,
+          "catches": 228.4384328358209,
+          "starts": 401.2891791044776,
+          "review_minutes": 8025.7835820895525,
+          "overtime_minutes": 33.83477574646831,
+          "recall": 0.20449121447503124,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26913.83477574647
+        },
+        "training_peak": {
+          "sessions": 4378.0,
+          "positives": 1117.1063432835822,
+          "nominated": 658.9309701492538,
+          "catches": 253.25559701492537,
+          "starts": 443.93283582089555,
+          "review_minutes": 8878.65671641791,
+          "overtime_minutes": 43.696690827352775,
+          "recall": 0.22670679343787,
+          "scheduled_minutes": 26880.0,
+          "paid_minutes": 26923.696690827353
+        }
+      },
+      "delta_recall": 0.022215578962838756,
+      "placement_delta_range": [
+        0.018349236896266004,
+        0.02548123715799719
+      ],
+      "omit_fold_delta_range": [
+        0.01153973432624315,
+        0.029094551825353948
+      ]
+    }
+  ]
+}
