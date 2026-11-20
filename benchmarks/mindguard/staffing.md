@@ -3,6 +3,7 @@
 This offline experiment couples real model responses and expert role-play annotations to a **separate** public traffic trace. It estimates performance in a specified simulated workflow, not clinical recall, actual harm, or Open Up's operational performance.
 
 See the [four-model results and limits of inference](staffing-findings.md).
+For the follow-up with cutoffs tuned on training families and policies compared at identical realized work, see [Jev and Gemini: timely recall per reviewer-minute](onset-budget.md).
 
 ## Reproduce
 
