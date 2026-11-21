@@ -2,7 +2,7 @@
 
 **Technical draft · Research question and outcome frozen 2026-11-21**
 
-The [full-cohort MindGuard replay](full-panel-findings.md) and [pending-ticket experiment](ticket-updates.md) report what was actually run. The customer-support study remains a proposal.
+The [full-cohort MindGuard replay](full-panel-findings.md) and [pending-ticket experiment](ticket-updates.md) report what was actually run. The [loss audit and equal-minute policy comparison](ticket-updates.md#where-cases-are-lost-and-which-fix-buys-the-most-catches) apply the two frozen outcomes below. The customer-support study remains a proposal.
 
 When an AI system flags a conversation, someone still has to be available to read it. A team may have enough reviewer-hours over a week and still miss the cases that arrive together on Tuesday afternoon. We ask: **When a small team faces a surge, which conversations reach a human in time, which slip through, and would changing the order of review actually help?**
 

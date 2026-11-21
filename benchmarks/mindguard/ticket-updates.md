@@ -248,3 +248,64 @@ validation is a blinded reviewer comparison of the two displays, measuring actua
 review time and whether the reviewer identifies the supported evidence, on
 independent conversations. Adding new tickets after service or retaining a ticket
 beyond its expiry is a different intervention with a different workload.
+
+## Where cases are lost and which fix buys the most catches
+
+On the full cached replay, **a sensitive gate and an accurate alert are not enough**. With one reviewer, liberal gates flag almost every need-positive conversation, but many never reach a timely review. Training-tuned gates leave many more conversations unflagged, yet get more *supported* reviews per equal number of minutes. The tables below separate two questions: *where did cases go in the natural queue?* and *what changed when we gave competing policies exactly the same amount of work?* No new model calls or clinician ratings were collected.
+
+### Where the cases went
+
+Per 100 observed-positive replayed conversations, **before any retrospective work cap**, with a frozen ticket and FIFO. Each row averages the six detectors equally on the same arrivals; it is not a six-model ensemble. The clock is ten minutes from the first observed majority-endorsed turn. “Stale” means another eligible, already visible turn was endorsed at that timely pickup; “no eligible evidence” means none of the selectable *endpoints since nomination* was endorsed. Neither establishes what an actual human would notice in a full transcript.
+
+| Gate / arrivals / reviewers | Never flagged | First flag too late | Flag by deadline, but expired or started late | Started before need | Timely, no eligible evidence | Timely, stale | Timely catch |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Tuned · observed · 3 | 48.0 | 0.0 | 3.0 | 3.5 | 0.9 | 0.9 | 43.6 |
+| Tuned · observed · 2 | 48.0 | 0.0 | 8.6 | 2.4 | 0.7 | 1.2 | 39.0 |
+| Tuned · observed · 1 | 48.0 | 0.0 | 22.8 | 1.2 | 0.4 | 1.0 | 26.6 |
+| Tuned · doubled + need pulse · 1 | 48.0 | 0.0 | 34.5 | 0.4 | 0.2 | 0.7 | 16.1 |
+| Liberal · observed · 3 | 3.9 | 4.9 | 9.2 | 36.4 | 1.7 | 8.0 | 35.8 |
+| Liberal · observed · 2 | 3.9 | 4.9 | 22.5 | 26.6 | 1.3 | 10.2 | 30.5 |
+| Liberal · observed · 1 | 3.9 | 4.9 | 48.8 | 13.9 | 0.7 | 8.5 | 19.3 |
+| Liberal · doubled + need pulse · 1 | 3.9 | 4.9 | 67.5 | 5.9 | 0.4 | 6.6 | 10.8 |
+
+![Loss breakdown for training-tuned and liberal gates across staffing and demand](figures/loss-audit.png)
+
+These are allocations of misses, not claims about which intervention would rescue them. A one-shot ticket can start *before* the first observed evidence, or even expire before that evidence appears; it cannot be reopened in this experiment. Equally, a ticket can be stale only if it gets a timely pickup. As congestion worsens, fewer stale tickets **at pickup** can mean that more people were never seen. At the tuned gate on the observed clock with one reviewer, 20.9 per 100 positives were flagged but never served and 1.9 started after the deadline; at the liberal gate those figures were 50.7 and 3.0. The liberal numbers include 4.9 late first flags, so do not add them again.
+
+The [432 operating points](figures/loss-audit.json) give the full decomposition in mean **case counts**, not just rates: all six detectors, nine demand scenarios, two gates and four staffing settings (including no wait). The observed-clock and doubled-clock comparisons have the same 9,175 arrivals and about 2,328 resampled need-positive episodes per placement after fold weighting. They come from **67 distinct role-plays, 17 observed-positive (16 opening families), 1,134 rated turns and 22 unrated positions**. The source clock is real; the assignments of conversations, reviewer labor and deadlines are simulated.
+
+### Which fix wins at the same actual minutes?
+
+For each detector, held-out fold, placement, arrival scenario and staffing level, replay both gates and both dispatchers. Let each queue work in chronological order and compare the **first K starts**, where K is the smallest realized start count of the four queues. Every presentation uses those exact starts for its queue. All 16 arms therefore spend exactly **20 × K** busy minutes in that block, including reviews of negative or premature alerts. All positive arrivals, including those after the cap, remain in the denominator. This is a retrospective work match, not a policy that knows its future budget. Minutes are matched **within**, not between, detectors or staffing levels. The tuned gate was selected on training families for timely FIFO catches with a cap on starts; the fixed liberal gate was not optimized for that objective.
+
+One reviewer, observed clock: extra timely supported catches **per 100 positive arrivals**, relative to the *liberal gate, FIFO, frozen ticket*. Each column changes **one** decision. Refresh shows the highest calibrated score seen since nomination, using the most recent turn on an exact tie (an exploratory tie convention from the earlier pilot). “Priority” takes the highest-scored waiting alert rather than the oldest.
+
+| Detector | Mean matched busy minutes | Tune gate only | Refresh only | Priority only |
+|---|---:|---:|---:|---:|
+| Jev | 15,277 | +19.3 | +5.8 | +1.8 |
+| Gemini Decision 1 | 15,798 | +21.0 | +6.9 | +0.9 |
+| Liquid D1 Ultra | 16,843 | +23.5 | +7.0 | +1.0 |
+| Luna Decisions | 14,601 | +7.7 | +6.7 | +0.4 |
+| Clef Flash | 15,035 | +15.6 | +1.8 | +0.9 |
+| Decider Flash | 14,156 | +15.3 | +2.8 | +0.9 |
+
+Across detectors, liberal/FIFO/frozen caught **9.5** per 100 on this matched budget. Tuning just the gate raised that to **26.6**; refreshing just the ticket to **14.7**; changing just priority to **10.5**. The uncapped liberal baseline above is higher because it did considerably more work. Under twice the arrival rate with a need pulse and one reviewer, the corresponding values were **5.8 → 16.1, 9.8 or 7.3**, respectively. Tuning the gate was the best of these three single changes in 157/162 detector × demand × staffing conditions; refresh was better in five Luna conditions. These are related scenarios, not 162 independent statistical tests.
+
+**If the gate is already tuned**, do not expect another 17 catches from changing it. On the observed one-reviewer clock, refresh added **4.9** per 100 for Luna and **1.1** for Gemini, and zero for the other four. Risk priority alone added at most **0.6** per 100. In the earlier, separately work-matched [learned-dispatch comparison](full-panel-findings.md), RL differed from FIFO by −0.11 to +0.37 points under the tuned gate here; it was not an arm in this 16-way comparison. A policy cannot reorder a case it never admitted.
+
+See the [joint work comparison](figures/loss-workmatch.json) for all arms, positive denominators, busy minutes and leave-one-fold-out sufficient statistics. The cap can be zero: in the observed scenario one held-out fold per detector (two for Luna) had no common starts, and its positives still count. The Luna advantage from tuning rather than retaining the liberal frozen ticket can disappear on omission of one fold. The cap can also end a high-volume policy's service earlier in calendar time. Results are conditional on these gates and traffic, one ticket per conversation, and 20 simulated minutes per review with no extra reading cost for a refreshed ticket. They do not establish an optimal production threshold.
+
+**Is it just that the liberal gate runs out of minutes early?** This does happen: among nonzero-budget blocks, the last matched liberal FIFO start fell on average around day 18–21 for five detectors on the 30-day observed clock, versus day 30 for tuned FIFO (Luna's liberal run reached day 28). In a [daily work match](figures/loss-blockwork.json), we replayed each 24-hour arrival cohort in isolation, drained it, and matched minutes *within that cohort*, charging the full duration even for reviews crossing midnight. All arrivals remained in the denominator. With one reviewer, observed-clock catches per 100 were **26.8 tuned/frozen, 9.6 liberal/frozen, 14.3 liberal/refreshed**. Under doubled demand and concentrated need: **16.3, 5.8, 9.6**. Tuned/frozen beat liberal/refreshed for five detectors even on omitting any one held-out fold; Luna was close and the sign could reverse. The ordering is not just a consequence of leaving later days entirely uncovered. Intra-day pacing and cross-midnight competition are different questions.
+
+**Can we get the gain simply by moving the shift?** In a separate [matched roster replay](figures/loss-roster.json), one reviewer was always present and a second worked either 09–17 or the peak window (18–02) forecast from earlier arrivals. Both options had 448 scheduled hours during the 14 scored days. With the tuned gate, the peak roster used about **873 more busy minutes** without a cap. Once the number of actual starts was matched per fold and placement, its mean improvement fell to **0.13 catches per 100 positive arrivals** (model range −0.03 to +0.28). The original equal-hours advantage was largely the ability to *do more reviews*, not to catch more per minute worked. That is valuable operationally, but answers a different question. This sensitivity scored all 4,378 arrivals on days 16–29; it retained common warm-up work, charged for carry-in and drain starts, and does not share the month-long comparison's budget.
+
+**Reproduce the loss audit** from the public aggregates alone; the other comparisons also need the locally licensed annotation file and cached scores described above. All commands are offline, take fresh output paths, and need no API keys:
+
+```sh
+D=benchmarks/mindguard/private
+python -m benchmarks.mindguard.loss_audit --out "$D/loss-audit-check.json"
+python -m benchmarks.mindguard.loss_plot "$D/loss-audit-check.json" "$D/loss-audit-check.png"
+python -m benchmarks.mindguard.loss_workmatch --jobs 6 --out "$D/loss-work-check.json"
+python -m benchmarks.mindguard.loss_blockwork --jobs 6 --out "$D/loss-days-check.json"
+python -m benchmarks.mindguard.loss_roster --annotations "$D/mindguard.parquet" --trace "$D/real_interarrivals_nov.csv" --caches "$D/responses.jsonl" "$D/luna-responses.jsonl" "$D/clef-flash-responses.jsonl" "$D/decider-flash-responses.jsonl" --out "$D/loss-roster-check.json"
+```

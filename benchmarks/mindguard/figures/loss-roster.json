@@ -1,0 +1,510 @@
+{
+  "kind": "mindguard_matched_busy_minutes_roster_v1",
+  "revision": "1c082b67bc0a6574badc3bf4cbe3e12af130f606",
+  "trace_sha256": "1414173cc5fbf6d2f50ca1345b38ce6aedd0ec92793af5960a4fb646cb243e29",
+  "seed": 2026,
+  "folds": 5,
+  "placements": 8,
+  "warmup_day": 15,
+  "scored_arrival_days": [
+    16,
+    29
+  ],
+  "drain_day": 30,
+  "review_minutes_per_start": 20,
+  "deadline_from_first_endorsed_turn_minutes": 10,
+  "fixed_hour": 9,
+  "peak_hour": 18,
+  "scored_arrivals": 4378,
+  "scheduled_minutes_per_arm_scoring_window": 26880.0,
+  "scheduled_minutes_per_arm_including_drain": 28800.0,
+  "accounting": "Common 09-17 warmup. Fixed vs predicted extra eight-hour shift with one base reviewer. Post-switch start order includes warm carry-ins, safe cases and service during drain; no new day-30 arrivals. Truncate each paired stream at smaller realized number of starts, charge full 20 minutes even if service crosses a boundary. Only timely, supported frozen reviews of days 16-29 arrivals earn credit. Paid overtime is not work-matched.",
+  "results": [
+    {
+      "model": "clef_flash",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 394.5130597014925,
+      "minutes_per_arm": 7890.261194029851,
+      "fixed_uncapped_minutes": 7890.261194029851,
+      "fixed_matches": 372.87873134328356,
+      "fixed_warm_carry_starts": 0.5988805970149254,
+      "fixed_drain_starts": 0.8619402985074627,
+      "peak_uncapped_minutes": 8715.223880597016,
+      "peak_matches": 375.18283582089555,
+      "peak_warm_carry_starts": 1.1436567164179106,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3337898254585658,
+      "peak_recall": 0.3358523904878175,
+      "delta": 0.0020625650292516815,
+      "omit_fold_delta_range": [
+        0.0011609418222212542,
+        0.002612884953883697
+      ],
+      "placement_delta_range": [
+        -0.0008588413693152082,
+        0.0036540480208347176
+      ]
+    },
+    {
+      "model": "clef_flash",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 394.5130597014925,
+      "minutes_per_arm": 7890.261194029851,
+      "fixed_uncapped_minutes": 7890.261194029851,
+      "fixed_matches": 372.87873134328356,
+      "fixed_warm_carry_starts": 0.5988805970149254,
+      "fixed_drain_starts": 0.8619402985074627,
+      "peak_uncapped_minutes": 8715.223880597016,
+      "peak_matches": 375.18283582089555,
+      "peak_warm_carry_starts": 1.1436567164179106,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3337898254585658,
+      "peak_recall": 0.3358523904878175,
+      "delta": 0.0020625650292516815,
+      "omit_fold_delta_range": [
+        0.0011609418222212542,
+        0.002612884953883697
+      ],
+      "placement_delta_range": [
+        -0.0008588413693152082,
+        0.0036540480208347176
+      ]
+    },
+    {
+      "model": "clef_flash",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 773.2667910447761,
+      "minutes_per_arm": 15465.335820895523,
+      "fixed_uncapped_minutes": 15465.335820895523,
+      "fixed_matches": 302.05410447761193,
+      "fixed_warm_carry_starts": 0.7518656716417911,
+      "fixed_drain_starts": 1.3246268656716418,
+      "peak_uncapped_minutes": 17187.350746268658,
+      "peak_matches": 299.56716417910445,
+      "peak_warm_carry_starts": 1.8805970149253732,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.27038974963633716,
+      "peak_recall": 0.2681635154792582,
+      "delta": -0.0022262341570789402,
+      "omit_fold_delta_range": [
+        -0.0025215253401115398,
+        -0.0018802215700154353
+      ],
+      "placement_delta_range": [
+        -0.0063504320157629175,
+        0.0016324346022613234
+      ]
+    },
+    {
+      "model": "decider_flash",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 372.464552238806,
+      "minutes_per_arm": 7449.29104477612,
+      "fixed_uncapped_minutes": 7449.29104477612,
+      "fixed_matches": 306.1100746268657,
+      "fixed_warm_carry_starts": 0.5727611940298507,
+      "fixed_drain_starts": 0.9906716417910447,
+      "peak_uncapped_minutes": 8286.08208955224,
+      "peak_matches": 309.24067164179104,
+      "peak_warm_carry_starts": 1.1958955223880596,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.2740205321250766,
+      "peak_recall": 0.2768229484158331,
+      "delta": 0.0028024162907565354,
+      "omit_fold_delta_range": [
+        0.0013896451830715951,
+        0.0034330912641937312
+      ],
+      "placement_delta_range": [
+        0.001221990516290993,
+        0.005365249690466364
+      ]
+    },
+    {
+      "model": "decider_flash",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 372.464552238806,
+      "minutes_per_arm": 7449.29104477612,
+      "fixed_uncapped_minutes": 7449.29104477612,
+      "fixed_matches": 306.1100746268657,
+      "fixed_warm_carry_starts": 0.5727611940298507,
+      "fixed_drain_starts": 0.9906716417910447,
+      "peak_uncapped_minutes": 8286.08208955224,
+      "peak_matches": 309.24067164179104,
+      "peak_warm_carry_starts": 1.1958955223880596,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.2740205321250766,
+      "peak_recall": 0.2768229484158331,
+      "delta": 0.0028024162907565354,
+      "omit_fold_delta_range": [
+        0.0013896451830715951,
+        0.0034330912641937312
+      ],
+      "placement_delta_range": [
+        0.001221990516290993,
+        0.005365249690466364
+      ]
+    },
+    {
+      "model": "decider_flash",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 823.7966417910447,
+      "minutes_per_arm": 16475.932835820895,
+      "fixed_uncapped_minutes": 16475.932835820895,
+      "fixed_matches": 310.99067164179104,
+      "fixed_warm_carry_starts": 0.875,
+      "fixed_drain_starts": 1.2220149253731343,
+      "peak_uncapped_minutes": 18197.537313432837,
+      "peak_matches": 308.05783582089555,
+      "peak_warm_carry_starts": 2.0261194029850746,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.27838949578217975,
+      "peak_recall": 0.27576410936437923,
+      "delta": -0.0026253864178005207,
+      "omit_fold_delta_range": [
+        -0.0034997293083066866,
+        -0.0005664929275873307
+      ],
+      "placement_delta_range": [
+        -0.007150967881475073,
+        0.004584169335229009
+      ]
+    },
+    {
+      "model": "gemini",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 457.6044776119403,
+      "minutes_per_arm": 9152.089552238805,
+      "fixed_uncapped_minutes": 9152.089552238805,
+      "fixed_matches": 377.47574626865674,
+      "fixed_warm_carry_starts": 0.5708955223880597,
+      "fixed_drain_starts": 0.8619402985074627,
+      "peak_uncapped_minutes": 10111.455223880597,
+      "peak_matches": 379.8190298507463,
+      "peak_warm_carry_starts": 1.2369402985074627,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3379049349582226,
+      "peak_recall": 0.34000257194343725,
+      "delta": 0.0020976369852146654,
+      "omit_fold_delta_range": [
+        0.00047047548517784407,
+        0.0027346977722465735
+      ],
+      "placement_delta_range": [
+        -0.001357954015949303,
+        0.005419262289638317
+      ]
+    },
+    {
+      "model": "gemini",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 426.4384328358209,
+      "minutes_per_arm": 8528.768656716418,
+      "fixed_uncapped_minutes": 8528.768656716418,
+      "fixed_matches": 346.3339552238806,
+      "fixed_warm_carry_starts": 0.5466417910447762,
+      "fixed_drain_starts": 0.8861940298507462,
+      "peak_uncapped_minutes": 9411.977611940298,
+      "peak_matches": 348.75,
+      "peak_warm_carry_starts": 1.1399253731343284,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3100277402470735,
+      "peak_recall": 0.3121905108647909,
+      "delta": 0.00216277061771735,
+      "omit_fold_delta_range": [
+        0.0005554224477793992,
+        0.0027346977722465735
+      ],
+      "placement_delta_range": [
+        -0.001357954015949303,
+        0.005419262289638317
+      ]
+    },
+    {
+      "model": "gemini",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 861.4832089552239,
+      "minutes_per_arm": 17229.66417910448,
+      "fixed_uncapped_minutes": 17229.66417910448,
+      "fixed_matches": 190.05783582089552,
+      "fixed_warm_carry_starts": 0.9291044776119403,
+      "fixed_drain_starts": 1.125,
+      "peak_uncapped_minutes": 18998.171641791047,
+      "peak_matches": 189.1865671641791,
+      "peak_warm_carry_starts": 1.8805970149253732,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.17013405837643564,
+      "peak_recall": 0.16935412487954452,
+      "delta": -0.0007799334968911216,
+      "omit_fold_delta_range": [
+        -0.0014862697468069532,
+        -0.00043608159390865
+      ],
+      "placement_delta_range": [
+        -0.005969035627681403,
+        0.004901244570775831
+      ]
+    },
+    {
+      "model": "jev",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 416.2723880597015,
+      "minutes_per_arm": 8325.44776119403,
+      "fixed_uncapped_minutes": 8325.44776119403,
+      "fixed_matches": 358.06529850746267,
+      "fixed_warm_carry_starts": 0.5652985074626866,
+      "fixed_drain_starts": 0.8339552238805971,
+      "peak_uncapped_minutes": 9162.425373134329,
+      "peak_matches": 358.9794776119403,
+      "peak_warm_carry_starts": 1.1511194029850746,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3205292859182756,
+      "peak_recall": 0.3213476315574119,
+      "delta": 0.0008183456391362946,
+      "omit_fold_delta_range": [
+        -0.0011979699854065475,
+        0.002749349845472103
+      ],
+      "placement_delta_range": [
+        -0.0011858128813920644,
+        0.005038355651778794
+      ]
+    },
+    {
+      "model": "jev",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 416.2723880597015,
+      "minutes_per_arm": 8325.44776119403,
+      "fixed_uncapped_minutes": 8325.44776119403,
+      "fixed_matches": 358.06529850746267,
+      "fixed_warm_carry_starts": 0.5652985074626866,
+      "fixed_drain_starts": 0.8339552238805971,
+      "peak_uncapped_minutes": 9162.425373134329,
+      "peak_matches": 358.9794776119403,
+      "peak_warm_carry_starts": 1.1511194029850746,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3205292859182756,
+      "peak_recall": 0.3213476315574119,
+      "delta": 0.0008183456391362946,
+      "omit_fold_delta_range": [
+        -0.0011979699854065475,
+        0.002749349845472103
+      ],
+      "placement_delta_range": [
+        -0.0011858128813920644,
+        0.005038355651778794
+      ]
+    },
+    {
+      "model": "jev",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 782.4626865671642,
+      "minutes_per_arm": 15649.253731343284,
+      "fixed_uncapped_minutes": 15649.253731343284,
+      "fixed_matches": 266.79477611940297,
+      "fixed_warm_carry_starts": 0.753731343283582,
+      "fixed_drain_starts": 1.0522388059701493,
+      "peak_uncapped_minutes": 17241.082089552237,
+      "peak_matches": 265.67723880597015,
+      "peak_warm_carry_starts": 1.6753731343283582,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.23882665936279263,
+      "peak_recall": 0.23782627357127706,
+      "delta": -0.0010003857915155928,
+      "omit_fold_delta_range": [
+        -0.0020661785429690114,
+        0.00013998280836134813
+      ],
+      "placement_delta_range": [
+        -0.008018603159329644,
+        0.0024838285494175622
+      ]
+    },
+    {
+      "model": "liquid",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 457.94776119402985,
+      "minutes_per_arm": 9158.955223880597,
+      "fixed_uncapped_minutes": 9158.955223880597,
+      "fixed_matches": 391.6735074626866,
+      "fixed_warm_carry_starts": 0.6156716417910447,
+      "fixed_drain_starts": 0.9365671641791045,
+      "peak_uncapped_minutes": 10150.783582089553,
+      "peak_matches": 392.2686567164179,
+      "peak_warm_carry_starts": 1.2798507462686568,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3506143437619516,
+      "peak_recall": 0.3511471034739607,
+      "delta": 0.0005327597120091388,
+      "omit_fold_delta_range": [
+        -0.001570429744505674,
+        0.002688107366814013
+      ],
+      "placement_delta_range": [
+        -0.0016993376597310497,
+        0.002565953010985486
+      ]
+    },
+    {
+      "model": "liquid",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 457.94776119402985,
+      "minutes_per_arm": 9158.955223880597,
+      "fixed_uncapped_minutes": 9158.955223880597,
+      "fixed_matches": 391.6735074626866,
+      "fixed_warm_carry_starts": 0.6156716417910447,
+      "fixed_drain_starts": 0.9365671641791045,
+      "peak_uncapped_minutes": 10150.783582089553,
+      "peak_matches": 392.2686567164179,
+      "peak_warm_carry_starts": 1.2798507462686568,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.3506143437619516,
+      "peak_recall": 0.3511471034739607,
+      "delta": 0.0005327597120091388,
+      "omit_fold_delta_range": [
+        -0.001570429744505674,
+        0.002688107366814013
+      ],
+      "placement_delta_range": [
+        -0.0016993376597310497,
+        0.002565953010985486
+      ]
+    },
+    {
+      "model": "liquid",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 861.9757462686567,
+      "minutes_per_arm": 17239.514925373136,
+      "fixed_uncapped_minutes": 17239.514925373136,
+      "fixed_matches": 188.76305970149255,
+      "fixed_warm_carry_starts": 0.8041044776119403,
+      "fixed_drain_starts": 1.2276119402985075,
+      "peak_uncapped_minutes": 18996.417910447763,
+      "peak_matches": 189.4179104477612,
+      "peak_warm_carry_starts": 1.8264925373134329,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.16897501373651608,
+      "peak_recall": 0.16956121642904023,
+      "delta": 0.0005862026925241621,
+      "omit_fold_delta_range": [
+        -0.0001399080662069301,
+        0.0015573609810285117
+      ],
+      "placement_delta_range": [
+        -0.004704228398399481,
+        0.006016975042171955
+      ]
+    },
+    {
+      "model": "luna",
+      "gate": "early_clock_only",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 401.98320895522386,
+      "minutes_per_arm": 8039.664179104478,
+      "fixed_uncapped_minutes": 8039.664179104478,
+      "fixed_matches": 228.4384328358209,
+      "fixed_warm_carry_starts": 0.34888059701492535,
+      "fixed_drain_starts": 0.6940298507462687,
+      "peak_uncapped_minutes": 8903.432835820895,
+      "peak_matches": 228.08582089552237,
+      "peak_warm_carry_starts": 0.8955223880597015,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.20449121447503124,
+      "peak_recall": 0.20417556687136437,
+      "delta": -0.0003156476036668565,
+      "omit_fold_delta_range": [
+        -0.0004133867309421062,
+        -0.00018457406997994026
+      ],
+      "placement_delta_range": [
+        -0.0005501952522175553,
+        -0.00017320862312468355
+      ]
+    },
+    {
+      "model": "luna",
+      "gate": "frozen_primary",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 401.98320895522386,
+      "minutes_per_arm": 8039.664179104478,
+      "fixed_uncapped_minutes": 8039.664179104478,
+      "fixed_matches": 228.4384328358209,
+      "fixed_warm_carry_starts": 0.34888059701492535,
+      "fixed_drain_starts": 0.6940298507462687,
+      "peak_uncapped_minutes": 8903.432835820895,
+      "peak_matches": 228.08582089552237,
+      "peak_warm_carry_starts": 0.8955223880597015,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.20449121447503124,
+      "peak_recall": 0.20417556687136437,
+      "delta": -0.0003156476036668565,
+      "omit_fold_delta_range": [
+        -0.0004133867309421062,
+        -0.00018457406997994026
+      ],
+      "placement_delta_range": [
+        -0.0005501952522175553,
+        -0.00017320862312468355
+      ]
+    },
+    {
+      "model": "luna",
+      "gate": "liberal",
+      "sessions": 4378.0,
+      "positives": 1117.1063432835822,
+      "starts_per_arm": 772.2350746268656,
+      "minutes_per_arm": 15444.701492537313,
+      "fixed_uncapped_minutes": 15444.701492537313,
+      "fixed_matches": 252.7929104477612,
+      "fixed_warm_carry_starts": 0.8526119402985075,
+      "fixed_drain_starts": 1.0746268656716418,
+      "peak_uncapped_minutes": 17035.70895522388,
+      "peak_matches": 253.37313432835822,
+      "peak_warm_carry_starts": 1.8544776119402986,
+      "peak_drain_starts": 0.0,
+      "fixed_recall": 0.22629261033887857,
+      "peak_recall": 0.22681200930575898,
+      "delta": 0.000519398966880383,
+      "omit_fold_delta_range": [
+        9.124439100451964e-05,
+        0.0008295691716680831
+      ],
+      "placement_delta_range": [
+        -0.002806511105765376,
+        0.006543119020539239
+      ]
+    }
+  ]
+}

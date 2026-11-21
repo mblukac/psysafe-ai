@@ -10,6 +10,8 @@ For the full clinician-rated cohort, start with the [time-sensitive human-review
 
 The [paired ticket-update experiment](ticket-updates.md) tests what happens when later evidence can change an existing alert at the same FIFO review start. It compares simple and Bayesian rules on all six cached detectors at identical simulated reviewer-minutes.
 
+For **where conversations are lost and which fix buys the most timely catches**, see the [full-cohort loss and equal-work comparison](ticket-updates.md#where-cases-are-lost-and-which-fix-buys-the-most-catches). It separates failure to flag, failure to reach review in time, and a stale ticket at pickup.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
