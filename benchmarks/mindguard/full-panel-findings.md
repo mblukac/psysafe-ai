@@ -198,6 +198,47 @@ average precision: .783, .796, .768, .524, .632 and .630,
 respectively. Better average calibration is not sufficient for timely access at a
 particular operating point, and majority votes are not calibrated clinician posteriors.
 
+## Can an ensemble recover conversations that the tuned gates never flag?
+
+**Some misses are shared, some are recoverable, but the six-model average did not reliably outperform the strongest single model under surge.** It did outperform the procedure that picked a single model on training data. Those are different comparisons.
+
+### Misses before a reviewer enters the picture
+
+Here a **miss means the original tuned gate never opened a ticket anywhere in a need-positive conversation**, not that it opened on the wrong turn. The six detectors made 49 such misses in 102 model–conversation pairs (6 × 17): Liquid 7; Jev, Gemini and Luna 8 each; Clef and Decider 9 each. This is the source of the approximately 48 per 100 in the [loss audit](ticket-updates.md#where-cases-are-lost-and-which-fix-buys-the-most-catches), not 48 distinct patients. Of the **17 original positive role-plays**, all six missed 3 (three opening families), all six flagged 3, and the panel disagreed on 11. Jev missed all seven of Liquid's never-flagged cases; Clef and Luna shared only four. See the [full 6 × 6 overlap and fold breakdown](figures/ensemble-overlap.json).
+
+Four of Liquid's seven misses got a flag from a different model. But the **first alert from any model** policy flagged 14/17 and, even with an immediately available reviewer, presented an endorsed turn in time for just **10/17**, tying Liquid. In one held-out fold it flagged all four positives yet froze an unsupported ticket in all four; Liquid caught all four without waiting. The four missed opportunities are not necessarily the same four additional conversations. The 14/17 union is not an accuracy estimate for an ensemble and is not a theoretical ceiling on pooling subthreshold scores.
+
+### Head-to-head under surge
+
+The primary ensemble averages the six native probabilities of either risk at **each observed turn**, then calibrates that single number; there is no independence assumption or learned mixing weight. Every single model gets the same calibration and gate search. For each of five held-out opening-family folds, tune on inner out-of-fold scores and pick the best single using **training families only**: four independent-seed synthetic surge streams of 2,000 arrivals, exactly 100 FIFO starts per stream. Clef won training twice, Gemini once and Liquid twice. These training scores are not presented as test performance.
+
+Test on the full cached cohort: 67 role-plays, 1,134 rated turns, 17 observed positives in 16 opening families; unrated positions are not negatives. The primary replay doubles the observed Open Up arrival rate and concentrates needs in busy periods, with one reviewer. Give each conversation one frozen ticket, charge 20 simulated busy minutes for every review (including negatives), and count only supported starts within ten minutes of first observed evidence. For each held-out fold and placement, pay for the same number of chronological starts in every compared queue. All positive arrivals still count, including those never flagged or arriving after budget exhaustion. Counts below are path-weighted means per stream of 9,175 simulated arrivals, about 2,328 of them positive, not independent people.
+
+| Comparator in the one-reviewer surge | Matched busy minutes per arm | Mean-six timely catches | Single timely catches | Mean-six minus single, per 100 positives |
+|---|---:|---:|---:|---:|
+| Single chosen on the training folds, head-to-head | 8,606 | 385.2 (16.55%) | 341.2 (14.66%) | **+1.89** |
+| Clef, strongest observed single on the common budget, head-to-head | 8,955 | 397.5 (17.08%) | 394.4 (16.94%) | **+0.14** |
+| All seven forced to one common budget; compare to the best single, Clef | 4,066 | 182.4 (7.83%) | 185.2 (7.96%) | **−0.12** |
+
+The common budget is selected from work volume, not from labels. Its size depends on the comparison set: one fold had no common starts in the primary head-to-head; three of five had none when all seven arms had to match. Do not compare counts *between* rows as if budgets were equal. The direct Clef comparison checks whether the seven-way result is an artifact of the smaller common budget.
+
+Against the training-selected single, the net gain of 44 catches comprised **173 gained and 129 lost** on the same stream. Five positive opening families had a net gain, two a net loss and nine tied. Omitting one held-out fold at a time gave **+0.71 to +2.30** catches per 100. Against Clef, the corresponding range was **−0.15 to +0.34**. These are sensitivity ranges, not confidence intervals. Matching minutes separately within each isolated arrival-day instead of letting one arm exhaust its budget early gave **16.81% vs 14.90%** against the training-selected single, **17.42% vs 17.21%** head-to-head against Clef. These are retrospective work matches, not an online budget controller.
+
+**Where did the 44 extra catches come from?** The mean rescued **41** resampled episodes from one source conversation the selected single never flagged, but lost **65** from two sources the mean never flagged: a **net loss of 24** on that mechanism. When both policies issued a supported ticket by the deadline, the mean gained 132 and lost 64 through differences in when and which cases reached service before the deadline or budget cap: **net +68**. No gained catch came from a conversation missed by all six surge-tuned singles. The positive overall result was about access for already-flagged cases, not recovery of a shared blind spot.
+
+**Check against the exact original gates.** Leaving all six previously published cutoffs alone reproduces their six-way surge counts. Under that training protocol the equal-mean rule flagged just **one of Liquid's seven** never-flagged positive conversations, and **none of the three** missed by all six. Its five cutoffs were the same as under the new surge training. The first-alert-wins policy did not beat Liquid in their direct surge match: **13.95% vs 17.86%** at 10,548 busy minutes each. More opportunities to flag are not automatically more supported tickets at pickup.
+
+The [surge-trained results](figures/ensemble-replay.json) contain all six individual comparisons, staffing sensitivities, paired gains/losses and training decisions. The [original-gate check](figures/ensemble-locked.json) separates the effect of combining models from changing the original admission rules. The evidence supports keeping Clef as a single-model benchmark and testing the ensemble on new families before using six models instead of one. We matched reviewer time, not model latency or inference cost.
+
+Reproduce offline using the previously approved local caches and the original traces. Each output must be a fresh path:
+
+```sh
+D=benchmarks/mindguard/private
+python -m benchmarks.mindguard.ensemble_overlap --inputs "$D" --out "$D/ensemble-overlap-check.json"
+python -m benchmarks.mindguard.ensemble_replay --inputs "$D" --jobs 5 --out "$D/ensemble-replay-check.json"
+python -m benchmarks.mindguard.ensemble_locked --inputs "$D" --out "$D/ensemble-locked-check.json"
+```
+
 ## Reproduce or extend
 
 [Primary operating points](figures/full-panel-tuned.json) and [liberal-gate operating

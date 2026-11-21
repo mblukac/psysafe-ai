@@ -1,0 +1,335 @@
+{
+  "kind": "mindguard_ensemble_historical_gates_v1",
+  "dataset_revision": "1c082b67bc0a6574badc3bf4cbe3e12af130f606",
+  "trace_sha256": "1414173cc5fbf6d2f50ca1345b38ce6aedd0ec92793af5960a4fb646cb243e29",
+  "seed": 2026,
+  "placements": 8,
+  "folds": 5,
+  "scenario": "compound",
+  "staff": 1,
+  "service_minutes": 20,
+  "deadline_minutes": 10,
+  "turn_minutes": 2,
+  "immediate_source_counts": {
+    "clef_flash": {
+      "no_ticket": 9,
+      "early_or_unsupported_or_late": 0,
+      "supported_in_time": 8
+    },
+    "decider_flash": {
+      "no_ticket": 9,
+      "early_or_unsupported_or_late": 1,
+      "supported_in_time": 7
+    },
+    "gemini": {
+      "no_ticket": 8,
+      "early_or_unsupported_or_late": 1,
+      "supported_in_time": 8
+    },
+    "jev": {
+      "no_ticket": 8,
+      "early_or_unsupported_or_late": 0,
+      "supported_in_time": 9
+    },
+    "liquid": {
+      "no_ticket": 7,
+      "early_or_unsupported_or_late": 0,
+      "supported_in_time": 10
+    },
+    "luna": {
+      "no_ticket": 8,
+      "early_or_unsupported_or_late": 4,
+      "supported_in_time": 5
+    },
+    "mean6": {
+      "no_ticket": 9,
+      "early_or_unsupported_or_late": 0,
+      "supported_in_time": 8
+    },
+    "any6": {
+      "no_ticket": 3,
+      "early_or_unsupported_or_late": 4,
+      "supported_in_time": 10
+    }
+  },
+  "mean6_on_original_positive_no_tickets": {
+    "clef_flash": {
+      "mean6_flagged": 1,
+      "mean6_supported_in_time": 1
+    },
+    "decider_flash": {
+      "mean6_flagged": 2,
+      "mean6_supported_in_time": 2
+    },
+    "gemini": {
+      "mean6_flagged": 1,
+      "mean6_supported_in_time": 1
+    },
+    "jev": {
+      "mean6_flagged": 1,
+      "mean6_supported_in_time": 1
+    },
+    "liquid": {
+      "mean6_flagged": 1,
+      "mean6_supported_in_time": 1
+    },
+    "luna": {
+      "mean6_flagged": 3,
+      "mean6_supported_in_time": 3
+    },
+    "any6": {
+      "mean6_flagged": 0,
+      "mean6_supported_in_time": 0
+    }
+  },
+  "mean6_fold_cutoffs": [
+    0.8,
+    0.8,
+    0.65,
+    0.8,
+    0.65
+  ],
+  "original_six": {
+    "positives": 2327.9141791044776,
+    "minutes": 4065.89552238806,
+    "zero_cap_folds": [
+      0,
+      2,
+      4
+    ],
+    "catches": {
+      "clef_flash": 185.2257462686567,
+      "decider_flash": 182.38805970149255,
+      "gemini": 151.48880597014926,
+      "jev": 156.0,
+      "liquid": 156.5820895522388,
+      "luna": 81.46828358208955
+    },
+    "recall": {
+      "clef_flash": 0.0795672572173219,
+      "decider_flash": 0.07834827475111439,
+      "gemini": 0.06507491011907719,
+      "jev": 0.0670127796807404,
+      "liquid": 0.0672628273661163,
+      "luna": 0.03499625729906825
+    }
+  },
+  "all_eight": {
+    "positives": 2327.9141791044776,
+    "minutes": 4065.89552238806,
+    "zero_cap_folds": [
+      0,
+      2,
+      4
+    ],
+    "catches": {
+      "clef_flash": 185.2257462686567,
+      "decider_flash": 182.38805970149255,
+      "gemini": 151.48880597014926,
+      "jev": 156.0,
+      "liquid": 156.5820895522388,
+      "luna": 81.46828358208955,
+      "mean6": 182.38805970149255,
+      "any6": 81.46828358208955
+    },
+    "recall": {
+      "clef_flash": 0.0795672572173219,
+      "decider_flash": 0.07834827475111439,
+      "gemini": 0.06507491011907719,
+      "jev": 0.0670127796807404,
+      "liquid": 0.0672628273661163,
+      "luna": 0.03499625729906825,
+      "mean6": 0.07834827475111439,
+      "any6": 0.03499625729906825
+    }
+  },
+  "pairwise": {
+    "mean6": {
+      "clef_flash": {
+        "positives": 2327.9141791044776,
+        "minutes": 8955.0,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "mean6": 397.54477611940297,
+          "clef_flash": 394.375
+        },
+        "recall": {
+          "mean6": 0.17077295189306935,
+          "clef_flash": 0.16941131401661536
+        }
+      },
+      "decider_flash": {
+        "positives": 2327.9141791044776,
+        "minutes": 7836.417910447762,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "mean6": 346.78171641791045,
+          "decider_flash": 308.4813432835821
+        },
+        "recall": {
+          "mean6": 0.14896670999757966,
+          "decider_flash": 0.13251405316077905
+        }
+      },
+      "gemini": {
+        "positives": 2327.9141791044776,
+        "minutes": 8605.746268656716,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "mean6": 385.2481343283582,
+          "gemini": 335.3059701492537
+        },
+        "recall": {
+          "mean6": 0.16549069453950352,
+          "gemini": 0.14403708399518497
+        }
+      },
+      "jev": {
+        "positives": 2327.9141791044776,
+        "minutes": 8605.746268656716,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "mean6": 385.2481343283582,
+          "jev": 339.51679104477614
+        },
+        "recall": {
+          "mean6": 0.16549069453950352,
+          "jev": 0.1458459225397151
+        }
+      },
+      "liquid": {
+        "positives": 2327.9141791044776,
+        "minutes": 8605.746268656716,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "mean6": 385.2481343283582,
+          "liquid": 335.67537313432837
+        },
+        "recall": {
+          "mean6": 0.16549069453950352,
+          "liquid": 0.144195768103212
+        }
+      },
+      "luna": {
+        "positives": 2327.9141791044776,
+        "minutes": 5328.544776119403,
+        "zero_cap_folds": [
+          0,
+          2,
+          4
+        ],
+        "catches": {
+          "mean6": 241.39738805970148,
+          "luna": 119.93470149253731
+        },
+        "recall": {
+          "mean6": 0.10369685885609596,
+          "luna": 0.05152024184099211
+        }
+      }
+    },
+    "any6": {
+      "clef_flash": {
+        "positives": 2327.9141791044776,
+        "minutes": 9765.223880597016,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "any6": 330.4235074626866,
+          "clef_flash": 432.535447761194
+        },
+        "recall": {
+          "any6": 0.14193972889060574,
+          "clef_flash": 0.18580386323673906
+        }
+      },
+      "decider_flash": {
+        "positives": 2327.9141791044776,
+        "minutes": 9202.985074626866,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "any6": 285.31529850746267,
+          "decider_flash": 351.160447761194
+        },
+        "recall": {
+          "any6": 0.12256263614375178,
+          "decider_flash": 0.15084767768212207
+        }
+      },
+      "gemini": {
+        "positives": 2327.9141791044776,
+        "minutes": 10016.305970149253,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "any6": 298.1324626865672,
+          "gemini": 389.59514925373134
+        },
+        "recall": {
+          "any6": 0.12806849383135566,
+          "gemini": 0.1673580378309325
+        }
+      },
+      "jev": {
+        "positives": 2327.9141791044776,
+        "minutes": 9674.365671641792,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "any6": 282.96268656716416,
+          "jev": 381.71828358208955
+        },
+        "recall": {
+          "any6": 0.12155202674869085,
+          "jev": 0.16397437972946763
+        }
+      },
+      "liquid": {
+        "positives": 2327.9141791044776,
+        "minutes": 10548.544776119403,
+        "zero_cap_folds": [
+          2
+        ],
+        "catches": {
+          "any6": 324.8059701492537,
+          "liquid": 415.72014925373134
+        },
+        "recall": {
+          "any6": 0.13952660843975054,
+          "liquid": 0.17858053058195392
+        }
+      },
+      "luna": {
+        "positives": 2327.9141791044776,
+        "minutes": 8940.373134328358,
+        "zero_cap_folds": [
+          0,
+          4
+        ],
+        "catches": {
+          "any6": 270.9365671641791,
+          "luna": 270.9365671641791
+        },
+        "recall": {
+          "any6": 0.1163859774540337,
+          "luna": 0.1163859774540337
+        }
+      }
+    }
+  }
+}
