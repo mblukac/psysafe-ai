@@ -8,6 +8,8 @@ For time-sensitive human review, start with [When does a safety flag become a ti
 
 For the full clinician-rated cohort, start with the [time-sensitive human-review pilot results](full-panel-findings.md). This is a different endpoint: a shared review desk for **either** risk category, timed from the first observed majority endorsement. The [technical draft](timely-human-review-draft.md) describes the study design and the still-proposed customer-support comparison.
 
+The [paired ticket-update experiment](ticket-updates.md) tests what happens when later evidence can change an existing alert at the same FIFO review start. It compares simple and Bayesian rules on all six cached detectors at identical simulated reviewer-minutes.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
