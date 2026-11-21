@@ -1,0 +1,263 @@
+{
+  "kind": "mindguard_tuned_no_ticket_overlap_v1",
+  "dataset_revision": "1c082b67bc0a6574badc3bf4cbe3e12af130f606",
+  "models_and_matrix_order": [
+    "clef_flash",
+    "decider_flash",
+    "gemini",
+    "jev",
+    "liquid",
+    "luna"
+  ],
+  "gate": "original family-held-out tuned",
+  "matrix_unit": "distinct observed-positive conversation, before resampling; miss = no first crossing anywhere",
+  "family_blocked_fold_counts": [
+    {
+      "fold": 0,
+      "positive_paths": 3,
+      "never_flagged_by_any": 0,
+      "first_to_flag_or_immediate_supported_catches": 3,
+      "any_flag_positive_by_model": [
+        2,
+        3,
+        2,
+        1,
+        2,
+        0
+      ]
+    },
+    {
+      "fold": 1,
+      "positive_paths": 3,
+      "never_flagged_by_any": 0,
+      "first_to_flag_or_immediate_supported_catches": 3,
+      "any_flag_positive_by_model": [
+        2,
+        1,
+        2,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "fold": 2,
+      "positive_paths": 3,
+      "never_flagged_by_any": 1,
+      "first_to_flag_or_immediate_supported_catches": 2,
+      "any_flag_positive_by_model": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "fold": 3,
+      "positive_paths": 4,
+      "never_flagged_by_any": 0,
+      "first_to_flag_or_immediate_supported_catches": 0,
+      "any_flag_positive_by_model": [
+        2,
+        3,
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "fold": 4,
+      "positive_paths": 4,
+      "never_flagged_by_any": 2,
+      "first_to_flag_or_immediate_supported_catches": 2,
+      "any_flag_positive_by_model": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  ],
+  "note": "A flag does not mean an endorsed turn was reviewed. The retrospective union is not an ensemble policy. Miss correlations describe these role-plays; 17 positives in 16 families do not establish population dependence.",
+  "observed_positive_paths": 17,
+  "observed_negative_paths": 50,
+  "positive_opening_families": 16,
+  "families_containing_a_path_missed_by_all": 3,
+  "positive_families_with_no_positive_path_flagged_by_any": 3,
+  "by_model": {
+    "clef_flash": {
+      "never_flagged_positive": 9,
+      "any_flag_positive": 8,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 8,
+      "never_flagged_here_but_flagged_elsewhere": 6,
+      "sole_detector_to_flag": 1,
+      "any_flag_on_observed_negative": 0
+    },
+    "decider_flash": {
+      "never_flagged_positive": 9,
+      "any_flag_positive": 8,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 7,
+      "never_flagged_here_but_flagged_elsewhere": 6,
+      "sole_detector_to_flag": 0,
+      "any_flag_on_observed_negative": 0
+    },
+    "gemini": {
+      "never_flagged_positive": 8,
+      "any_flag_positive": 9,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 8,
+      "never_flagged_here_but_flagged_elsewhere": 5,
+      "sole_detector_to_flag": 0,
+      "any_flag_on_observed_negative": 1
+    },
+    "jev": {
+      "never_flagged_positive": 8,
+      "any_flag_positive": 9,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 9,
+      "never_flagged_here_but_flagged_elsewhere": 5,
+      "sole_detector_to_flag": 0,
+      "any_flag_on_observed_negative": 1
+    },
+    "liquid": {
+      "never_flagged_positive": 7,
+      "any_flag_positive": 10,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 10,
+      "never_flagged_here_but_flagged_elsewhere": 4,
+      "sole_detector_to_flag": 0,
+      "any_flag_on_observed_negative": 1
+    },
+    "luna": {
+      "never_flagged_positive": 8,
+      "any_flag_positive": 9,
+      "first_flag_after_deadline": 0,
+      "timely_supported_if_immediate": 5,
+      "never_flagged_here_but_flagged_elsewhere": 5,
+      "sole_detector_to_flag": 2,
+      "any_flag_on_observed_negative": 1
+    }
+  },
+  "never_flagged_by_n_models_from_0_up": [
+    3,
+    4,
+    1,
+    2,
+    1,
+    3,
+    3
+  ],
+  "joint_never_flagged_counts": [
+    [
+      9,
+      7,
+      7,
+      6,
+      5,
+      4
+    ],
+    [
+      7,
+      9,
+      7,
+      6,
+      6,
+      4
+    ],
+    [
+      7,
+      7,
+      8,
+      7,
+      6,
+      5
+    ],
+    [
+      6,
+      6,
+      7,
+      8,
+      7,
+      6
+    ],
+    [
+      5,
+      6,
+      6,
+      7,
+      7,
+      5
+    ],
+    [
+      4,
+      4,
+      5,
+      6,
+      5,
+      8
+    ]
+  ],
+  "pairwise_miss_phi": [
+    [
+      1.0,
+      0.5277777777777778,
+      0.6527777777777778,
+      0.4166666666666667,
+      0.3098898934004561,
+      -0.05555555555555555
+    ],
+    [
+      0.5277777777777778,
+      1.0,
+      0.6527777777777778,
+      0.4166666666666667,
+      0.5493502655735357,
+      -0.05555555555555555
+    ],
+    [
+      0.6527777777777778,
+      0.6527777777777778,
+      1.0,
+      0.7638888888888888,
+      0.6479515952918626,
+      0.2916666666666667
+    ],
+    [
+      0.4166666666666667,
+      0.4166666666666667,
+      0.7638888888888888,
+      1.0,
+      0.8874119674649423,
+      0.5277777777777778
+    ],
+    [
+      0.3098898934004561,
+      0.5493502655735357,
+      0.6479515952918626,
+      0.8874119674649423,
+      1.0,
+      0.408491223118783
+    ],
+    [
+      -0.05555555555555555,
+      -0.05555555555555555,
+      0.2916666666666667,
+      0.5277777777777778,
+      0.408491223118783,
+      1.0
+    ]
+  ],
+  "mean_model_no_flag_rate": 0.4803921568627451,
+  "never_flagged_by_any": 3,
+  "flagged_by_any": 14,
+  "retrospective_union_of_immediate_supported_catches": 14,
+  "first_to_flag_or_immediate_supported_catches": 10,
+  "observed_negative_flagged_by_any": 1
+}

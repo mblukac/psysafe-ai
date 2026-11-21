@@ -12,6 +12,8 @@ The [paired ticket-update experiment](ticket-updates.md) tests what happens when
 
 For **where conversations are lost and which fix buys the most timely catches**, see the [full-cohort loss and equal-work comparison](ticket-updates.md#where-cases-are-lost-and-which-fix-buys-the-most-catches). It separates failure to flag, failure to reach review in time, and a stale ticket at pickup.
 
+For the [six-model ensemble test under surge](full-panel-findings.md#can-an-ensemble-recover-conversations-that-the-tuned-gates-never-flag), see which source conversations the original gates jointly missed, and whether pooling their scores improved timely catches against a single model on the same reviewer-minutes.
+
 ## Start without data or credentials
 
 From the repository root, with Python 3.10 or later:
